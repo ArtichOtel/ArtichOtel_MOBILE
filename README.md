@@ -6,6 +6,13 @@ cd ArtichOtel_MOBILE/
 yarn 
 ```
 
+# Running with WSL2 ubuntu (windows)
+```
+npm install --global @expo/ngrok@^4.1.0 (tunnel)
+cd ArtichOtel_MOBILE/
+yarn expo start --tunnel
+```
+
 # Running
 ## Directly on mobile
 ```bash
