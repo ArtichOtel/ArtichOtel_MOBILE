@@ -1,8 +1,8 @@
 const colors = {
-  primary: "#204438",
-  secondary: "#FFFFF0",
-  tertiary: "#E1AA32",
-  quaternary: "#121712",
+  primary: "#204438", // Green
+  secondary: "#FFFFF0", // Ivory
+  tertiary: "#E1AA32", // Gold
+  quaternary: "#121712", // Black
 };
 
 export default colors;
