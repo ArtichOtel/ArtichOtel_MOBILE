@@ -4,11 +4,16 @@ import colors from "./colors";
 const buttonStyle = StyleSheet.create({
   dark: {
     backgroundColor: colors.primary,
+  },
+  textDark: {
+    fontSize: 18,
     color: colors.secondary,
-    // TODO : add shadow
   },
   light: {
     backgroundColor: colors.secondary,
+  },
+  textLight: {
+    fontSize: 18,
     color: colors.quaternary,
   }
 });
