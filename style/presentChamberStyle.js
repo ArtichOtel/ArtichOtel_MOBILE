@@ -13,6 +13,7 @@ const presentChamberStyle = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 15,
+        marginRight: 15
     },
 
     littleContainer: {

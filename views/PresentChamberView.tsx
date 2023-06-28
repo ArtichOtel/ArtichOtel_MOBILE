@@ -3,7 +3,7 @@ import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, faKitchenSet } from '@fortawesome/free-solid-svg-icons';
 
 export default function PresentChamberView(props: any): JSX.Element {
     return (
@@ -39,7 +39,8 @@ export default function PresentChamberView(props: any): JSX.Element {
                     <Text style={baseStyle.text} >Télévision</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
-                    <Text style={baseStyle.text} >Frigo</Text>
+                    <FontAwesomeIcon icon={faKitchenSet} size={40} style={{marginRight: 15}} />
+                    <Text style={baseStyle.text} >Frigo et Cuisine</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
                     <FontAwesomeIcon icon={faBellConcierge} size={40} style={{marginRight: 15}}/>
