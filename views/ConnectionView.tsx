@@ -3,19 +3,20 @@ import {TextInput, View} from "react-native";
 import connectionStyle from "../style/ConnectionStyle";
 import inputStyle from "../style/inputStyle";
 import mainStyle from "../style/MainStyle";
+import MainMenu from "../components/tabs/MainMenu";
 
 
 type ConnectionProps = {
-    placeholder: string;
+    navigation: any;
 }
 
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
-    const {placeholder} = props
+    const {navigation} = props
     const [username, setUsername] = useState<string>('')
 
     return (
-        <View style={connectionStyle.container}>
+        <View style={[mainStyle.container, connectionStyle.container]}>
 
             <TextInput
                 style={[mainStyle.input, inputStyle.connectionView]}
@@ -25,6 +26,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 onChangeText={(val) => setUsername(val)}
                 placeholder={"identifiant"}
             />
+
+            <MainMenu navigation={navigation} />
         </View>
     )
 }
