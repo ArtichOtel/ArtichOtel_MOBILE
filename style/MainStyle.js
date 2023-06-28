@@ -4,6 +4,7 @@ import colors from '../style/colors';
 
 const mainStyle = StyleSheet.create({
   container: {
+    flex: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
@@ -18,6 +19,12 @@ const mainStyle = StyleSheet.create({
     margin: 20,
     alignItems: "center",
   },
+  input: {
+    height: 40,
+    margin: 12,
+    padding: 10,
+    borderRadius: 10
+  }
 });
 
 export default mainStyle;

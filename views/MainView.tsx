@@ -6,12 +6,14 @@ import mainStyle from '../style/MainStyle';
 import buttonStyle from '../style/buttonStyle';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import MainMenu from '../components/tabs/MainMenu';
 
-type Hero = {
-  url_image: string,
+type MainViewProps = {
+  navigation: any,
 };
 
-export default function MainView(props: any): JSX.Element {
+export default function MainView(props: MainViewProps): JSX.Element {
+  const { navigation } = props;
   const [data, setData] = useState([]);
   //const [imageUrl, setImageUrl] = useState<string | null>(null);
 
@@ -63,6 +65,7 @@ export default function MainView(props: any): JSX.Element {
           <Text style={buttonStyle.light}>Nombre de personnes</Text>
         </TouchableOpacity>
       </View>
+      <MainMenu navigation={navigation} />
     </View>
   );
 }

@@ -5,13 +5,14 @@ const typoTitle = 'Bitter-Regular';
 const typoText = 'Nunito Sans';
 
 const baseStyle = StyleSheet.create({
-  container: { 
+  container: {
+    flex: 1
   },
   title: {
     fontFamily: typoTitle,
   },
   text: {
-    fontFamily: typoText,
+    //fontFamily: typoText,
   },
   btn: {
     borderRadius: 10,
