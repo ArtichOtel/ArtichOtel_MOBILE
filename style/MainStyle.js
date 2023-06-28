@@ -7,6 +7,7 @@ const mainStyle = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    width: '100%'
   },
   input: {
     height: 40,
