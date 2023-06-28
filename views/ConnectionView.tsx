@@ -2,9 +2,12 @@ import {useState} from "react";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import connectionStyle from "../style/ConnectionStyle";
 import inputStyle from "../style/inputStyle";
-import mainStyle from "../style/MainStyle";
 import MainMenu from "../components/tabs/MainMenu";
 import baseStyle from "../style/baseStyle";
+import buttonStyle from "../style/buttonStyle";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faArrowRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import mainMenuStyle from "../style/mainMenuStyle";
 
 
 type ConnectionProps = {
@@ -17,7 +20,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
     const [username, setUsername] = useState<string>('')
 
     return (
-        <View style={mainStyle.container}>
+        <View style={baseStyle.view}>
             <View style={[connectionStyle.container]}>
 
                 <View style={inputStyle.labelWrapper}>
@@ -26,7 +29,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 </View>
 
                 <TextInput
-                    style={[mainStyle.input, inputStyle.connectionView]}
+                    style={[baseStyle.input, connectionStyle.input]}
                     autoComplete={"username"}
                     blurOnSubmit={true}
                     inputMode="text"
@@ -41,7 +44,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 </View>
 
                 <TextInput
-                    style={[mainStyle.input, inputStyle.connectionView]}
+                    style={[baseStyle.input, connectionStyle.input]}
                     autoComplete={"username"}
                     blurOnSubmit={true}
                     inputMode="text"
@@ -51,15 +54,16 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
                 <View style={[baseStyle.container, connectionStyle.buttonWrapper]}>
 
-                    <TouchableOpacity >
-                        <Text style={[inputStyle.label]}>Mot de passe</Text>
+                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}>
+                        <FontAwesomeIcon icon={faArrowRightToBracket} size={30} style={mainMenuStyle.items} />
+                        <Text style={[connectionStyle.button, buttonStyle.textDark]}>Se connecter</Text>
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity >
-                        <Text style={[inputStyle.label]}>Mot de passe</Text>
+                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}>
+                        <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
+                        <Text style={[connectionStyle.button, buttonStyle.textDark]}>Créer un compte</Text>
                     </TouchableOpacity>
-
 
 
                 </View>
