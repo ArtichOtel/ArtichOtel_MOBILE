@@ -9,7 +9,11 @@ const mainMenuStyle = StyleSheet.create({
         justifyContent: "space-evenly",
         height: 62,
         width: '100%',
-        bottom:0,
+        bottom: 0,
+        /*TODO : change 'bottom' to 'top' with calculated
+           value from user screen minus mainMenu height
+           OR make this container hidden when user keyboard is On
+        */
         backgroundColor: colors.primary,
         position: 'absolute',
     },
