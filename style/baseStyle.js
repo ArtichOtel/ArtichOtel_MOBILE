@@ -14,7 +14,10 @@ const baseStyle = StyleSheet.create({
   text: {
     //fontFamily: typoText,
   },
-
+  btn: {
+    borderRadius: 10,
+    fontSize: 20,
+  },
 })
 
 export default baseStyle;
