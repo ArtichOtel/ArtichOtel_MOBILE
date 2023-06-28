@@ -11,7 +11,7 @@ const baseStyle = StyleSheet.create({
     fontFamily: typoTitle,
   },
   text: {
-    fontFamily: typoText,
+    //fontFamily: typoText,
   },
 
 })
