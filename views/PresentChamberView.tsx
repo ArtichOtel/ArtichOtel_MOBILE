@@ -27,7 +27,7 @@ export default function PresentChamberView(props: any): JSX.Element {
 
         <View style={presentChamberStyle.greatContainer}>
             <View style={presentChamberStyle.middleContainer}>
-                <View style={presentChamberStyle.littleContainer} >
+                <View style={presentChamberStyle.littleContainer}>
                     <FontAwesomeIcon icon={faShower} size={40} style={{marginRight: 15}}/>
                     <Text style={baseStyle.textTypo}>Douche</Text>
                 </View>
@@ -50,8 +50,8 @@ export default function PresentChamberView(props: any): JSX.Element {
                     <Text style={baseStyle.textTypo} >Frigo et Cuisine</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
-                    <FontAwesomeIcon icon={faBellConcierge} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.textTypo} >Service de Chambre</Text>
+                    <FontAwesomeIcon icon={faBellConcierge} size={40} style={{marginRight: 5}}/>
+                    <Text style={baseStyle.textTypo} >Service Chambre</Text>
                 </View>
             </View>
         </View>
