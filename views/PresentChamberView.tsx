@@ -12,7 +12,7 @@ export default function PresentChamberView(props: any): JSX.Element {
 
       <View style={[baseStyle.container, mainStyle.container]}>
             <View style={[baseStyle.container, mainStyle.container, presentChamberStyle.box]}>
-                <Text>X personnes </Text>
+                <Text>X personnes  -  </Text>
                 <Text>29/06/2023  -  </Text>
                 <Text>30/06/2023</Text>
             </View>

@@ -49,7 +49,7 @@ const presentChamberStyle = StyleSheet.create({
     buttonPrice: {
       backgroundColor: colors.tertiary,
       color: colors.primary,
-      marginLeft: 15,
+      marginLeft: 25,
       marginBottom: 15,
       borderRadius: 5,
       height: 40,
