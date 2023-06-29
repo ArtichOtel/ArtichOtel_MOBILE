@@ -96,26 +96,26 @@ export default function MainView(props: MainViewProps): JSX.Element {
             onPress={() => onPress(allRefs.refRoomsTypes, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
-            <Text style={buttonStyle.light}>Type de chambres</Text>
+            <Text style={baseStyle.textDark}>Type de chambres</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
             onPress={() => onPress(allRefs.refDates, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
-            <Text style={buttonStyle.light}>Date</Text>
+            <Text style={baseStyle.textDark}>Date</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
             onPress={() => onPress(allRefs.refPeopleNbr, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
-            <Text style={buttonStyle.light}>Nombre de personnes</Text>
+            <Text style={baseStyle.textDark}>Nombre de personnes</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}
           >
-            <Text style={[buttonStyle.search, buttonStyle.textDark]}>Rechercher</Text>
+            <Text style={[buttonStyle.search, baseStyle.textLight]}>Rechercher</Text>
           </TouchableOpacity>
 
         </View>
