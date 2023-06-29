@@ -15,7 +15,11 @@ const buttonStyle = StyleSheet.create({
   textLight: {
     fontSize: 18,
     color: colors.quaternary,
-  }
+  },
+  search: {
+    backgroundColor: colors.primary,
+    color: colors.secondary,
+  },
 });
 
 export default buttonStyle;
