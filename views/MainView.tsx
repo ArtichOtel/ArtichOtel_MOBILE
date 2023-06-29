@@ -60,7 +60,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
   useEffect(() => {
     fetchHero();
-  }, []);
+  }, [API_URL]);
 
   useEffect(() => {
     if (data.length > 0) {
