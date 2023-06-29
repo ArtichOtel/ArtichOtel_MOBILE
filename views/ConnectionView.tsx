@@ -8,6 +8,9 @@ import buttonStyle from "../style/buttonStyle";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import mainMenuStyle from "../style/mainMenuStyle";
+import axios from "axios";
+// @ts-ignore
+import {API_URL} from "@env";
 
 
 type ConnectionProps = {
@@ -18,10 +21,47 @@ type ConnectionProps = {
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
     const [username, setUsername] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [connectionError, setConnectionError] = useState<string|null>(null)
+
+    const getUserAccess = async () => {
+        return await axios
+            .post(API_URL+"user/login", {
+                pseudo: username,
+                email: username,
+                password: password
+            })
+            .then((response) => {
+                console.log("RESPONSE",response.data)
+
+                return response.data.role;
+            })
+            .then(() => {
+                setPassword("");
+                setUsername("");
+            })
+            .catch((err) => {
+                console.log("connection error :", err);
+                setConnectionError(err.response.data.message)
+            });
+    };
+
+    function tryConnection():void {
+getUserAccess().then()
+    }
+
 
     return (
         <View style={baseStyle.view}>
-            <View style={[connectionStyle.container]}>
+            <View style={[connectionStyle.container]}
+            >
+
+                {connectionError ?
+                    <View style={{marginBottom: 20}}>
+                        <Text style={baseStyle.errorText}>{connectionError}</Text>
+                    </View>
+                    : null}
+
 
                 <View style={inputStyle.labelWrapper}>
                     <Text style={[inputStyle.label]}>Identifiant</Text>
@@ -34,7 +74,9 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     blurOnSubmit={true}
                     inputMode="text"
                     onChangeText={(val) => setUsername(val)}
+                    onPressIn={() => setConnectionError(null)}
                     placeholder={"identifiant"}
+                    value={username}
                 />
 
 
@@ -48,19 +90,25 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     autoComplete={"username"}
                     blurOnSubmit={true}
                     inputMode="text"
-                    onChangeText={(val) => setUsername(val)}
+                    secureTextEntry={true}
+                    onChangeText={(val) => setPassword(val)}
+                    onPressIn={() => setConnectionError(null)}
                     placeholder={"mot de passe"}
+                    value={password}
                 />
 
-                <View style={[baseStyle.container, connectionStyle.buttonWrapper]}>
+                <View style={[connectionStyle.buttonWrapper]}
+                >
 
-                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}>
+                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
+                    onPress={() => tryConnection()}
+                    >
                         <FontAwesomeIcon icon={faArrowRightToBracket} size={30} style={mainMenuStyle.items} />
                         <Text style={[connectionStyle.button, buttonStyle.textDark]}>Se connecter</Text>
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}>
+                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]} >
                         <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
                         <Text style={[connectionStyle.button, buttonStyle.textDark]}>Créer un compte</Text>
                     </TouchableOpacity>
@@ -70,7 +118,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
             </View>
 
-            <MainMenu navigation={navigation} />
+            <MainMenu navigation={navigation}  />
         </View>
     )
 }

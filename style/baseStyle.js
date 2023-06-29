@@ -35,7 +35,14 @@ const baseStyle = StyleSheet.create({
   text: {
     //fontFamily: typoText,
     fontSize: 18
-  }
+  },
+  errorText: {
+    fontSize: 18,
+    color: 'red',
+    padding: 5,
+    backgroundColor: '#ff000060'
+}
+
 })
 
 export default baseStyle;

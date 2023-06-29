@@ -8,9 +8,20 @@ const mainStyle = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
-    margin: 'auto',
-    height: '50%',
+    marginTop: 80,
   },
+  alignBtn: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 20,
+    padding: 10,
+    margin: 20,
+    justifyContent: "flex-start",
+  },
+  first: {
+    marginTop: 60,
+  },
+
   alignBtn: {
     display: "flex",
     flexDirection: "row",
@@ -19,6 +30,7 @@ const mainStyle = StyleSheet.create({
     margin: 20,
     alignItems: "center",
   },
+
   input: {
     height: 40,
     margin: 12,
