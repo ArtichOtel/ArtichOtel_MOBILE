@@ -48,7 +48,6 @@ const presentChamberStyle = StyleSheet.create({
 
     buttonPrice: {
       backgroundColor: colors.tertiary,
-      color: colors.primary,
       marginLeft: 25,
       marginBottom: 15,
       borderRadius: 5,
@@ -60,7 +59,6 @@ const presentChamberStyle = StyleSheet.create({
 
     buttonValid: {
       backgroundColor: colors.tertiary,
-      color: colors.primary,
       marginRight: 15,
       marginLeft: 15,
       marginBottom: 15,
@@ -69,6 +67,10 @@ const presentChamberStyle = StyleSheet.create({
       width: 220,
       alignItems: "center",
       justifyContent: "center",
+    },
+
+    buttonTextColor: {
+      color: colors.primary,
     }
   });
 

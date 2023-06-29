@@ -59,8 +59,8 @@ export default function PresentChamberView(props: any): JSX.Element {
         </View>
 
         <View style={presentChamberStyle.littleContainer}>
-            <TouchableOpacity style={presentChamberStyle.buttonPrice}><Text>200€</Text></TouchableOpacity>
-            <TouchableOpacity style={presentChamberStyle.buttonValid}><Text>Selectionner</Text></TouchableOpacity>
+            <TouchableOpacity style={presentChamberStyle.buttonPrice}><Text style={presentChamberStyle.buttonTextColor}>200€</Text></TouchableOpacity>
+            <TouchableOpacity style={presentChamberStyle.buttonValid}><Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text></TouchableOpacity>
         </View>
       </View>
     );
