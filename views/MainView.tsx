@@ -1,4 +1,4 @@
-import { Alert, Button, Text, View, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { Alert, Button, Text, View, TouchableOpacity, Image, ImageBackground, StyleSheet } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -12,9 +12,14 @@ type MainViewProps = {
   navigation: any,
 };
 
+type Hero = {
+  title: string,
+  url_image: string,
+};
+
 export default function MainView(props: MainViewProps): JSX.Element {
   const { navigation } = props;
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Hero[] | null>([]);
   //const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   // const getHeroFromApi = async () => {
@@ -33,39 +38,49 @@ export default function MainView(props: MainViewProps): JSX.Element {
   //   getHeroFromApi();
   // }, []);
 
-  // const fetchHero = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost/api/hero");
-  //     console.log("Response : ", response);
-  //     const data = response.data;
-  //     //setData(data);
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.error(error, "Error data : ", data);
-  //   }
-  // };
+  const fetchHero = async () => {
+    try {
+      const response = await axios.get("http://192.168.137.1/api/hero");
+      const data = response.data[0];
+      console.log(data[0].url_image);
+      setData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchHero();
-  // }, []);
+  useEffect(() => {
+    fetchHero();
+  }, []);
+
+  const image = { uri: data[0].url_image }
+  console.log("image: ", image)
 
   return (
     <View style={[baseStyle.container, mainStyle.container]}>
-      <View>
-        <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
-          <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
-          <Text style={buttonStyle.light}>Type de chambres</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
-          <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
-          <Text style={buttonStyle.light}>Date</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
-          <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
-          <Text style={buttonStyle.light}>Nombre de personnes</Text>
-        </TouchableOpacity>
-      </View>
+      <ImageBackground source={image} resizeMode='cover' >
+        <View>
+          <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
+            <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
+            <Text style={buttonStyle.light}>Type de chambres</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
+            <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
+            <Text style={buttonStyle.light}>Date</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
+            <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
+            <Text style={buttonStyle.light}>Nombre de personnes</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
       <MainMenu navigation={navigation} />
     </View>
   );
 }
+
+const test = StyleSheet.create({
+  image: {
+    justifyContent: "center",
+  }
+});
