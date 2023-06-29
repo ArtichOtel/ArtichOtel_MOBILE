@@ -9,7 +9,7 @@ import axios from 'axios';
 import MainMenu from '../components/tabs/MainMenu';
 import { useCallback, useRef } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import BottomSheetBase, { BottomSheetRefProps } from '../components/BottomSheetBase';
+import BottomSheetBase, { BottomSheetRefProps } from '../components/bottomSheets/BottomSheetBase';
 import { SCREEN_HEIGHT } from '../utils/dimension';
 
 type MainViewProps = {
