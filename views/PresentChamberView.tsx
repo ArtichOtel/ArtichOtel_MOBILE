@@ -18,11 +18,11 @@ export default function PresentChamberView(props: any): JSX.Element {
             </View>
 
         <Image source={require('../assets/images/chambreHotel.jpg')} style={{width:300, height:100, borderColor:'black', borderWidth:1, borderRadius:10, marginBottom: 15}} />
-        <Text style={baseStyle.title}>Chambre Standard </Text>
+        <Text style={[baseStyle.title, {fontSize: 30, alignItems:"flex-start", marginBottom: 5, textDecorationLine: 'underline'}]}>Chambre Standard</Text>
 
-        <Text style={baseStyle.text}>Voici une chambre Standard  pour maximum 3 personnes, avec des lits douillés, ainsi qu'un confort inégalable. Télé, service de chambre, douche et autres avantages vous attendent</Text>
+        <Text style={baseStyle.text}>Voici une chambre Standard pour maximum 3 personnes, avec des lits douillés, ainsi qu'un confort inégalable. Télé, service de chambre, douche et autres avantages vous attendent</Text>
 
-        <View style={presentChamberStyle.littleContainer}>
+        <View style={presentChamberStyle.arrivalHourContainer}>
             <FontAwesomeIcon icon={faClock} size={40} style={{marginRight: 15}} />
             <Text style={baseStyle.text}> Arrivée entre 13h00 et 18h00</Text>
         </View>

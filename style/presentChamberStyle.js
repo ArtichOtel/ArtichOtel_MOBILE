@@ -26,13 +26,21 @@ const presentChamberStyle = StyleSheet.create({
         marginTop: 15
     },
 
+    arrivalHourContainer: {
+      display: "flex",
+      flexDirection: "row", 
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 15
+  },
+
     box: {
       display: "flex",
       flexDirection: "row",
       borderColor: colors.tertiary,
       borderWidth: 1,
       borderRadius: 10,
-      shadowColor: '#FFF',
+      shadowColor: '#000',
       width: 300,
       marginBottom: 75,
       marginTop: 85,
