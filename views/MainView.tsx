@@ -12,6 +12,8 @@ import BottomSheetBase, { BottomSheetRefProps } from '../components/bottomSheets
 import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
+// @ts-ignore
+import { API_URL } from '@env';
 
 type MainViewProps = {
   navigation: any,
@@ -43,7 +45,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
   // fetchHero section
   const fetchHero = async () => {
     try {
-      const response = await axios.get("http://192.168.137.1/api/hero");
+      const response = await axios.get(API_URL + "hero");
       const data = response.data[0];
       //console.log(data);
       setData(data);
