@@ -16,7 +16,10 @@ const mainStyle = StyleSheet.create({
     gap: 20,
     padding: 10,
     margin: 20,
-    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  first: {
+    marginTop: 60,
   },
   input: {
     height: 40,

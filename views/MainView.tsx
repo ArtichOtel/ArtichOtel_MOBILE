@@ -11,6 +11,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import BottomSheetBase, { BottomSheetRefProps } from '../components/bottomSheets/BottomSheetBase';
 import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
+import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
+// @ts-ignore
+import { API_URL } from '@env';
 
 type MainViewProps = {
   navigation: any,
@@ -42,7 +45,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
   // fetchHero section
   const fetchHero = async () => {
     try {
-      const response = await axios.get("http://192.168.137.1/api/hero");
+      const response = await axios.get(API_URL + "hero");
       const data = response.data[0];
       //console.log(data);
       setData(data);
@@ -71,7 +74,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
         <BottomSheetBase
           ref={allRefs.refRoomsTypes}
           height={BottomSheetBaseHeight}
-          content={<Text>RoomsTypes</Text>}
+          content={<RoomTypesBottomSheetContent />}
         />
         <BottomSheetBase
           ref={allRefs.refDates}
@@ -85,7 +88,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
         />
         <View>
           <TouchableOpacity
-            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
             onPress={() => onPress(allRefs.refRoomsTypes, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
@@ -99,16 +102,16 @@ export default function MainView(props: MainViewProps): JSX.Element {
             <Text style={buttonStyle.light}>Date</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}
+            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
             onPress={() => onPress(allRefs.refPeopleNbr, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
             <Text style={buttonStyle.light}>Nombre de personnes</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[baseStyle.btn]}
+            style={[baseStyle.btn, buttonStyle.search]}
           >
-            <Text style={[buttonStyle.textDark]}>Rechercher</Text>
+            <Text style={[buttonStyle.search, buttonStyle.textDark]}>Rechercher</Text>
           </TouchableOpacity>
 
         </View>
