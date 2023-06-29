@@ -9,7 +9,7 @@ import axios from 'axios';
 import MainMenu from '../components/tabs/MainMenu';
 import { useCallback, useRef } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import BottomSheetBase, { BottomSheetRefProps } from '../components/BottomSheetBase';
+import BottomSheetBase, { BottomSheetRefProps } from '../components/bottomSheets/BottomSheetBase';
 import { SCREEN_HEIGHT } from '../utils/dimension';
 
 type MainViewProps = {
@@ -17,13 +17,22 @@ type MainViewProps = {
 };
 
 export default function MainView(props: MainViewProps): JSX.Element {
-  const ref = useRef<BottomSheetRefProps>(null)
-  const onPress = useCallback((height: number) => {
-    ref?.current?.scrollTo(height)
-  }, [])
   const BottomSheetBaseHeight = -SCREEN_HEIGHT / 3
   const { navigation } = props;
   const [data, setData] = useState([]);
+
+  const allRefs = {
+    refRoomsTypes: useRef<BottomSheetRefProps>(null),
+    refDates: useRef<BottomSheetRefProps>(null),
+    refPeopleNbr: useRef<BottomSheetRefProps>(null)
+  }
+
+  const onPress = useCallback((ref: React.MutableRefObject<BottomSheetRefProps>, height: number) => {
+    Object.values(allRefs).forEach((ref) => {
+      ref.current.scrollTo(0)
+    })
+    ref.current.scrollTo(height)
+  }, [])
   //const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   // const getHeroFromApi = async () => {
@@ -60,21 +69,39 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
   return (
     <GestureHandlerRootView style={[baseStyle.container, mainStyle.container]}>
+      <BottomSheetBase
+        ref={allRefs.refRoomsTypes}
+        height={BottomSheetBaseHeight}
+        content={<Text>RoomsTypes</Text>}
+      />
+      <BottomSheetBase
+        ref={allRefs.refDates}
+        height={BottomSheetBaseHeight}
+        content={<Text>Dates</Text>}
+      />
+      <BottomSheetBase
+        ref={allRefs.refPeopleNbr}
+        height={BottomSheetBaseHeight}
+        content={<Text>People number</Text>}
+      />
       <View>
         <TouchableOpacity
           style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}
+          onPress={() => onPress(allRefs.refRoomsTypes, BottomSheetBaseHeight)}
         >
           <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
           <Text style={buttonStyle.light}>Type de chambres</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}
+          onPress={() => onPress(allRefs.refDates, BottomSheetBaseHeight)}
         >
           <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
           <Text style={buttonStyle.light}>Date</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}
+          onPress={() => onPress(allRefs.refPeopleNbr, BottomSheetBaseHeight)}
         >
           <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
           <Text style={buttonStyle.light}>Nombre de personnes</Text>
