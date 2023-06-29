@@ -11,6 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import BottomSheetBase, { BottomSheetRefProps } from '../components/bottomSheets/BottomSheetBase';
 import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
+import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
 
 type MainViewProps = {
   navigation: any,
@@ -71,7 +72,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
         <BottomSheetBase
           ref={allRefs.refRoomsTypes}
           height={BottomSheetBaseHeight}
-          content={<Text>RoomsTypes</Text>}
+          content={<RoomTypesBottomSheetContent />}
         />
         <BottomSheetBase
           ref={allRefs.refDates}
