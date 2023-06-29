@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import connectionStyle from "../style/ConnectionStyle";
 import inputStyle from "../style/inputStyle";
@@ -11,6 +11,8 @@ import mainMenuStyle from "../style/mainMenuStyle";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
+import {userDataType} from "../utils/types";
+import {UserContext} from "../App";
 
 
 type ConnectionProps = {
@@ -20,6 +22,7 @@ type ConnectionProps = {
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
+    const {currentUser, setCurrentUser} = useContext(UserContext)
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
@@ -34,9 +37,16 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             .then((response) => {
                 console.log("RESPONSE",response.data)
 
-                return response.data.role;
+                return response.data;
             })
-            .then(() => {
+            .then((userData) => {
+                console.log("recap")
+                console.log(userData.user_id,userData.token,userData.customer_id)
+                setCurrentUser({
+                    userId: userData.user_id,
+                    token: userData.token,
+                    customerId: userData.customer_id
+                })
                 setPassword("");
                 setUsername("");
             })
@@ -104,13 +114,13 @@ getUserAccess().then()
                     onPress={() => tryConnection()}
                     >
                         <FontAwesomeIcon icon={faArrowRightToBracket} size={30} style={mainMenuStyle.items} />
-                        <Text style={[connectionStyle.button, buttonStyle.textDark]}>Se connecter</Text>
+                        <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Se connecter</Text>
                     </TouchableOpacity>
 
 
                     <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]} >
                         <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
-                        <Text style={[connectionStyle.button, buttonStyle.textDark]}>Créer un compte</Text>
+                        <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Créer un compte</Text>
                     </TouchableOpacity>
 
 

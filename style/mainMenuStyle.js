@@ -12,7 +12,7 @@ const mainMenuStyle = StyleSheet.create({
         /*TODO : find a way to determinate the actual '56' value
            OR make it better
         */
-        top: SCREEN_HEIGHT-(62+56),
+        top: SCREEN_HEIGHT-(62+156),
         backgroundColor: colors.primary,
         position: 'absolute',
     },
