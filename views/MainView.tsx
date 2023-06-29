@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import MainMenu from '../components/tabs/MainMenu';
 import { useCallback, useRef } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import BottomSheetBase, { BottomSheetRefProps } from '../components/BottomSheetBase';
+import BottomSheetBase, { BottomSheetRefProps } from '../components/bottomSheets/BottomSheetBase';
 import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
 
@@ -21,14 +21,23 @@ type Hero = {
 };
 
 export default function MainView(props: MainViewProps): JSX.Element {
-  const ref = useRef<BottomSheetRefProps>(null)
-  const onPress = useCallback((height: number) => {
-    ref?.current?.scrollTo(height)
-  }, [])
   const BottomSheetBaseHeight = -SCREEN_HEIGHT / 3
   const { navigation } = props;
   const [data, setData] = useState<Hero[] | null>([]);
   const [image, setImage] = useState<string | null>(null);
+  const allRefs = {
+    refRoomsTypes: useRef<BottomSheetRefProps>(null),
+    refDates: useRef<BottomSheetRefProps>(null),
+    refPeopleNbr: useRef<BottomSheetRefProps>(null)
+  }
+
+  const onPress = useCallback((ref: React.MutableRefObject<BottomSheetRefProps>, height: number) => {
+    Object.values(allRefs).forEach((ref) => {
+      ref.current.scrollTo(0)
+    })
+    ref.current.scrollTo(height)
+  }, [])
+  //const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   // fetchHero section
   const fetchHero = async () => {
@@ -56,37 +65,60 @@ export default function MainView(props: MainViewProps): JSX.Element {
   // fetch
 
   return (
-    <GestureHandlerRootView style={[baseStyle.view]}>
-      <ImageBackground source={{ uri: image }} resizeMode='cover' style={baseStyle.view}>
+    <ImageBackground source={{ uri: image }} resizeMode='cover' style={baseStyle.view}>
+      <GestureHandlerRootView style={[baseStyle.container, mainStyle.container]}>
+
+        <BottomSheetBase
+          ref={allRefs.refRoomsTypes}
+          height={BottomSheetBaseHeight}
+          content={<Text>RoomsTypes</Text>}
+        />
+        <BottomSheetBase
+          ref={allRefs.refDates}
+          height={BottomSheetBaseHeight}
+          content={<Text>Dates</Text>}
+        />
+        <BottomSheetBase
+          ref={allRefs.refPeopleNbr}
+          height={BottomSheetBaseHeight}
+          content={<Text>People number</Text>}
+        />
         <View>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
+            onPress={() => onPress(allRefs.refRoomsTypes, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
             <Text style={buttonStyle.light}>Type de chambres</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+            onPress={() => onPress(allRefs.refDates, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
             <Text style={buttonStyle.light}>Date</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+            onPress={() => onPress(allRefs.refPeopleNbr, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
-            <Text style={[buttonStyle.light,]}>Nombre de personnes</Text>
+            <Text style={buttonStyle.light}>Nombre de personnes</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}
           >
             <Text style={[buttonStyle.search, buttonStyle.textDark]}>Rechercher</Text>
           </TouchableOpacity>
-        </View>
-      </ImageBackground >
 
-      <MainMenu navigation={navigation} />
-    </GestureHandlerRootView >
+        </View>
+
+        <MainMenu navigation={navigation} />
+      </GestureHandlerRootView >
+    </ImageBackground >
   );
 }
+
+
+
 
