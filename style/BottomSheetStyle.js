@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { SCREEN_HEIGHT } from "../utils/dimension";
 
+
 const BottomSheetStyle = StyleSheet.create({
   container: {
     backgroundColor: 'white',
