@@ -35,10 +35,14 @@ export default function MainView(props: MainViewProps): JSX.Element {
   }
 
   const onPress = useCallback((ref: React.MutableRefObject<BottomSheetRefProps>, height: number) => {
-    Object.values(allRefs).forEach((ref) => {
-      ref.current.scrollTo(0)
+    Object.values(allRefs).forEach((refObj) => {
+      const isActive = refObj.current.isActive()
+      if (isActive && refObj != ref) {
+        refObj?.current?.scrollTo(0)
+      }
     })
-    ref.current.scrollTo(height)
+    const isActive = ref?.current?.isActive()
+    ref?.current?.scrollTo(isActive ? 0 : height)
   }, [])
   //const [imageUrl, setImageUrl] = useState<string | null>(null);
 

@@ -11,10 +11,12 @@ type Props = {
 }
 export type BottomSheetRefProps = {
   scrollTo: (destination: number) => void
+  isActive: () => boolean
 }
 const BottomSheetBase = React.forwardRef<BottomSheetRefProps, Props>(({content, height}, ref) => {
   const translateY = useSharedValue(0)
   const context = useSharedValue({ y: 0 })
+  const active = useSharedValue(false)
   const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50
   const MIN_TRANSLATE_Y = height
 
@@ -24,12 +26,22 @@ const BottomSheetBase = React.forwardRef<BottomSheetRefProps, Props>(({content, 
     }
   })
 
+  const isActive = useCallback(() => {
+    return active.value
+  }, [])
+
   const scrollTo = useCallback((destination: number) => {
     'worklet'
+
+    active.value = destination !== 0
+
     translateY.value = withSpring(destination, { damping: 50 })
   }, [])
 
-  useImperativeHandle(ref, () => ({scrollTo}), [scrollTo])
+  useImperativeHandle(ref, () => ({ scrollTo, isActive }), [
+    scrollTo,
+    isActive
+  ])
 
   const gesture = Gesture.Pan()
     .onStart(() => {
