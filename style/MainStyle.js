@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import colors from '../style/colors';
 
 
 const mainStyle = StyleSheet.create({
@@ -8,6 +9,16 @@ const mainStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
+  alignBtn: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 20,
+    padding: 10,
+    margin: 20,
+    alignItems: "center",
+  },
+
   input: {
     height: 40,
     margin: 12,

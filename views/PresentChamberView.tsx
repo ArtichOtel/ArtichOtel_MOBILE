@@ -1,13 +1,22 @@
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, faKitchenSet } from '@fortawesome/free-solid-svg-icons';
+import colors from '../style/colors';
 
 export default function PresentChamberView(props: any): JSX.Element {
     return (
+        
+
       <View style={[baseStyle.container, mainStyle.container]}>
+            <View style={[baseStyle.container, mainStyle.container, presentChamberStyle.box]}>
+                <Text>X personnes </Text>
+                <Text>29/06/2023  -  </Text>
+                <Text>30/06/2023</Text>
+            </View>
+
         <Image source={require('../assets/images/chambreHotel.jpg')} style={{width:300, height:100, borderColor:'black', borderWidth:1, borderRadius:10, marginBottom: 15}} />
         <Text style={baseStyle.title}>Chambre Standard </Text>
 
@@ -47,6 +56,11 @@ export default function PresentChamberView(props: any): JSX.Element {
                     <Text style={baseStyle.text} >Service de Chambre</Text>
                 </View>
             </View>
+        </View>
+
+        <View style={presentChamberStyle.littleContainer}>
+            <TouchableOpacity style={presentChamberStyle.testButton}><Text>200€</Text></TouchableOpacity>
+            <TouchableOpacity style={presentChamberStyle.testButton}><Text>Selectionner</Text></TouchableOpacity>
         </View>
       </View>
     );
