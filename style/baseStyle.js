@@ -32,9 +32,15 @@ const baseStyle = StyleSheet.create({
     borderRadius: 10,
     fontSize: 18,
   },
-  text: {
+  textTypo: {
     //fontFamily: typoText,
     fontSize: 18
+  },
+  textDark: {
+    color: colors.quaternary,
+  },
+  textLight: {
+    color: colors.secondary,
   },
   errorText: {
     fontSize: 18,
