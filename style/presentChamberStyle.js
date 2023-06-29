@@ -1,8 +1,10 @@
 import { StyleSheet } from "react-native";
 import colors from "./colors";
+import { withTiming } from "react-native-reanimated";
 
 
 const presentChamberStyle = StyleSheet.create({
+
     greatContainer: {
       display: "flex",
       flexDirection: "row",
@@ -15,7 +17,7 @@ const presentChamberStyle = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 15,
-        marginRight: 15
+        marginRight: 10
     },
 
     littleContainer: {

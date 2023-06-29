@@ -1,8 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainView from "./views/MainView";
 import ConnectionView from "./views/ConnectionView";
-
+import PresentChamberView from "./views/PresentChamberView";
+import presentChamberStyle from "./style/presentChamberStyle";
 
 import colors from "./style/colors";
 import React, { createContext, useEffect, useState } from 'react';

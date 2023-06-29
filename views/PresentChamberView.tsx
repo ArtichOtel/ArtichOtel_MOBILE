@@ -18,40 +18,40 @@ export default function PresentChamberView(props: any): JSX.Element {
         <Image source={require('../assets/images/chambreHotel.jpg')} style={{width:300, height:100, borderColor:'black', borderWidth:1, borderRadius:10, marginBottom: 15}} />
         <Text style={[baseStyle.title, {fontSize: 30, alignItems:"flex-start", marginBottom: 5, textDecorationLine: 'underline'}]}>Chambre Standard</Text>
 
-        <Text style={baseStyle.text}>Voici une chambre Standard pour maximum 3 personnes, avec des lits douillés, ainsi qu'un confort inégalable. Télé, service de chambre, douche et autres avantages vous attendent</Text>
+        <Text style={baseStyle.textTypo}>Voici une chambre Standard pour maximum 3 personnes, avec des lits douillés, ainsi qu'un confort inégalable. Télé, service de chambre, douche et autres avantages vous attendent</Text>
 
         <View style={presentChamberStyle.arrivalHourContainer}>
             <FontAwesomeIcon icon={faClock} size={40} style={{marginRight: 15}} />
-            <Text style={baseStyle.text}> Arrivée entre 13h00 et 18h00</Text>
+            <Text style={baseStyle.textTypo}> Arrivée entre 13h00 et 18h00</Text>
         </View>
 
         <View style={presentChamberStyle.greatContainer}>
             <View style={presentChamberStyle.middleContainer}>
-                <View style={presentChamberStyle.littleContainer} >
+                <View style={presentChamberStyle.littleContainer}>
                     <FontAwesomeIcon icon={faShower} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.text}>Douche</Text>
+                    <Text style={baseStyle.textTypo}>Douche</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
                     <FontAwesomeIcon icon={faBed} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.text} >Grand lit</Text>
+                    <Text style={baseStyle.textTypo} >Grand lit</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
-                    <FontAwesomeIcon icon={faSmokingBan} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.text} >Ne pas fumer</Text>
+                    <FontAwesomeIcon icon={faSmokingBan} size={40} style={{marginRight: 10}}/>
+                    <Text style={baseStyle.textTypo} >Ne pas fumer</Text>
                 </View>
             </View>
             <View style={presentChamberStyle.middleContainer}>
                 <View style={presentChamberStyle.littleContainer} >
                     <FontAwesomeIcon icon={faTelevision} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.text} >Télévision</Text>
+                    <Text style={baseStyle.textTypo} >Télévision</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
                     <FontAwesomeIcon icon={faKitchenSet} size={40} style={{marginRight: 15}} />
-                    <Text style={baseStyle.text} >Frigo et Cuisine</Text>
+                    <Text style={baseStyle.textTypo} >Frigo et Cuisine</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
-                    <FontAwesomeIcon icon={faBellConcierge} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.title} >Service de Chambre</Text>
+                    <FontAwesomeIcon icon={faBellConcierge} size={40} style={{marginRight: 5}}/>
+                    <Text style={baseStyle.textTypo} >Service Chambre</Text>
                 </View>
             </View>
         </View>
