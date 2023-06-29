@@ -7,7 +7,7 @@ const connectionStyle = StyleSheet.create({
         flex: 1,
         display: 'flex',
         alignItems: "center",
-        justifyContent: "center",
+        //justifyContent: "center",
         marginTop: 80,
         paddingLeft: 20,
         paddingRight: 20,
@@ -21,8 +21,7 @@ const connectionStyle = StyleSheet.create({
         width: '100%'
     },
     buttonWrapper: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: 50,
         width: '100%',
     },
     button: {
