@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
     const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
 
   return (
-       {/* <UserContext.Provider value={{currentUser, setCurrentUser}}>
+       <UserContext.Provider value={{currentUser, setCurrentUser}}>
           <NavigationContainer>
               <Stack.Navigator initialRouteName="Main">
                   <Stack.Screen name="Main" component={MainView}
@@ -40,10 +40,10 @@ export default function App(): JSX.Element {
                                 }} />
               </Stack.Navigator>
           </NavigationContainer>
-      </UserContext.Provider> */},
+      </UserContext.Provider>
 
       
-      <PresentChamberView />
+
 
   );
 }
