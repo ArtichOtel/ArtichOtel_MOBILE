@@ -23,7 +23,7 @@ const BottomSheetStyle = StyleSheet.create({
     backgroundColor: 'grey',
     alignSelf: 'center',
     marginVertical: 15,
-    borderRadius: '50%'
+    borderRadius: 25
   }
 })
 

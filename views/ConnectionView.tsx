@@ -18,10 +18,12 @@ type ConnectionProps = {
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
     const [username, setUsername] = useState<string>('')
+    const [editing, setEditing] = useState<boolean>(false)
 
     return (
         <View style={baseStyle.view}>
-            <View style={[connectionStyle.container]}>
+            <View style={[connectionStyle.container]}
+            >
 
                 <View style={inputStyle.labelWrapper}>
                     <Text style={[inputStyle.label]}>Identifiant</Text>
@@ -34,6 +36,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     blurOnSubmit={true}
                     inputMode="text"
                     onChangeText={(val) => setUsername(val)}
+                    onTextInput={() => setEditing(true)}
+                    onEndEditing={() => setEditing(false)}
                     placeholder={"identifiant"}
                 />
 
@@ -52,7 +56,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     placeholder={"mot de passe"}
                 />
 
-                <View style={[baseStyle.container, connectionStyle.buttonWrapper]}>
+                <View style={[connectionStyle.buttonWrapper]}
+                >
 
                     <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}>
                         <FontAwesomeIcon icon={faArrowRightToBracket} size={30} style={mainMenuStyle.items} />
@@ -60,7 +65,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}>
+                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]} >
                         <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
                         <Text style={[connectionStyle.button, buttonStyle.textDark]}>Créer un compte</Text>
                     </TouchableOpacity>
@@ -70,7 +75,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
             </View>
 
-            <MainMenu navigation={navigation} />
+            <MainMenu navigation={navigation}  />
         </View>
     )
 }
