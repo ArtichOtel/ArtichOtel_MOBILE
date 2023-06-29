@@ -1,8 +1,8 @@
-import BottomSheetStyle from "../style/BottomSheetStyle";
+import BottomSheetStyle from "../../style/BottomSheetStyle";
 import { View } from "react-native";
 import { GestureDetector, Gesture } from 'react-native-gesture-handler'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
-import { SCREEN_HEIGHT } from "../utils/dimension";
+import { SCREEN_HEIGHT } from "../../utils/dimension";
 import React, { useCallback, useImperativeHandle } from "react";
 
 type Props = {
