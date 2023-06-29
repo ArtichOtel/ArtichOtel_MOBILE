@@ -65,7 +65,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
   useEffect(() => {
     if (data.length > 0) {
       setImage(data[0].url_image);
-      console.log("Image : ", data[0].url_image);
+      //console.log("Image : ", data[0].url_image);
     }
   }, [data]);
 
