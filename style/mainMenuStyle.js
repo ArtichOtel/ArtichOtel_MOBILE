@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import colors from "./colors";
-
+import {SCREEN_HEIGHT} from "../utils/dimension"
 
 const mainMenuStyle = StyleSheet.create({
     container: {
@@ -9,11 +9,9 @@ const mainMenuStyle = StyleSheet.create({
         justifyContent: "space-evenly",
         height: 62,
         width: '100%',
-        bottom: 0,
-        /*TODO : change 'bottom' to 'top' with calculated
-           value from user screen minus mainMenu height
-           OR make this container hidden when user keyboard is On
+        /*TODO : find a way to determinate the actual '56' value
         */
+        top: SCREEN_HEIGHT-(62+56),
         backgroundColor: colors.primary,
         position: 'absolute',
     },

@@ -21,12 +21,8 @@ const connectionStyle = StyleSheet.create({
         width: '100%'
     },
     buttonWrapper: {
-        //display: 'block',
-        //alignItems: 'center',
-        //justifyContent: 'center',
         paddingTop: 50,
         width: '100%',
-        backgroundColor: 'red'
     },
     button: {
         paddingLeft: 30,
