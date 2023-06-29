@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
-import { StatusBar } from 'expo-status-bar';
 import PresentChamberView from './views/PresentChamberView';
 import MainView from "./views/MainView";
 import ConnectionView from "./views/ConnectionView";
@@ -19,7 +18,6 @@ export default function App() {
   return (
       <View style={styles.container}>
         <PresentChamberView />
-        <StatusBar style="auto" />
       </View>
   );
 }
