@@ -11,10 +11,6 @@ import colors from "./style/colors";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import baseStyle from './style/baseStyle';
-import mainStyle from './style/MainStyle';
-
-const image = require('./assets/images/chambreHotel.jpg');
 const Stack = createNativeStackNavigator();
 
 
@@ -22,7 +18,7 @@ export default function App(): JSX.Element {
   return (
 
     <View>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <Stack.Navigator initialRouteName="Main">
           <Stack.Screen name="Main" component={MainView}
             options={{
@@ -35,10 +31,9 @@ export default function App(): JSX.Element {
               headerStyle: { backgroundColor: colors.primary }
             }} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
 
-      {/* <PresentChamberView /> Pour la présentation de la chambre*/}
+        <PresentChamberView />
     </View>
   );
 }
-

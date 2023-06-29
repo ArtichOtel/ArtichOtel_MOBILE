@@ -1,15 +1,13 @@
 import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, faKitchenSet } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, faKitchenSet } from '@fortawesome/free-solid-svg-icons';
 import colors from '../style/colors';
 
 export default function PresentChamberView(props: any): JSX.Element {
     return (
-        
-
       <View style={[baseStyle.container, mainStyle.container]}>
             <View style={[baseStyle.container, mainStyle.container, presentChamberStyle.box]}>
                 <Text>X personnes  -  </Text>
@@ -31,7 +29,7 @@ export default function PresentChamberView(props: any): JSX.Element {
             <View style={presentChamberStyle.middleContainer}>
                 <View style={presentChamberStyle.littleContainer} >
                     <FontAwesomeIcon icon={faShower} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.text} >Douche</Text>
+                    <Text style={baseStyle.text}>Douche</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
                     <FontAwesomeIcon icon={faBed} size={40} style={{marginRight: 15}}/>
@@ -53,7 +51,7 @@ export default function PresentChamberView(props: any): JSX.Element {
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
                     <FontAwesomeIcon icon={faBellConcierge} size={40} style={{marginRight: 15}}/>
-                    <Text style={baseStyle.text} >Service de Chambre</Text>
+                    <Text style={baseStyle.title} >Service de Chambre</Text>
                 </View>
             </View>
         </View>
