@@ -7,7 +7,19 @@ const mainStyle = StyleSheet.create({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    marginTop: 80,
+  },
+  alignBtn: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 20,
+    padding: 10,
+    margin: 20,
+    justifyContent: "flex-start",
+  },
+  first: {
+    marginTop: 60,
   },
 
   alignBtn: {
