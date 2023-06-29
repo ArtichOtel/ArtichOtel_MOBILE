@@ -1,48 +1,41 @@
-import { Alert, Button, Text, View, TouchableOpacity, Image, ImageBackground, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import buttonStyle from '../style/buttonStyle';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import MainMenu from '../components/tabs/MainMenu';
+import { useCallback, useRef } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import BottomSheetBase, { BottomSheetRefProps } from '../components/BottomSheetBase';
+import { SCREEN_HEIGHT } from '../utils/dimension';
+import axios from 'axios';
 
 type MainViewProps = {
   navigation: any,
 };
 
 type Hero = {
-  title: string,
   url_image: string,
 };
 
 export default function MainView(props: MainViewProps): JSX.Element {
+  const ref = useRef<BottomSheetRefProps>(null)
+  const onPress = useCallback((height: number) => {
+    ref?.current?.scrollTo(height)
+  }, [])
+  const BottomSheetBaseHeight = -SCREEN_HEIGHT / 3
   const { navigation } = props;
   const [data, setData] = useState<Hero[] | null>([]);
-  //const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
-  // const getHeroFromApi = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost/api/hero');
-  //     const json = await response.json();
-  //     const hero = json
-  //     console.log(hero);
-  //     //setData(hero);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getHeroFromApi();
-  // }, []);
-
+  // fetchHero section
   const fetchHero = async () => {
     try {
       const response = await axios.get("http://192.168.137.1/api/hero");
       const data = response.data[0];
-      console.log(data[0].url_image);
+      //console.log(data);
       setData(data);
     } catch (error) {
       console.error(error);
@@ -53,34 +46,47 @@ export default function MainView(props: MainViewProps): JSX.Element {
     fetchHero();
   }, []);
 
-  const image = { uri: data[0].url_image }
-  console.log("image: ", image)
+  useEffect(() => {
+    if (data.length > 0) {
+      setImage(data[0].url_image);
+      console.log("Image : ", data[0].url_image);
+    }
+  }, [data]);
+
+  // fetch
 
   return (
-    <View style={[baseStyle.container, mainStyle.container]}>
-      <ImageBackground source={image} resizeMode='cover' >
+    <GestureHandlerRootView style={[baseStyle.view]}>
+      <ImageBackground source={{ uri: image }} resizeMode='cover' style={baseStyle.view}>
         <View>
-          <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
+          <TouchableOpacity
+            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
+          >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
             <Text style={buttonStyle.light}>Type de chambres</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
+          <TouchableOpacity
+            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+          >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
             <Text style={buttonStyle.light}>Date</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[mainStyle.alignBtn, buttonStyle.light, baseStyle.btn]}>
+          <TouchableOpacity
+            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+          >
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
-            <Text style={buttonStyle.light}>Nombre de personnes</Text>
+            <Text style={[buttonStyle.light,]}>Nombre de personnes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[baseStyle.btn, buttonStyle.search]}
+          >
+            <Text style={[buttonStyle.search, buttonStyle.textDark]}>Rechercher</Text>
           </TouchableOpacity>
         </View>
-      </ImageBackground>
+      </ImageBackground >
+
       <MainMenu navigation={navigation} />
-    </View>
+    </GestureHandlerRootView >
   );
 }
 
-const test = StyleSheet.create({
-  image: {
-    justifyContent: "center",
-  }
-});
