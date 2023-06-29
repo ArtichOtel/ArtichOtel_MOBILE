@@ -41,13 +41,3 @@ export default function App(): JSX.Element {
       </UserContext.Provider>
   );
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
