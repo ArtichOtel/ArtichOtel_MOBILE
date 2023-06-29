@@ -4,7 +4,7 @@ import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, 
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
-import colors from '../style/colors';
+
 
 export default function PresentChamberView(props: any): JSX.Element {
     return (

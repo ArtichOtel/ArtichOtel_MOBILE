@@ -3,10 +3,11 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 import { StatusBar } from 'expo-status-bar';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
-
+import PresentChamberView from './views/PresentChamberView';
 import MainView from "./views/MainView";
 import ConnectionView from "./views/ConnectionView";
-import PresentChamberView from './views/PresentChamberView';
+
+
 import colors from "./style/colors";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -17,7 +18,7 @@ const Stack = createNativeStackNavigator();
 export default function App(): JSX.Element {
   return (
 
-    <View>
+    <View style={styles.container}>
       {/* <NavigationContainer>
         <Stack.Navigator initialRouteName="Main">
           <Stack.Screen name="Main" component={MainView}
@@ -33,7 +34,19 @@ export default function App(): JSX.Element {
         </Stack.Navigator>
       </NavigationContainer> */}
 
-        <PresentChamberView />
+      
+
+      <PresentChamberView />
     </View>
   );
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

@@ -42,8 +42,9 @@ const presentChamberStyle = StyleSheet.create({
       borderRadius: 10,
       shadowColor: '#000',
       width: 300,
-      marginBottom: 75,
-      marginTop: 85,
+      marginBottom: 25,
+      marginTop: 15,
+      justifyContent:"center"
     },
 
     buttonPrice: {
