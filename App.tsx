@@ -5,8 +5,8 @@ import ConnectionView from "./views/ConnectionView";
 
 
 import colors from "./style/colors";
-import React, {createContext, useEffect, useState} from 'react';
-import {userDataType} from "./utils/types";
+import React, { createContext, useEffect, useState } from 'react';
+import { criteriaType, userDataType } from "./utils/types";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,27 +17,38 @@ const defaultUserData = {
     customerId: null
 }
 
+const defaultCriteria = {
+    arrivalDate: null,
+    departureDate: null,
+    roomTypes: "Chambre standard",
+    peopleNbr: 2
+}
+
 export const UserContext: React.Context<any> = createContext(null)
+export const CriteriaContext: React.Context<any> = createContext(null)
 
 export default function App(): JSX.Element {
     const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
+    const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
 
-  return (
-       <UserContext.Provider value={{currentUser, setCurrentUser}}>
-          <NavigationContainer>
-              <Stack.Navigator initialRouteName="Main">
-                  <Stack.Screen name="Main" component={MainView}
-                                options={{
-                                    title: null,
-                                    headerStyle: { backgroundColor: colors.primary }
-                                }} />
-                  <Stack.Screen name="Connection" component={ConnectionView}
-                                options={{
-                                    title: null,
-                                    headerStyle: { backgroundColor: colors.primary }
-                                }} />
-              </Stack.Navigator>
-          </NavigationContainer>
-      </UserContext.Provider>
-  );
+    return (
+        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+            <CriteriaContext.Provider value={{ criteria, setCriteria }}>
+                <NavigationContainer>
+                    <Stack.Navigator initialRouteName="Main">
+                        <Stack.Screen name="Main" component={MainView}
+                            options={{
+                                title: null,
+                                headerStyle: { backgroundColor: colors.primary }
+                            }} />
+                        <Stack.Screen name="Connection" component={ConnectionView}
+                            options={{
+                                title: null,
+                                headerStyle: { backgroundColor: colors.primary }
+                            }} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </CriteriaContext.Provider>
+        </UserContext.Provider>
+    );
 }
