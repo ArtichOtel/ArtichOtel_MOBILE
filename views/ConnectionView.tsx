@@ -56,8 +56,12 @@ getUserAccess().then()
             <View style={[connectionStyle.container]}
             >
 
-                <Text>connectionError</Text>
-                <Text>{connectionError}</Text>
+                {connectionError ?
+                    <View style={{marginBottom: 20}}>
+                        <Text style={baseStyle.errorText}>{connectionError}</Text>
+                    </View>
+                    : null}
+
 
                 <View style={inputStyle.labelWrapper}>
                     <Text style={[inputStyle.label]}>Identifiant</Text>
@@ -70,6 +74,7 @@ getUserAccess().then()
                     blurOnSubmit={true}
                     inputMode="text"
                     onChangeText={(val) => setUsername(val)}
+                    onPressIn={() => setConnectionError(null)}
                     placeholder={"identifiant"}
                     value={username}
                 />
@@ -87,6 +92,7 @@ getUserAccess().then()
                     inputMode="text"
                     secureTextEntry={true}
                     onChangeText={(val) => setPassword(val)}
+                    onPressIn={() => setConnectionError(null)}
                     placeholder={"mot de passe"}
                     value={password}
                 />
