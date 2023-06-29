@@ -36,7 +36,7 @@ export default function PresentChamberView(props: any): JSX.Element {
                     <Text style={baseStyle.textTypo} >Grand lit</Text>
                 </View>
                 <View style={presentChamberStyle.littleContainer} >
-                    <FontAwesomeIcon icon={faSmokingBan} size={40} style={{marginRight: 15}}/>
+                    <FontAwesomeIcon icon={faSmokingBan} size={40} style={{marginRight: 10}}/>
                     <Text style={baseStyle.textTypo} >Ne pas fumer</Text>
                 </View>
             </View>

@@ -44,9 +44,8 @@ export default function App(): JSX.Element {
 
 
       //Vue de la présentation de la chambre. Il faut le style dans la view sinon le texte ne s'affiche pas
-      <View style={presentChamberStyle.containerPrincipal}>
-        <PresentChamberView />
-      </View>
+      
+      <PresentChamberView />
 
   );
 }
