@@ -1,20 +1,44 @@
-import {TouchableHighlight, View} from 'react-native';
+import {Text, TouchableHighlight, View} from 'react-native';
 import baseStyle from '../../style/baseStyle';
 import mainMenuStyle from "../../style/mainMenuStyle";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faUser, faSuitcase, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import React, {useContext, useEffect, useState} from "react";
+import {userDataType} from "../../utils/types";
+import {UserContext} from "../../App";
 
 export default function MainMenu({navigation}): JSX.Element {
+    const {currentUser} = useContext(UserContext)
+    const [isLogged, setIsLogged] = useState<boolean>(false)
+
+
+    useEffect(()=> {
+        console.log("main menu currenuser update :", currentUser.userId)
+        setIsLogged(currentUser.userId !== null)
+    }, [currentUser.userId])
+
+
     return (
         <View style={mainMenuStyle.container}>
             <TouchableHighlight onPress={() => navigation.navigate('Main')}>
-                <FontAwesomeIcon icon={faMagnifyingGlass} size={50} style={mainMenuStyle.items} />
+                <View style={{alignItems: "center"}}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} size={30} style={mainMenuStyle.items} />
+                    <Text style={[baseStyle.textLight]}>Rechercher</Text>
+                </View>
             </TouchableHighlight>
+
             <TouchableHighlight onPress={() => alert('loupe')}>
-                <FontAwesomeIcon icon={faSuitcase} size={50} style={mainMenuStyle.items} />
+                <View style={{alignItems: "center"}}>
+                    <FontAwesomeIcon icon={faSuitcase} size={30} style={mainMenuStyle.items} />
+                    <Text style={[baseStyle.textLight]}>Réservation</Text>
+                </View>
             </TouchableHighlight>
+
             <TouchableHighlight onPress={() => navigation.navigate('Connection')}>
-                <FontAwesomeIcon icon={faUser} size={50} style={mainMenuStyle.items} />
+                <View style={{alignItems: "center"}}>
+                    <FontAwesomeIcon icon={faUser} size={30} style={mainMenuStyle.items} />
+                    <Text style={[baseStyle.textLight]}>{ isLogged ? 'Mon compte' : 'Se connecter' }</Text>
+                </View>
             </TouchableHighlight>
         </View>
     );
