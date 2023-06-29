@@ -1,8 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Text } from "react-native";
-// @ts-ignore
-import { API_URL } from "@env";
 
 type RoomTypes = {
   title: {
@@ -16,20 +14,16 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
   const [data, setData] = useState<RoomTypes[] | null>([]);
 
-  const fetchRoomTypes = async () => {
+  const fetchHero = async () => {
     try {
-      const response = await axios.get(API_URL + "room-types");
+      const response = await axios.get("http://192.168.137.1/api/hero");
       const data = response.data[0];
-      console.log("fetchRoomTypes : ", data);
-      setData(data);
+      //console.log(data);
+      //setData(data);
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    fetchRoomTypes();
-  }, []);
 
   return (
     <>
