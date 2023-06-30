@@ -6,14 +6,12 @@ import { withTiming } from "react-native-reanimated";
 const presentChamberStyle = StyleSheet.create({
 
     greatContainer: {
-      display: "flex",
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
     },
 
     middleContainer: {
-        display: "flex",
         alignItems: "center",
         justifyContent: "center",
         marginTop: 15,
@@ -21,7 +19,6 @@ const presentChamberStyle = StyleSheet.create({
     },
 
     littleContainer: {
-        display: "flex",
         flexDirection: "row", 
         alignItems: "center",
         justifyContent: "center",
@@ -29,22 +26,22 @@ const presentChamberStyle = StyleSheet.create({
     },
 
     arrivalHourContainer: {
-      display: "flex",
       flexDirection: "row", 
       alignItems: "center",
       justifyContent: "center",
       marginTop: 15
   },
 
-    box: {
-      display: "flex",
+    infoBox: {
       flexDirection: "row",
+      flex: 0,
       borderColor: colors.tertiary,
       borderWidth: 1,
       borderRadius: 10,
       shadowColor: '#000',
       width: 300,
-      marginBottom: 25,
+      height: 30,
+      marginBottom: 5,
       marginTop: 15,
       justifyContent:"center"
     },

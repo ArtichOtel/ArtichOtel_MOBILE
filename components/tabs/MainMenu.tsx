@@ -27,7 +27,7 @@ export default function MainMenu({navigation}): JSX.Element {
                 </View>
             </TouchableHighlight>
 
-            <TouchableHighlight onPress={() => alert('loupe')}>
+            <TouchableHighlight onPress={() => navigation.navigate('Room')}>
                 <View style={{alignItems: "center"}}>
                     <FontAwesomeIcon icon={faSuitcase} size={30} style={mainMenuStyle.items} />
                     <Text style={[baseStyle.textLight]}>Réservation</Text>
