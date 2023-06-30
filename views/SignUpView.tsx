@@ -33,26 +33,22 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
     const [connectionError, setConnectionError] = useState<string|null>(null)
 
 
-    const postCreateUser = async () => {
+    const postCreateUser = () => {
         let bodyJSON = {
             last_name: lastname,
             first_name: firstname,
             pseudo: pseudo,
             email: email,
             password: password,
-            lang: "fr",
+            lang: 'fr_FR'
     }
-        return await axios
+        return axios
             .post(API_URL+"user/register",
                 bodyJSON)
             .then((response) => {
                 console.log("RESPONSE",response.data)
-                alert("vous êtes enregistré")
+                alert(`Bienvenue ${response.data[0].pseudo} !`)
                 return response.data;
-            })
-            .then(() => {
-                // TODO : change destination according to global state next view
-                navigation.navigate('Main')
             })
             .catch((err) => {
                 console.log("connection error :", err);
@@ -60,16 +56,12 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             });
     };
 
-    function trySignUp():void {
-        postCreateUser().then()
-    }
 
-
-    async function autoLogin() {
-        return await axios.post(API_URL+"user/login", {
-            pseudo: null,
+    function autoLogin(pseudo:string) {
+        return axios.post(API_URL+"user/login", {
+            pseudo: pseudo,
             email: email,
-            password
+            password: password
         })
             .then((response) => {
                 setCurrentUser({
@@ -78,11 +70,22 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     customerId: response.data.customer_id
                 })
             })
+            .then(() => {
+                // TODO : change destination according to global state next view
+                navigation.navigate('Main')
+            })
             .catch((err) => {
                 console.log("signup error :", err);
                 setConnectionError(err.response.data.message)
             });
 
+    }
+
+    function trySignUp():void {
+        postCreateUser()
+            .then((userData) => {
+                return autoLogin(userData[0].pseudo)
+            })
     }
 
 
