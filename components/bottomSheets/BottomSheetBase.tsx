@@ -1,7 +1,7 @@
 import BottomSheetStyle from "../../style/BottomSheetStyle";
 import { View } from "react-native";
 import { GestureDetector, Gesture } from 'react-native-gesture-handler'
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate, Extrapolate } from 'react-native-reanimated'
 import { SCREEN_HEIGHT } from "../../utils/dimension";
 import React, { useCallback, useImperativeHandle } from "react";
 
@@ -21,7 +21,14 @@ const BottomSheetBase = React.forwardRef<BottomSheetRefProps, Props>(({content, 
   const MIN_TRANSLATE_Y = height
 
   const transYBottomSheetStyle = useAnimatedStyle(() => {
+    const borderRadius = interpolate(
+      translateY.value,
+      [MAX_TRANSLATE_Y+25, MAX_TRANSLATE_Y],
+      [25, 0],
+      Extrapolate.CLAMP
+    )
     return {
+      borderRadius,
       transform: [{ translateY: translateY.value }]
     }
   })
