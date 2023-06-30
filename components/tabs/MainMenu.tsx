@@ -18,7 +18,7 @@ export default function MainMenu({navigation}): JSX.Element {
     }, [currentUser.userId, UserCtx])
 
 
-    return (
+    return ( !UserCtx ? null :
         <View style={mainMenuStyle.container}>
             <TouchableHighlight onPress={() => navigation.navigate('Main')}>
                 <View style={{alignItems: "center"}}>
