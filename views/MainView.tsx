@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -12,9 +12,10 @@ import BottomSheetBase, { BottomSheetRefProps } from '../components/bottomSheets
 import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
+import NumberOfPeopleBottomSheetContent from '../components/bottomSheets/NumberOfPeopleBottomSheetContent';
 // @ts-ignore
 import { API_URL } from '@env';
-import { CriteriaContext } from "../App";
+import { CriteriaCtx } from '../utils/context';
 
 type MainViewProps = {
   navigation: any,
@@ -26,7 +27,7 @@ type Hero = {
 
 export default function MainView(props: MainViewProps): JSX.Element {
 
-  const { criteria } = React.useContext(CriteriaContext);
+  const { criteria } = React.useContext(CriteriaCtx);
   const BottomSheetBaseHeight = -SCREEN_HEIGHT / 3
   const { navigation } = props;
   const [data, setData] = useState<Hero[] | null>([]);
@@ -70,29 +71,16 @@ export default function MainView(props: MainViewProps): JSX.Element {
       setImage(data[0].url_image);
       //console.log("Image : ", data[0].url_image);
     }
-  }, [data]);
+  }, [data, CriteriaCtx]);
 
   // fetch
 
   return (
     <ImageBackground source={{ uri: image }} resizeMode='cover' style={baseStyle.view}>
+      <StatusBar
+        barStyle={'light-content'}
+      />
       <GestureHandlerRootView style={[baseStyle.container, mainStyle.container]}>
-
-        <BottomSheetBase
-          ref={allRefs.refRoomsTypes}
-          height={BottomSheetBaseHeight}
-          content={<RoomTypesBottomSheetContent />}
-        />
-        <BottomSheetBase
-          ref={allRefs.refDates}
-          height={BottomSheetBaseHeight}
-          content={<Text>Dates</Text>}
-        />
-        <BottomSheetBase
-          ref={allRefs.refPeopleNbr}
-          height={BottomSheetBaseHeight}
-          content={<Text>People number</Text>}
-        />
         <View>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
@@ -113,7 +101,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
             onPress={() => onPress(allRefs.refPeopleNbr, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>Nombre de personnes</Text>
+            <Text style={baseStyle.textDark}>{criteria.peopleNbr ? criteria.peopleNbr : "Nombre de personnes"}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}
@@ -122,7 +110,21 @@ export default function MainView(props: MainViewProps): JSX.Element {
           </TouchableOpacity>
 
         </View>
-
+        <BottomSheetBase
+          ref={allRefs.refRoomsTypes}
+          height={BottomSheetBaseHeight}
+          content={<RoomTypesBottomSheetContent />}
+        />
+        <BottomSheetBase
+          ref={allRefs.refDates}
+          height={BottomSheetBaseHeight}
+          content={<Text>Dates</Text>}
+        />
+        <BottomSheetBase
+          ref={allRefs.refPeopleNbr}
+          height={BottomSheetBaseHeight}
+          content={<NumberOfPeopleBottomSheetContent />}
+        />
         <MainMenu navigation={navigation} />
       </GestureHandlerRootView >
     </ImageBackground >

@@ -5,17 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faUser, faSuitcase, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import React, {useContext, useEffect, useState} from "react";
 import {userDataType} from "../../utils/types";
-import {UserContext} from "../../App";
+import { UserCtx } from '../../utils/context';
 
 export default function MainMenu({navigation}): JSX.Element {
-    const {currentUser} = useContext(UserContext)
+    const {currentUser} = useContext(UserCtx)
     const [isLogged, setIsLogged] = useState<boolean>(false)
 
 
     useEffect(()=> {
         console.log("main menu currenuser update :", currentUser.userId)
         setIsLogged(currentUser.userId !== null)
-    }, [currentUser.userId])
+    }, [currentUser.userId, UserCtx])
 
 
     return (
