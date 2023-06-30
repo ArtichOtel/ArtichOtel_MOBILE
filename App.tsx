@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainView from "./views/MainView";
 import ConnectionView from "./views/ConnectionView";
 import SignUpView from "./views/SignUpView";
+import ProfileView from "./views/ProfileView";
 import PresentChamberView from "./views/PresentChamberView";
 import { UserCtx, CriteriaCtx, UserProfileCtx } from "./utils/context";
 
@@ -13,13 +14,13 @@ import { criteriaType, userProfileType, userDataType } from "./utils/types";
 const Stack = createNativeStackNavigator();
 
 
-const defaultUserData: userDataType = {
+export const defaultUserData: userDataType = {
     userId: null,
     token: null,
     customerId: null
 }
 
-const defaultProfile: userProfileType = {
+export const defaultProfile: userProfileType = {
     dateCreated: null,
     email: null,
     pseudo: null,
@@ -28,7 +29,7 @@ const defaultProfile: userProfileType = {
     //lastName: null
 }
 
-const defaultCriteria: criteriaType = {
+export const defaultCriteria: criteriaType = {
     startDate: null,
     endDate: null,
     roomTypes: "Chambre standard",
@@ -57,20 +58,27 @@ export default function App(): JSX.Element {
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
+
                             <Stack.Screen name="SignUp" component={SignUpView}
                                 options={{
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
 
-                            <Stack.Screen name="Room" component={PresentChamberView}
-                                options={{
-                                    title: null,
-                                    headerStyle: { backgroundColor: colors.primary }
-                                }} />
-                        </Stack.Navigator>
-                    </NavigationContainer>
-                </CriteriaCtx.Provider>
+                        <Stack.Screen name="Room" component={PresentChamberView}
+                                      options={{
+                                          title: null,
+                                          headerStyle: { backgroundColor: colors.primary }
+                                      }} />
+
+                        <Stack.Screen name="Profile" component={ProfileView}
+                                      options={{
+                                          title: null,
+                                          headerStyle: { backgroundColor: colors.primary }
+                                      }} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </CriteriaCtx.Provider>
             </UserProfileCtx.Provider>
         </UserCtx.Provider>
     );

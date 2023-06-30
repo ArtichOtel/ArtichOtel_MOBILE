@@ -34,7 +34,11 @@ export default function MainMenu({navigation}): JSX.Element {
                 </View>
             </TouchableHighlight>
 
-            <TouchableHighlight onPress={() => navigation.navigate('Connection')}>
+            <TouchableHighlight onPress={() => {
+                isLogged
+                    ? navigation.navigate('Profile')
+                    : navigation.navigate('Connection')
+            }}>
                 <View style={{alignItems: "center"}}>
                     <FontAwesomeIcon icon={faUser} size={30} style={mainMenuStyle.items} />
                     <Text style={[baseStyle.textLight]}>{ isLogged ? 'Mon compte' : 'Se connecter' }</Text>
