@@ -63,8 +63,7 @@ getUserAccess().then()
 
     return (
         <View style={baseStyle.view}>
-            <View style={[connectionStyle.container]}
-            >
+            <View style={[connectionStyle.container]}>
 
                 {connectionError ?
                     <View style={{marginBottom: 20}}>
@@ -73,7 +72,7 @@ getUserAccess().then()
                     : null}
 
 
-                <View style={inputStyle.labelWrapper}>
+                <View style={[inputStyle.labelWrapper, connectionStyle.first]}>
                     <Text style={[inputStyle.label]}>Identifiant</Text>
                     <Text style={[inputStyle.needed]}>*</Text>
                 </View>
@@ -118,7 +117,9 @@ getUserAccess().then()
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]} >
+                    <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
+                                      onPress={() => navigation.navigate('SignUp')}
+                    >
                         <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
                         <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Créer un compte</Text>
                     </TouchableOpacity>
