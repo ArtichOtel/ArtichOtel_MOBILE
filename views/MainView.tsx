@@ -13,6 +13,7 @@ import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
 import NumberOfPeopleBottomSheetContent from '../components/bottomSheets/NumberOfPeopleBottomSheetContent';
+import DatePickerBottomSheetContent from '../components/bottomSheets/DatePickerBottomSheetContent';
 // @ts-ignore
 import { API_URL } from '@env';
 import { CriteriaCtx } from '../utils/context';
@@ -94,7 +95,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
             onPress={() => onPress(allRefs.refDates, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>Date</Text>
+            <Text style={baseStyle.textDark}>{criteria.startDate} - {criteria.endDate}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
@@ -118,7 +119,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
         <BottomSheetBase
           ref={allRefs.refDates}
           height={BottomSheetBaseHeight}
-          content={<Text>Dates</Text>}
+          content={<DatePickerBottomSheetContent />}
         />
         <BottomSheetBase
           ref={allRefs.refPeopleNbr}
