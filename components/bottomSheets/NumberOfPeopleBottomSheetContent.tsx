@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import NumberOfPeopleBottomSheetStyle from '../../style/NumberOfPeopleBottomSheetStyle';
-import { CriteriaContext } from "../../App";
+import { CriteriaCtx } from '../../utils/context';
 
 
 function NumberOfPeopleBottomSheetContent(props: any): JSX.Element {
-  const { criteria, setCriteria } = React.useContext(CriteriaContext);
+  const { criteria, setCriteria } = React.useContext(CriteriaCtx);
   const [numberOfPeople, setNumberOfPeople] = useState<number>(criteria.peopleNbr);
 
   const decrementNumberOfPeople = () => {

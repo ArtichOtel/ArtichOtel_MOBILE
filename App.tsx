@@ -1,10 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainView from "./views/MainView";
 import ConnectionView from "./views/ConnectionView";
+import SignUpView from "./views/SignUpView";
 import PresentChamberView from "./views/PresentChamberView";
-import presentChamberStyle from "./style/presentChamberStyle";
+import { UserCtx, CriteriaCtx } from "./utils/context";
 
 import colors from "./style/colors";
 import React, { createContext, useEffect, useState } from 'react';
@@ -26,16 +26,13 @@ const defaultCriteria = {
     peopleNbr: 0,
 }
 
-export const UserContext: React.Context<any> = createContext(null)
-export const CriteriaContext: React.Context<any> = createContext(null)
-
 export default function App(): JSX.Element {
     const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
     const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
 
     return (
-        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
-            <CriteriaContext.Provider value={{ criteria, setCriteria }}>
+        <UserCtx.Provider value={{ currentUser, setCurrentUser }}>
+            <CriteriaCtx.Provider value={{ criteria, setCriteria }}>
                 <NavigationContainer>
                     <Stack.Navigator initialRouteName="Main">
                         <Stack.Screen name="Main" component={MainView}
@@ -43,7 +40,13 @@ export default function App(): JSX.Element {
                                 title: null,
                                 headerStyle: { backgroundColor: colors.primary }
                             }} />
+
                         <Stack.Screen name="Connection" component={ConnectionView}
+                            options={{
+                                title: null,
+                                headerStyle: { backgroundColor: colors.primary }
+                            }} />
+                        <Stack.Screen name="SignUp" component={SignUpView}
                             options={{
                                 title: null,
                                 headerStyle: { backgroundColor: colors.primary }
@@ -56,9 +59,7 @@ export default function App(): JSX.Element {
                             }} />
                     </Stack.Navigator>
                 </NavigationContainer>
-            </CriteriaContext.Provider>
-        </UserContext.Provider>
-
-
+            </CriteriaCtx.Provider>
+        </UserCtx.Provider>
     );
 }
