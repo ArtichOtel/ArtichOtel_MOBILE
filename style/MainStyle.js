@@ -21,6 +21,16 @@ const mainStyle = StyleSheet.create({
   first: {
     marginTop: 60,
   },
+
+  alignBtn: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 20,
+    padding: 10,
+    margin: 20,
+    alignItems: "center",
+  },
+
   input: {
     height: 40,
     margin: 12,
