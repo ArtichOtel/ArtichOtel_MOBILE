@@ -9,6 +9,7 @@ import presentChamberStyle from "./style/presentChamberStyle";
 import colors from "./style/colors";
 import React, { createContext, useEffect, useState } from 'react';
 import { criteriaType, userDataType } from "./utils/types";
+import OptionsView from "./views/OptionsView";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,16 +35,16 @@ export default function App(): JSX.Element {
     const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
 
   return (
-       <UserContext.Provider value={{currentUser, setCurrentUser}}>
+       {/* <UserContext.Provider value={{currentUser, setCurrentUser}}>
         <CriteriaContext.Provider value={{criteria, setCriteria}}>
           <NavigationContainer>
               <Stack.Navigator initialRouteName="Main">
-                  <Stack.Screen name="Main" component={MainView}
+                    <Stack.Screen name="Main" component={MainView}
                                 options={{
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
-                  <Stack.Screen name="Connection" component={ConnectionView}
+                    <Stack.Screen name="Connection" component={ConnectionView}
                                 options={{
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
@@ -57,7 +58,11 @@ export default function App(): JSX.Element {
               </Stack.Navigator>
             </NavigationContainer>
           </CriteriaContext.Provider>
-      </UserContext.Provider>
+      </UserContext.Provider> */},
+
+
+      <OptionsView />
+
 
 
   );

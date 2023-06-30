@@ -1,5 +1,5 @@
 import { Text, View, Image, TouchableOpacity, Animated, Switch } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -25,6 +25,50 @@ export default function OptionsView(props: any): JSX.Element {
     const toogleSwitchPressing = () =>setIsEnabledPressing(previousState => !previousState);
     const toogleSwitchWifi = () =>setIsEnabledWifi(previousState => !previousState);
     const toogleSwitchTele = () =>setIsEnabledTele(previousState => !previousState);
+
+
+
+    const calculPriceFullPension = () =>setNewPrice(price => price += 35 * getDiffDate() * 3);
+    const calculPriceHalfPension = () =>setNewPrice(price => price += 20 * getDiffDate() * 3);
+    const calculPriceBreakfast = () =>setNewPrice(price => price += 9 * getDiffDate() * 3);
+    const calculPricePressing = () =>setNewPrice(price => price += 30 * getDiffDate() * 3);
+    const calculPriceWifi = () =>setNewPrice(price => price += 25);
+    const calculPriceTele = () =>setNewPrice(price => price += 10 * 1);
+
+    const [newPrice, setNewPrice] = useState(70);
+
+    function getDiffDate()
+    {
+        let calculDiff = new Date("02/07/2023").getTime() - new Date("30/06/2023").getTime();
+        let dayDiff = Math.floor(calculDiff  /(1000*3600*24));
+
+        return dayDiff;
+    }
+
+    if(isEnabledTele)
+    {
+        calculPriceTele;
+    }
+    if(isEnabledWifi)
+    {
+        calculPriceWifi;
+    }
+    if(isEnabledPressing)
+    {
+        calculPricePressing;
+    }
+    if(isEnabledBreakfast)
+    {
+        calculPriceBreakfast;
+    }
+    if(isEnabledHalfPension)
+    {
+        calculPriceHalfPension;
+    }
+    if(isEnabledFullPension)
+    {
+        calculPriceFullPension;
+    }
 
     return (
       <View style={baseStyle.container}>
@@ -63,7 +107,7 @@ export default function OptionsView(props: any): JSX.Element {
                     <View style={optionStyle.switchContainer}>
                         <Switch onValueChange={toogleSwitchFullPension} value={isEnabledFullPension}/>
                         <Switch onValueChange={toogleSwitchHalfPension} value={isEnabledHalfPension} />
-                        <Switch onValueChange={toogleSwitchBreakfast} value={isEnabledBreakfast} />
+                        <Switch onValueChange={toogleSwitchBreakfast} value={isEnabledBreakfast}/>
                         <Switch onValueChange={toogleSwitchPressing} value={isEnabledPressing} />
                         <Switch onValueChange={toogleSwitchWifi} value={isEnabledWifi} />
                         <Switch onValueChange={toogleSwitchTele} value={isEnabledTele} />
@@ -83,7 +127,7 @@ export default function OptionsView(props: any): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <TouchableOpacity style={[optionStyle.buttonPrice, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>200€</Text></TouchableOpacity>
+            <TouchableOpacity style={[optionStyle.buttonPrice, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>{newPrice} €</Text></TouchableOpacity>
             <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
         </View>
       </View>
