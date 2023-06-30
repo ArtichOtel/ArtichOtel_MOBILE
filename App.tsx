@@ -38,11 +38,15 @@ export default function App(): JSX.Element {
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
+                                
+                    <Stack.Screen name="Room" component={PresentChamberView}
+                                options={{
+                                    title: null,
+                                    headerStyle: { backgroundColor: colors.primary }
+                                }} />
               </Stack.Navigator>
           </NavigationContainer>
       </UserContext.Provider>
-
-      
 
 
   );
