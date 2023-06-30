@@ -9,9 +9,7 @@ import ScrollView = Animated.ScrollView;
 
 export default function PresentChamberView(props: any): JSX.Element {
     return (
-      <View 
-      style={baseStyle.container}
-      >
+      <View style={baseStyle.container}>
             <View style={[baseStyle.container, presentChamberStyle.infoBox, presentChamberStyle.contentCenter]}>
                 <Text>X personnes  -  </Text>
                 <Text>29/06/2023  -  </Text>
