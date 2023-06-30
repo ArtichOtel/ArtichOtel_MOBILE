@@ -7,7 +7,7 @@ import PresentChamberView from "./views/PresentChamberView";
 import { UserCtx, CriteriaCtx, UserProfileCtx} from "./utils/context";
 
 import colors from "./style/colors";
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {criteriaType, userProfileType, userDataType} from "./utils/types";
 
 const Stack = createNativeStackNavigator();
@@ -23,7 +23,7 @@ const defaultProfile: userProfileType = {
     dateCreated: null,
     email: null,
     pseudo: null,
-    dateUpdate: null,
+    dateUpdate: null
     //firstName: null,
     //lastName: null
 }

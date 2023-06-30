@@ -8,12 +8,12 @@ import buttonStyle from "../style/buttonStyle";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import mainMenuStyle from "../style/mainMenuStyle";
+import {getProfileData} from "../utils/profileUpdater";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
-import {userDataType, userProfileType} from "../utils/types";
+import {userProfileType} from "../utils/types";
 import {UserCtx, UserProfileCtx} from "../utils/context";
-import {getProfileData} from "../utils/profileUpdater";
 
 
 type ConnectionProps = {

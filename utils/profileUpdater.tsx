@@ -1,9 +1,6 @@
-import {userProfileType} from "./types";
-import {useContext} from "react";
 import axios from "axios";
 //@ts-ignore
 import {API_URL} from '@env'
-import {UserProfileCtx} from "./context";
 
 
 // from log in => get data
