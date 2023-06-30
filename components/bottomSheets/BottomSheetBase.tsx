@@ -17,7 +17,7 @@ const BottomSheetBase = React.forwardRef<BottomSheetRefProps, Props>(({content, 
   const translateY = useSharedValue(0)
   const context = useSharedValue({ y: 0 })
   const active = useSharedValue(false)
-  const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50
+  const MAX_TRANSLATE_Y = -SCREEN_HEIGHT
   const MIN_TRANSLATE_Y = height
 
   const transYBottomSheetStyle = useAnimatedStyle(() => {
