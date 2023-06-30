@@ -30,8 +30,8 @@ export const defaultProfile: userProfileType = {
 }
 
 export const defaultCriteria: criteriaType = {
-    arrivalDate: null,
-    departureDate: null,
+    startDate: null,
+    endDate: null,
     roomTypes: "Chambre standard",
     peopleNbr: 0,
 }
