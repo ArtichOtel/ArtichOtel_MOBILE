@@ -9,7 +9,8 @@ const baseStyle = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0, 0.3)'
   },
   title: {
     fontFamily: typoTitle,
