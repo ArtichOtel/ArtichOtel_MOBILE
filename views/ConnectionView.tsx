@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import connectionStyle from "../style/ConnectionStyle";
 import inputStyle from "../style/inputStyle";
@@ -12,7 +12,7 @@ import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
 import {userDataType} from "../utils/types";
-import {UserContext} from "../App";
+import { UserCtx } from "../utils/context";
 
 
 type ConnectionProps = {
@@ -22,7 +22,7 @@ type ConnectionProps = {
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
-    const {currentUser, setCurrentUser} = useContext(UserContext)
+    const {currentUser, setCurrentUser} = useContext(UserCtx)
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
@@ -60,6 +60,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 getUserAccess().then()
     }
 
+    useEffect(() => {}, [UserCtx])
 
     return (
         <View style={baseStyle.view}>

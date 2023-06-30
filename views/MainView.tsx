@@ -14,7 +14,7 @@ import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
 // @ts-ignore
 import { API_URL } from '@env';
-import { CriteriaContext } from "../App";
+import { CriteriaCtx } from '../utils/context';
 
 type MainViewProps = {
   navigation: any,
@@ -26,7 +26,7 @@ type Hero = {
 
 export default function MainView(props: MainViewProps): JSX.Element {
 
-  const { criteria } = React.useContext(CriteriaContext);
+  const { criteria } = React.useContext(CriteriaCtx);
   const BottomSheetBaseHeight = -SCREEN_HEIGHT / 3
   const { navigation } = props;
   const [data, setData] = useState<Hero[] | null>([]);
@@ -70,7 +70,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
       setImage(data[0].url_image);
       //console.log("Image : ", data[0].url_image);
     }
-  }, [data]);
+  }, [data, CriteriaCtx]);
 
   // fetch
 
