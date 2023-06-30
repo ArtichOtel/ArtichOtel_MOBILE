@@ -11,11 +11,11 @@ import mainMenuStyle from "../style/mainMenuStyle";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
-import {userDataType} from "../utils/types";
-import { UserCtx } from "../utils/context";
+import {userDataType, userProfileType} from "../utils/types";
+import {UserCtx, UserProfileCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
-import {getProfileData, updateUserProfile} from "../utils/profileUpdater";
+import {getProfileData} from "../utils/profileUpdater";
 
 
 type ConnectionProps = {
@@ -23,9 +23,10 @@ type ConnectionProps = {
 }
 
 
-function ConnectionView(props: ConnectionProps): JSX.Element {
+function ConnectionView(props: ConnectionProps): JSX.Element|null {
     const {navigation} = props
     const {currentUser, setCurrentUser} = useContext(UserCtx)
+    const {userProfile, setUserProfile} = useContext(UserProfileCtx)
     const [lastname, setLastname] = useState<string>('')
     const [firstname, setFirstname] = useState<string>('')
     const [pseudo, setPseudo] = useState<string>('')
@@ -65,18 +66,18 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             password: password
         })
             .then((response) => {
-                setCurrentUser({
+                const user: userDataType = {
                     userId: response.data.user_id,
                     token: response.data.token,
                     customerId: response.data.customer_id
-                })
+                }
+                setCurrentUser(user)
                 return response.data
             })
             .catch((err) => {
                 console.log("signup error :", err);
                 setConnectionError(err.response.data.message)
             });
-
     }
 
     function trySignUp():void {
@@ -84,21 +85,23 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             .then((userData) => {
                 return autoLogin(userData[0].pseudo)
             })
-            .then((data)=> {
-                console.log("signup success", data)
-                return getProfileData(data.user_id, data.token)
+            .then((cred)=> {
+                console.log("signup success", cred)
+                return getProfileData(cred.user_id, cred.token)
             })
-            .then((data)=>{
+            .then((data: any)=>{
                 console.log("conection success, now try update user profile ctx", data)
-                //@ts-ignore
-                updateUserProfile({
+
+                const userData: userProfileType = {
                     dateCreated: data.created_at,
                     email: data.email,
                     pseudo: data.pseudo,
-                    dateUpdate: data.updated_at,
+                    dateUpdate: data.updated_at
                     //firstName: data.,
                     //lastName: data.
-                })
+                }
+
+                setUserProfile(userData)
             })
             .then(() => {
                 // TODO : change destination according to global state next view
@@ -107,114 +110,114 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
     }
 
 
-
     return (
-        <View style={baseStyle.view}>
-            <ScrollView
-                style={[SignUpViewStyle.container]}
-            >
-                <View style={connectionStyle.container}>
+        !currentUser ? null :
+            <View style={baseStyle.view}>
+                <ScrollView
+                    style={[SignUpViewStyle.container]}
+                >
+                    <View style={connectionStyle.container}>
 
-                    <View style={[inputStyle.labelWrapper, connectionStyle.first]}>
-                        <Text style={[inputStyle.label]}>Nom</Text>
-                        <Text style={[inputStyle.needed]}>*</Text>
-                    </View>
+                        <View style={[inputStyle.labelWrapper, connectionStyle.first]}>
+                            <Text style={[inputStyle.label]}>Nom</Text>
+                            <Text style={[inputStyle.needed]}>*</Text>
+                        </View>
 
-                    <TextInput
-                        style={[baseStyle.input, connectionStyle.input]}
-                        autoComplete={"name-family"}
-                        blurOnSubmit={true}
-                        inputMode="text"
-                        onChangeText={(val) => setLastname(val)}
-                        onPressIn={() => setConnectionError(null)}
-                        placeholder={"nom"}
-                        value={lastname}
-                    />
+                        <TextInput
+                            style={[baseStyle.input, connectionStyle.input]}
+                            autoComplete={"name-family"}
+                            blurOnSubmit={true}
+                            inputMode="text"
+                            onChangeText={(val) => setLastname(val)}
+                            onPressIn={() => setConnectionError(null)}
+                            placeholder={"nom"}
+                            value={lastname}
+                        />
 
-                    <View style={inputStyle.labelWrapper}>
-                        <Text style={[inputStyle.label]}>Prénom</Text>
-                        <Text style={[inputStyle.needed]}>*</Text>
-                    </View>
+                        <View style={inputStyle.labelWrapper}>
+                            <Text style={[inputStyle.label]}>Prénom</Text>
+                            <Text style={[inputStyle.needed]}>*</Text>
+                        </View>
 
-                    <TextInput
-                        style={[baseStyle.input, connectionStyle.input]}
-                        autoComplete={"name"}
-                        blurOnSubmit={true}
-                        inputMode="text"
-                        onChangeText={(val) => setFirstname(val)}
-                        onPressIn={() => setConnectionError(null)}
-                        placeholder={"prénom"}
-                        value={firstname}
-                    />
+                        <TextInput
+                            style={[baseStyle.input, connectionStyle.input]}
+                            autoComplete={"name"}
+                            blurOnSubmit={true}
+                            inputMode="text"
+                            onChangeText={(val) => setFirstname(val)}
+                            onPressIn={() => setConnectionError(null)}
+                            placeholder={"prénom"}
+                            value={firstname}
+                        />
 
-                    <View style={inputStyle.labelWrapper}>
-                        <Text style={[inputStyle.label]}>Pseudo</Text>
-                    </View>
+                        <View style={inputStyle.labelWrapper}>
+                            <Text style={[inputStyle.label]}>Pseudo</Text>
+                        </View>
 
-                    <TextInput
-                        style={[baseStyle.input, connectionStyle.input]}
-                        autoComplete={"username"}
-                        blurOnSubmit={true}
-                        inputMode="text"
-                        onChangeText={(val) => setPseudo(val)}
-                        onPressIn={() => setConnectionError(null)}
-                        placeholder={"pseudo"}
-                        value={pseudo}
-                    />
+                        <TextInput
+                            style={[baseStyle.input, connectionStyle.input]}
+                            autoComplete={"username"}
+                            blurOnSubmit={true}
+                            inputMode="text"
+                            onChangeText={(val) => setPseudo(val)}
+                            onPressIn={() => setConnectionError(null)}
+                            placeholder={"pseudo"}
+                            value={pseudo}
+                        />
 
-                    <View style={inputStyle.labelWrapper}>
-                        <Text style={[inputStyle.label]}>Email</Text>
-                        <Text style={[inputStyle.needed]}>*</Text>
-                    </View>
+                        <View style={inputStyle.labelWrapper}>
+                            <Text style={[inputStyle.label]}>Email</Text>
+                            <Text style={[inputStyle.needed]}>*</Text>
+                        </View>
 
-                    <TextInput
-                        style={[baseStyle.input, connectionStyle.input]}
-                        autoComplete={"email"}
-                        blurOnSubmit={true}
-                        inputMode="text"
-                        onChangeText={(val) => setEmail(val)}
-                        onPressIn={() => setConnectionError(null)}
-                        placeholder={"identifiant"}
-                        value={email}
-                    />
+                        <TextInput
+                            style={[baseStyle.input, connectionStyle.input]}
+                            autoComplete={"email"}
+                            blurOnSubmit={true}
+                            inputMode="text"
+                            onChangeText={(val) => setEmail(val)}
+                            onPressIn={() => setConnectionError(null)}
+                            placeholder={"identifiant"}
+                            value={email}
+                        />
 
 
-                    <View style={inputStyle.labelWrapper}>
-                        <Text style={[inputStyle.label]}>Mot de passe</Text>
-                        <Text style={[inputStyle.needed]}>*</Text>
-                    </View>
+                        <View style={inputStyle.labelWrapper}>
+                            <Text style={[inputStyle.label]}>Mot de passe</Text>
+                            <Text style={[inputStyle.needed]}>*</Text>
+                        </View>
 
-                    <TextInput
-                        style={[baseStyle.input, connectionStyle.input]}
-                        autoComplete={"username"}
-                        blurOnSubmit={true}
-                        inputMode="text"
-                        secureTextEntry={true}
-                        onChangeText={(val) => setPassword(val)}
-                        onPressIn={() => setConnectionError(null)}
-                        placeholder={"mot de passe"}
-                        value={password}
-                    />
+                        <TextInput
+                            style={[baseStyle.input, connectionStyle.input]}
+                            autoComplete={"username"}
+                            blurOnSubmit={true}
+                            inputMode="text"
+                            secureTextEntry={true}
+                            onChangeText={(val) => setPassword(val)}
+                            onPressIn={() => setConnectionError(null)}
+                            placeholder={"mot de passe"}
+                            value={password}
+                        />
 
-                    <View style={[connectionStyle.buttonWrapper]}
-                    >
-
-                        <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
-                                          onPress={() => trySignUp()}
+                        <View style={[connectionStyle.buttonWrapper]}
                         >
-                            <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
-                            <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>S'inscrire</Text>
-                        </TouchableOpacity>
+
+                            <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
+                                              onPress={() => trySignUp()}
+                            >
+                                <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
+                                <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>S'inscrire</Text>
+                            </TouchableOpacity>
 
 
+                        </View>
                     </View>
-                </View>
 
 
-            </ScrollView>
+                </ScrollView>
 
-            <MainMenu navigation={navigation}  />
-        </View>
+                <MainMenu navigation={navigation}  />
+            </View>
     )
 }
 

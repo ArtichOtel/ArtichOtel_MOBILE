@@ -16,7 +16,7 @@ export type userProfileType = {
     dateCreated: string | null,
     email: string | null,
     pseudo: string | null,
-    dateUpdate: string | null,
+    dateUpdate: string | null
     //firstName: string | null,
     //lastName: string | null
 }

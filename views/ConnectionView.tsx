@@ -11,9 +11,9 @@ import mainMenuStyle from "../style/mainMenuStyle";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
-import {userDataType} from "../utils/types";
-import { UserCtx } from "../utils/context";
-import {getProfileData, updateUserProfile} from "../utils/profileUpdater";
+import {userDataType, userProfileType} from "../utils/types";
+import {UserCtx, UserProfileCtx} from "../utils/context";
+import {getProfileData} from "../utils/profileUpdater";
 
 
 type ConnectionProps = {
@@ -24,6 +24,7 @@ type ConnectionProps = {
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
     const {currentUser, setCurrentUser} = useContext(UserCtx)
+    const {userProfile, setUserProfile} = useContext(UserProfileCtx)
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
@@ -68,22 +69,27 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             })
             .then((data: any) => {
                 console.log("conection success, now try update user profile ctx", data)
-                //@ts-ignore
-                updateUserProfile({
+
+                const userData: userProfileType = {
                     dateCreated: data.created_at,
                     email: data.email,
                     pseudo: data.pseudo,
-                    dateUpdate: data.updated_at,
+                    dateUpdate: data.updated_at
                     //firstName: data.,
                     //lastName: data.
-                })
+                }
+
+                setUserProfile(userData)
+            })
+            .then(() => {
+                // TODO : change destination according to global state next view
+                navigation.navigate('Main')
             })
     }
 
-    //TODO change to conditional return
-    useEffect(() => {}, [UserCtx])
 
     return (
+        !currentUser ? null :
         <View style={baseStyle.view}>
             <View style={[connectionStyle.container]}>
 

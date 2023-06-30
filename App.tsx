@@ -4,9 +4,7 @@ import MainView from "./views/MainView";
 import ConnectionView from "./views/ConnectionView";
 import SignUpView from "./views/SignUpView";
 import PresentChamberView from "./views/PresentChamberView";
-import { UserCtx, CriteriaCtx,
-    //UserProfileCtx
-} from "./utils/context";
+import { UserCtx, CriteriaCtx, UserProfileCtx} from "./utils/context";
 
 import colors from "./style/colors";
 import React, { createContext, useEffect, useState } from 'react';
