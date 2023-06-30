@@ -6,8 +6,8 @@ export type userDataType = {
 
 // TODO : change any type
 export type criteriaType = {
-    arrivalDate: any,
-    departureDate: any,
+    startDate: any,
+    endDate: any,
     roomTypes: string,
     peopleNbr: number,
 }

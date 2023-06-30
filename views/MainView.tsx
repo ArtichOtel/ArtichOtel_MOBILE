@@ -13,6 +13,7 @@ import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
 import NumberOfPeopleBottomSheetContent from '../components/bottomSheets/NumberOfPeopleBottomSheetContent';
+import DatePickerBottomSheetContent from '../components/bottomSheets/DatePickerBottomSheetContent';
 // @ts-ignore
 import { API_URL } from '@env';
 import { CriteriaCtx } from '../utils/context';
@@ -29,10 +30,10 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
   const { criteria } = React.useContext(CriteriaCtx);
   const baseBottomSheetHeight = (-SCREEN_HEIGHT +
-      mainStyle.first.marginTop +
-      baseStyle.btn.height +
-      (mainStyle.alignBtn.gap/2)
-    )
+    mainStyle.first.marginTop +
+    baseStyle.btn.height +
+    (mainStyle.alignBtn.gap / 2)
+  )
   const BottomSheetHeightSeperation = (
     mainStyle.alignBtn.gap +
     mainStyle.alignBtn.padding +
@@ -104,11 +105,11 @@ export default function MainView(props: MainViewProps): JSX.Element {
             onPress={() => onPress(allRefs.refDates, baseBottomSheetHeight + BottomSheetHeightSeperation)}
           >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>Date</Text>
+            <Text style={baseStyle.textDark}>{criteria.startDate} - {criteria.endDate}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
-            onPress={() => onPress(allRefs.refPeopleNbr, baseBottomSheetHeight + BottomSheetHeightSeperation*2)}
+            onPress={() => onPress(allRefs.refPeopleNbr, baseBottomSheetHeight + BottomSheetHeightSeperation * 2)}
           >
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
             <Text style={baseStyle.textDark}>{criteria.peopleNbr ? criteria.peopleNbr : "Nombre de personnes"}</Text>
@@ -128,11 +129,11 @@ export default function MainView(props: MainViewProps): JSX.Element {
         <BottomSheetBase
           ref={allRefs.refDates}
           height={baseBottomSheetHeight + BottomSheetHeightSeperation}
-          content={<Text>Dates</Text>}
+          content={<DatePickerBottomSheetContent />}
         />
         <BottomSheetBase
           ref={allRefs.refPeopleNbr}
-          height={baseBottomSheetHeight + BottomSheetHeightSeperation*2}
+          height={baseBottomSheetHeight + BottomSheetHeightSeperation * 2}
           content={<NumberOfPeopleBottomSheetContent />}
         />
         <MainMenu navigation={navigation} />
