@@ -14,6 +14,7 @@ import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
 // @ts-ignore
 import { API_URL } from '@env';
+import { CriteriaContext } from "../App";
 
 type MainViewProps = {
   navigation: any,
@@ -24,6 +25,8 @@ type Hero = {
 };
 
 export default function MainView(props: MainViewProps): JSX.Element {
+
+  const { criteria } = React.useContext(CriteriaContext);
   const BottomSheetBaseHeight = -SCREEN_HEIGHT / 3
   const { navigation } = props;
   const [data, setData] = useState<Hero[] | null>([]);
@@ -65,7 +68,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
   useEffect(() => {
     if (data.length > 0) {
       setImage(data[0].url_image);
-      console.log("Image : ", data[0].url_image);
+      //console.log("Image : ", data[0].url_image);
     }
   }, [data]);
 
@@ -96,7 +99,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
             onPress={() => onPress(allRefs.refRoomsTypes, BottomSheetBaseHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>Type de chambres</Text>
+            <Text style={baseStyle.textDark}>{criteria.roomTypes}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}

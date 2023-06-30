@@ -48,6 +48,7 @@ const baseStyle = StyleSheet.create({
     padding: 5,
     backgroundColor: '#ff000060'
 }
+
 })
 
 export default baseStyle;

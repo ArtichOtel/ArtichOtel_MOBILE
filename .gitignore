@@ -12,6 +12,7 @@ web-build/
 .idea
 .vscode
 .env
+.yarn.lock
 
 # macOS
 .DS_Store
