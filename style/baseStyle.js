@@ -7,7 +7,6 @@ const typoText = 'Nunito Sans';
 const baseStyle = StyleSheet.create({
   view: {
     flex: 1,
-    paddingBottom: 62 // = tab height
   },
   container: {
     flex: 1
