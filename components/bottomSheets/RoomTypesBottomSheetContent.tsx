@@ -45,9 +45,8 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
   const roomTypes = data.map((roomType, index) => {
     return (
-      <View style={RoomTypesBottomSheetStyle.alignContent}>
+      <View style={RoomTypesBottomSheetStyle.alignContent} key={index}>
         <Checkbox
-          key={index}
           style={RoomTypesBottomSheetStyle.checkbox}
           value={isChecked === index}
           onValueChange={() => setCriteriaToContext(index)}
