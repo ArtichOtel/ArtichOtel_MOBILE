@@ -12,7 +12,7 @@ import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
 import {userDataType} from "../utils/types";
-import {UserContext} from "../App";
+import { UserCtx } from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
 
@@ -24,7 +24,7 @@ type ConnectionProps = {
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
-    const {currentUser, setCurrentUser} = useContext(UserContext)
+    const {currentUser, setCurrentUser} = useContext(UserCtx)
     const [lastname, setLastname] = useState<string>('')
     const [firstname, setFirstname] = useState<string>('')
     const [pseudo, setPseudo] = useState<string>('')
