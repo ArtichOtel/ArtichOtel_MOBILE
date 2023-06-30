@@ -11,3 +11,12 @@ export type criteriaType = {
     roomTypes: string,
     peopleNbr: number,
 }
+
+export type userProfileType = {
+    dateCreated: string | null,
+    email: string | null,
+    pseudo: string | null,
+    dateUpdate: string | null,
+    //firstName: string | null,
+    //lastName: string | null
+}

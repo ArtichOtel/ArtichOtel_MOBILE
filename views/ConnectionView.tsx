@@ -13,6 +13,7 @@ import axios from "axios";
 import {API_URL} from "@env";
 import {userDataType} from "../utils/types";
 import {UserContext} from "../App";
+import {getProfileData, updateUserProfile} from "../utils/profileUpdater";
 
 
 type ConnectionProps = {
@@ -49,6 +50,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 })
                 setPassword("");
                 setUsername("");
+
+                return {id:userData.user_id, token:userData.token}
             })
             .catch((err) => {
                 console.log("connection error :", err);
@@ -57,7 +60,24 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
     };
 
     function tryConnection():void {
-getUserAccess().then()
+        getUserAccess()
+            .then((cred) => {
+                // set profile context
+                //@ts-ignore
+                return getProfileData(cred.id, cred.token)
+            })
+            .then((data: any) => {
+                console.log("conection success, now try update user profile ctx", data)
+                //@ts-ignore
+                updateUserProfile({
+                    dateCreated: data.created_at,
+                    email: data.email,
+                    pseudo: data.pseudo,
+                    dateUpdate: data.updated_at,
+                    //firstName: data.,
+                    //lastName: data.
+                })
+            })
     }
 
 

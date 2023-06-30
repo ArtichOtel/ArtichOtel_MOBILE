@@ -15,6 +15,7 @@ import {userDataType} from "../utils/types";
 import {UserContext} from "../App";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
+import {getProfileData, updateUserProfile} from "../utils/profileUpdater";
 
 
 type ConnectionProps = {
@@ -69,10 +70,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     token: response.data.token,
                     customerId: response.data.customer_id
                 })
-            })
-            .then(() => {
-                // TODO : change destination according to global state next view
-                navigation.navigate('Main')
+                return response.data
             })
             .catch((err) => {
                 console.log("signup error :", err);
@@ -85,6 +83,26 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
         postCreateUser()
             .then((userData) => {
                 return autoLogin(userData[0].pseudo)
+            })
+            .then((data)=> {
+                console.log("signup success", data)
+                return getProfileData(data.user_id, data.token)
+            })
+            .then((data)=>{
+                console.log("conection success, now try update user profile ctx", data)
+                //@ts-ignore
+                updateUserProfile({
+                    dateCreated: data.created_at,
+                    email: data.email,
+                    pseudo: data.pseudo,
+                    dateUpdate: data.updated_at,
+                    //firstName: data.,
+                    //lastName: data.
+                })
+            })
+            .then(() => {
+                // TODO : change destination according to global state next view
+                navigation.navigate('Main')
             })
     }
 
