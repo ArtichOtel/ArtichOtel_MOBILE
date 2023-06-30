@@ -8,7 +8,6 @@ const mainStyle = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
-    marginTop: 80,
   },
   alignBtn: {
     display: "flex",
@@ -19,18 +18,8 @@ const mainStyle = StyleSheet.create({
     justifyContent: "flex-start",
   },
   first: {
-    marginTop: 60,
+    marginTop: 80,
   },
-
-  alignBtn: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 20,
-    padding: 10,
-    margin: 20,
-    alignItems: "center",
-  },
-
   input: {
     height: 40,
     margin: 12,
