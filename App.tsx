@@ -35,6 +35,7 @@ export default function App(): JSX.Element {
 
   return (
        <UserContext.Provider value={{currentUser, setCurrentUser}}>
+        <CriteriaContext.Provider value={{criteria, setCriteria}}>
           <NavigationContainer>
               <Stack.Navigator initialRouteName="Main">
                   <Stack.Screen name="Main" component={MainView}
@@ -54,7 +55,8 @@ export default function App(): JSX.Element {
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
               </Stack.Navigator>
-          </NavigationContainer>
+            </NavigationContainer>
+          </CriteriaContext.Provider>
       </UserContext.Provider>
 
 
