@@ -5,10 +5,9 @@ import colors from "./colors";
 const connectionStyle = StyleSheet.create({
     container: {
         flex: 1,
-        display: 'flex',
+        //display: 'flex',
         alignItems: "center",
-        //justifyContent: "center",
-        marginTop: 80,
+        justifyContent: "center",
         paddingLeft: 20,
         paddingRight: 20,
         width: '100%'
@@ -19,6 +18,9 @@ const connectionStyle = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.grey,
         width: '100%'
+    },
+    first: {
+        marginTop: 80
     },
     buttonWrapper: {
         paddingTop: 50,
