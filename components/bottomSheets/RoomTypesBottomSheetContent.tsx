@@ -4,6 +4,9 @@ import { Text, View } from "react-native";
 import RoomTypesBottomSheetStyle from "../../style/RoomTypesBottomSheetStyle";
 import Checkbox from "expo-checkbox";
 import { CriteriaContext } from "../../App";
+// @ts-ignore
+import { API_URL } from "@env";
+import colors from "../../style/colors";
 
 type RoomTypes = {
   title: {
@@ -21,7 +24,7 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
   const fetchRoomTypes = async () => {
     try {
-      const response = await axios.get("http://192.168.137.1/api/room-types");
+      const response = await axios.get(API_URL + "room-types");
       const data = response.data;
       //console.log(data);
       setData(data);
@@ -44,17 +47,18 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
     return (
       <View style={RoomTypesBottomSheetStyle.alignContent}>
         <Checkbox
+          key={index}
           style={RoomTypesBottomSheetStyle.checkbox}
           value={isChecked === index}
           onValueChange={() => setCriteriaToContext(index)}
-          color={isChecked ? 'blue' : undefined}
+          color={isChecked ? colors.primary : colors.primary}
         />
         <Text style={RoomTypesBottomSheetStyle.alignContent}>{roomType.title['fr_FR']}</Text>
       </View>
     )
   });
 
-  console.log("Data : ", data)
+  //console.log("RoomTypes : ", data)
 
   useEffect(() => {
     fetchRoomTypes();
