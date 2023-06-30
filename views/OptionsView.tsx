@@ -35,51 +35,46 @@ export default function OptionsView(props: any): JSX.Element {
             <ScrollView>
                 <View style={optionStyle.recapInfoContainer}>
                     <Text style={baseStyle.textTypo}>Arrivée                                         30/06/2023</Text>
-                    <View style={{borderBottomColor:colors.primary, borderBottomWidth: 1, alignSelf: "stretch"}}></View>
+                    <View style={optionStyle.line}></View>
                     <Text style={baseStyle.textTypo}>Départ                                          01/07/2023</Text>
-                    <View style={{borderBottomColor:colors.primary, borderBottomWidth: 1, alignSelf: "stretch"}}></View>
+                    <View style={optionStyle.line}></View>
                     <Text style={baseStyle.textTypo}>Nombre de Personnes                                3</Text>
                     
                 </View>
 
-                <View style={{borderBottomColor:colors.primary, borderBottomWidth: 1, alignSelf: "stretch"}}></View>
+                <View style={optionStyle.line}></View>
 
                 <View style={optionStyle.contentOptionCenter}>
-                    <View style={optionStyle.optionContainer}>
-                        <Text>Formule Pension Complète (35€/personne/jour)</Text>
+                    <View style={optionStyle.textContainer}>
+                        <Text style={{marginTop:15, marginBottom:15}}>Formule Pension Complète (35€/personne/jour)</Text>
+
+                        <Text style={{marginTop:15, marginBottom:15}}>Formule Demie Pension (20€/personne/jour)</Text>
+
+                        <Text style={{marginTop:15, marginBottom:15}}>Formule Petit Déjeuner (9€/personne/jour)</Text>
+
+                        <Text style={{marginTop:15, marginBottom:15}}>Service Pressing (30€/personne/jour)</Text>
+
+                        <Text style={{marginTop:15, marginBottom:15}}>Télévision (10€/semaine)</Text>
+
+                        <Text style={{marginTop:15, marginBottom:15}}>Wifi (25€)</Text>
+                        
+                    </View>
+
+                    <View style={optionStyle.switchContainer}>
                         <Switch onValueChange={toogleSwitchFullPension} value={isEnabledFullPension}/>
-                    </View>
-
-                    <View style={optionStyle.optionContainer}>
-                        <Text>Formule Demie Pension (20€/personne/jour)</Text>
                         <Switch onValueChange={toogleSwitchHalfPension} value={isEnabledHalfPension} />
-                    </View>
-
-                    <View style={optionStyle.optionContainer}>
-                        <Text>Formule Petit Déjeuner (9€/personne/jour)</Text>
                         <Switch onValueChange={toogleSwitchBreakfast} value={isEnabledBreakfast} />
-                    </View>
-
-                    <View style={optionStyle.optionContainer}>
-                        <Text>Service Pressing (30€/personne/jour)</Text>
                         <Switch onValueChange={toogleSwitchPressing} value={isEnabledPressing} />
-                    </View>
-
-                    <View style={optionStyle.optionContainer}>
-                        <Text>Wifi (25€)</Text>
                         <Switch onValueChange={toogleSwitchWifi} value={isEnabledWifi} />
-                    </View>
-
-                    <View style={optionStyle.optionContainer}>
-                        <Text>Télévision (10€/semaine)</Text>
                         <Switch onValueChange={toogleSwitchTele} value={isEnabledTele} />
                     </View>
+
                 </View>
 
-                <View style={{borderBottomColor:colors.primary, borderBottomWidth: 1, alignSelf: "stretch"}}></View>
+                <View style={optionStyle.line}></View>
                 <View style={optionStyle.cbContainer}>
                     <FontAwesomeIcon icon={faCreditCard} size={40} />
-                    <TouchableOpacity style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}>
+                    <TouchableOpacity style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, {width: 275}]}>
                         <Text>Numéro Carte Bancaire</Text>
                     </TouchableOpacity>
                 </View>

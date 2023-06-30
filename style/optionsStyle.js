@@ -13,6 +13,7 @@ const presentChamberStyle = StyleSheet.create({
 
 
     contentOptionCenter: {
+        flexDirection: "row",
         alignItems: "flex-start",
         justifyContent: "center",
     },
@@ -22,9 +23,12 @@ const presentChamberStyle = StyleSheet.create({
         justifyContent: "center",
     },
 
+    textContainer: {
+        alignItems: "flex-start",
+        justifyContent: "center",
+    },
 
-    optionContainer: {
-        flexDirection: "row",
+    switchContainer: {
         alignItems: "center",
         justifyContent: "center",
     },
@@ -76,6 +80,15 @@ const presentChamberStyle = StyleSheet.create({
     {
       backgroundColor: colors.primary,
       flexDirection: "row",
+    },
+
+
+    line: {
+        borderBottomColor:colors.primary, 
+        borderBottomWidth: 1, 
+        alignSelf: "stretch", 
+        marginBottom:15, 
+        marginTop: 15,
     }
   });
 
