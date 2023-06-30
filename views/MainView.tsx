@@ -73,6 +73,17 @@ export default function MainView(props: MainViewProps): JSX.Element {
     }
   };
 
+  // Post criteria
+  const search = async () => {
+    const response = await axios.get(API_URL + `search?type=1startDate=${criteria.startDate}&endDate=${criteria.endDate}`)
+      .then((response) => { console.log("SEARCH REQUEST ", response.data) })
+    console.log("Criteria : ", response);
+    //const data = response.data;
+    //console.log(response);
+    setData(data);
+
+  };
+
   useEffect(() => {
     fetchHero();
   }, [API_URL]);
@@ -116,6 +127,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}
+            onPress={() => search()}
           >
             <Text style={[buttonStyle.search, baseStyle.textLight]}>Rechercher</Text>
           </TouchableOpacity>
