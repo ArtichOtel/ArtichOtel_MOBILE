@@ -28,7 +28,17 @@ type Hero = {
 export default function MainView(props: MainViewProps): JSX.Element {
 
   const { criteria } = React.useContext(CriteriaCtx);
-  const BottomSheetBaseHeight = -SCREEN_HEIGHT / 3
+  const baseBottomSheetHeight = (-SCREEN_HEIGHT +
+      mainStyle.first.marginTop +
+      baseStyle.btn.height +
+      (mainStyle.alignBtn.gap/2)
+    )
+  const BottomSheetHeightSeperation = (
+    mainStyle.alignBtn.gap +
+    mainStyle.alignBtn.padding +
+    baseStyle.btn.padding +
+    baseStyle.btn.height
+  )
   const { navigation } = props;
   const [data, setData] = useState<Hero[] | null>([]);
   const [image, setImage] = useState<string | null>(null);
@@ -84,21 +94,21 @@ export default function MainView(props: MainViewProps): JSX.Element {
         <View>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
-            onPress={() => onPress(allRefs.refRoomsTypes, BottomSheetBaseHeight)}
+            onPress={() => onPress(allRefs.refRoomsTypes, baseBottomSheetHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
             <Text style={baseStyle.textDark}>{criteria.roomTypes}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
-            onPress={() => onPress(allRefs.refDates, BottomSheetBaseHeight)}
+            onPress={() => onPress(allRefs.refDates, baseBottomSheetHeight + BottomSheetHeightSeperation)}
           >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
             <Text style={baseStyle.textDark}>Date</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
-            onPress={() => onPress(allRefs.refPeopleNbr, BottomSheetBaseHeight)}
+            onPress={() => onPress(allRefs.refPeopleNbr, baseBottomSheetHeight + BottomSheetHeightSeperation*2)}
           >
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
             <Text style={baseStyle.textDark}>{criteria.peopleNbr ? criteria.peopleNbr : "Nombre de personnes"}</Text>
@@ -112,17 +122,17 @@ export default function MainView(props: MainViewProps): JSX.Element {
         </View>
         <BottomSheetBase
           ref={allRefs.refRoomsTypes}
-          height={BottomSheetBaseHeight}
+          height={baseBottomSheetHeight}
           content={<RoomTypesBottomSheetContent />}
         />
         <BottomSheetBase
           ref={allRefs.refDates}
-          height={BottomSheetBaseHeight}
+          height={baseBottomSheetHeight + BottomSheetHeightSeperation}
           content={<Text>Dates</Text>}
         />
         <BottomSheetBase
           ref={allRefs.refPeopleNbr}
-          height={BottomSheetBaseHeight}
+          height={baseBottomSheetHeight + BottomSheetHeightSeperation*2}
           content={<NumberOfPeopleBottomSheetContent />}
         />
         <MainMenu navigation={navigation} />
