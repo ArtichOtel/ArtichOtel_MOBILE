@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -76,6 +76,9 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
   return (
     <ImageBackground source={{ uri: image }} resizeMode='cover' style={baseStyle.view}>
+      <StatusBar 
+        barStyle={'light-content'}
+      />
       <GestureHandlerRootView style={[baseStyle.container, mainStyle.container]}>
 
         <BottomSheetBase
