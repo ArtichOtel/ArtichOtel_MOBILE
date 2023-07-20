@@ -19,6 +19,9 @@ export default function OptionsView(props: any): JSX.Element {
     const [isEnabledWifi, setIsEnabledWifi] = useState(false);
     const [isEnabledTele, setIsEnabledTele] = useState(false);
 
+    
+
+
     const toogleSwitchFullPension = () =>setIsEnabledFullPension(previousState => !previousState);
     const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(previousState => !previousState);
     const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(previousState => !previousState);
@@ -26,49 +29,80 @@ export default function OptionsView(props: any): JSX.Element {
     const toogleSwitchWifi = () =>setIsEnabledWifi(previousState => !previousState);
     const toogleSwitchTele = () =>setIsEnabledTele(previousState => !previousState);
 
-
-
-    const calculPriceFullPension = () =>setNewPrice(price => price += 35 * getDiffDate() * 3);
-    const calculPriceHalfPension = () =>setNewPrice(price => price += 20 * getDiffDate() * 3);
-    const calculPriceBreakfast = () =>setNewPrice(price => price += 9 * getDiffDate() * 3);
-    const calculPricePressing = () =>setNewPrice(price => price += 30 * getDiffDate() * 3);
-    const calculPriceWifi = () =>setNewPrice(price => price += 25);
-    const calculPriceTele = () =>setNewPrice(price => price += 10 * 1);
-
-    const [newPrice, setNewPrice] = useState(70);
-
     function getDiffDate()
     {
-        let calculDiff = new Date("02/07/2023").getTime() - new Date("30/06/2023").getTime();
-        let dayDiff = Math.floor(calculDiff  /(1000*3600*24));
+        let calculDiff = new Date(2023, 6,  23).getTime() - new Date(2023, 6, 20).getTime();
+        let dayDiff = Math.floor(calculDiff/(1000*3600*24));
 
         return dayDiff;
     }
 
-    if(isEnabledTele)
+    useEffect(() => 
     {
-        calculPriceTele;
-    }
-    if(isEnabledWifi)
-    {
-        calculPriceWifi;
-    }
-    if(isEnabledPressing)
-    {
-        calculPricePressing;
-    }
-    if(isEnabledBreakfast)
-    {
-        calculPriceBreakfast;
-    }
-    if(isEnabledHalfPension)
-    {
-        calculPriceHalfPension;
-    }
-    if(isEnabledFullPension)
-    {
-        calculPriceFullPension;
-    }
+        if(isEnabledTele)
+        {
+            setNewPrice(price => price += 10 * 1);
+        }
+        /* else
+        {
+            setNewPrice(price => price -= 10 * 1);
+        } */
+
+
+        if(isEnabledWifi)
+        {
+            setNewPrice(price => price += 25);
+        }
+        /* else
+        {
+            setNewPrice(price => price -= 25 * 1);
+        } */
+
+
+        if(isEnabledPressing)
+        {
+            setNewPrice(price => price += 30 * getDiffDate() * 3);
+        }
+        /* else
+        {
+            setNewPrice(price => price -= 30 * getDiffDate() * 3);
+        } */
+
+
+        if(isEnabledBreakfast)
+        {
+            setNewPrice(price => price += 9 * getDiffDate() * 3);
+        }
+        /* else
+        {
+            setNewPrice(price => price -= 9 * getDiffDate() * 3);
+        } */
+
+
+        if(isEnabledHalfPension)
+        {
+            setNewPrice(price => price += 20 * getDiffDate() * 3);
+        }
+        /* else
+        {
+            setNewPrice(price => price -= 20 * getDiffDate() * 3);
+        } */
+
+
+        if(isEnabledFullPension)
+        {
+            setNewPrice(price => price += 35 * getDiffDate() * 3);
+            
+        }
+        /* else
+        {
+            setNewPrice(price => price -= 35 * getDiffDate() * 3);
+        } */
+
+
+    }, [isEnabledBreakfast, isEnabledFullPension, isEnabledHalfPension, isEnabledPressing, isEnabledTele, isEnabledWifi]);
+
+    const [newPrice, setNewPrice] = useState(70);
 
     return (
       <View style={baseStyle.container}>
@@ -109,8 +143,8 @@ export default function OptionsView(props: any): JSX.Element {
                         <Switch onValueChange={toogleSwitchHalfPension} value={isEnabledHalfPension} />
                         <Switch onValueChange={toogleSwitchBreakfast} value={isEnabledBreakfast}/>
                         <Switch onValueChange={toogleSwitchPressing} value={isEnabledPressing} />
-                        <Switch onValueChange={toogleSwitchWifi} value={isEnabledWifi} />
                         <Switch onValueChange={toogleSwitchTele} value={isEnabledTele} />
+                        <Switch onValueChange={toogleSwitchWifi} value={isEnabledWifi} />
                     </View>
 
                 </View>
