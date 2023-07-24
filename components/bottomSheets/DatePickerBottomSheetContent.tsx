@@ -10,7 +10,7 @@ function DatePickerBottomSheetContent(props: any): JSX.Element {
   const { criteria, setCriteria } = useContext(CriteriaCtx);
   const today = new Date()
   const [startDate, setStartDate] = useState<Date>(today);
-  const [endDate, setEndDate] = useState<Date>(addDays(startDate, 1))
+  const [endDate, setEndDate] = useState<Date>(addDays(today, 1))
 
   function addDays(date : Date, days : number) {
     let newDate = new Date(date)
