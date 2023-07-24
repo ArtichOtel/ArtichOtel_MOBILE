@@ -19,8 +19,12 @@ export default function OptionsView(props: any): JSX.Element {
     const [isEnabledWifi, setIsEnabledWifi] = useState(false);
     const [isEnabledTele, setIsEnabledTele] = useState(false);
 
-    
+    const [isFirstRender, setFirstRender] = useState(false);
 
+
+    useEffect(() =>  {
+        setFirstRender(state => state = true);
+    })
 
     const toogleSwitchFullPension = () =>setIsEnabledFullPension(previousState => !previousState);
     const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(previousState => !previousState);
@@ -28,6 +32,8 @@ export default function OptionsView(props: any): JSX.Element {
     const toogleSwitchPressing = () =>setIsEnabledPressing(previousState => !previousState);
     const toogleSwitchWifi = () =>setIsEnabledWifi(previousState => !previousState);
     const toogleSwitchTele = () =>setIsEnabledTele(previousState => !previousState);
+
+    const [newPrice, setNewPrice] = useState(70);
 
     function getDiffDate()
     {
@@ -39,70 +45,94 @@ export default function OptionsView(props: any): JSX.Element {
 
     useEffect(() => 
     {
-        if(isEnabledTele)
+        if(isFirstRender)
         {
-            setNewPrice(price => price += 10 * 1);
+            if(isEnabledTele)
+            {
+                setNewPrice(price => price += 10 * 1);
+            }
+            else
+            {
+                setNewPrice(price => price -= 10 * 1);
+            }
         }
-        /* else
-        {
-            setNewPrice(price => price -= 10 * 1);
-        } */
+    }, [isEnabledTele]);
 
-
-        if(isEnabledWifi)
+    useEffect(() => 
+    {
+        if(isFirstRender)
         {
-            setNewPrice(price => price += 25);
+            if(isEnabledWifi)
+            {
+                setNewPrice(price => price += 25);
+            }
+            else
+            {
+                setNewPrice(price => price -= 25);
+            }
         }
-        /* else
-        {
-            setNewPrice(price => price -= 25 * 1);
-        } */
+    }, [isEnabledWifi]);
 
-
-        if(isEnabledPressing)
+    useEffect(() => 
+    {
+        if(isFirstRender)
         {
-            setNewPrice(price => price += 30 * getDiffDate() * 3);
+            if(isEnabledPressing)
+            {
+                setNewPrice(price => price += 30 * getDiffDate() * 3);
+            }
+            else
+            {
+                setNewPrice(price => price -= 30 * getDiffDate() * 3);
+            }
         }
-        /* else
-        {
-            setNewPrice(price => price -= 30 * getDiffDate() * 3);
-        } */
+    }, [isEnabledPressing]);
 
-
-        if(isEnabledBreakfast)
+    useEffect(() => 
+    {
+        if(isFirstRender)
         {
-            setNewPrice(price => price += 9 * getDiffDate() * 3);
+            if(isEnabledBreakfast)
+            {
+                setNewPrice(price => price += 9 * getDiffDate() * 3);
+            }
+            else
+            {
+                setNewPrice(price => price -= 9 * getDiffDate() * 3);
+            }
         }
-        /* else
-        {
-            setNewPrice(price => price -= 9 * getDiffDate() * 3);
-        } */
+    }, [isEnabledBreakfast]);
 
-
-        if(isEnabledHalfPension)
+    useEffect(() => 
+    {
+        if(isFirstRender)
         {
-            setNewPrice(price => price += 20 * getDiffDate() * 3);
+            if(isEnabledHalfPension)
+            {
+                setNewPrice(price => price += 20 * getDiffDate() * 3);
+            }
+            else
+            {
+                setNewPrice(price => price -= 20 * getDiffDate() * 3);
+            }
         }
-        /* else
-        {
-            setNewPrice(price => price -= 20 * getDiffDate() * 3);
-        } */
+    }, [isEnabledHalfPension]);
 
-
-        if(isEnabledFullPension)
+    useEffect(() => 
+    {
+        if(isFirstRender)
         {
-            setNewPrice(price => price += 35 * getDiffDate() * 3);
-            
+            if(isEnabledFullPension)
+            {
+                setNewPrice(price => price += 35 * getDiffDate() * 3);
+                
+            }
+            else
+            {
+                setNewPrice(price => price -= 35 * getDiffDate() * 3);
+            }
         }
-        /* else
-        {
-            setNewPrice(price => price -= 35 * getDiffDate() * 3);
-        } */
-
-
-    }, [isEnabledBreakfast, isEnabledFullPension, isEnabledHalfPension, isEnabledPressing, isEnabledTele, isEnabledWifi]);
-
-    const [newPrice, setNewPrice] = useState(70);
+    }, [isEnabledFullPension]);
 
     return (
       <View style={baseStyle.container}>
