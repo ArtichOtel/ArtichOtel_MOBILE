@@ -15,7 +15,7 @@ import {userDataType, userProfileType} from "../utils/types";
 import {UserCtx, UserProfileCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
-import {getProfileData} from "../utils/profileUpdater";
+import {getUserData} from "../utils/profileUpdater";
 import {defaultProfile, defaultUserData} from "../App";
 
 
@@ -35,6 +35,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
 
+    console.log("ProfilView, userProfile :",userProfile)
+    console.log("ProfilView, currentUser :",currentUser)
 
     function loggout() {
         axios.get(API_URL+"user/logout", {
@@ -47,6 +49,19 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
             setCurrentUser(defaultUserData)
         }).then(() => navigation.navigate('Main'))
     }
+
+
+    // fetch user data
+    const userData = async () => {
+        try {
+            const response = await axios.get(API_URL);
+            const data = response.data[0];
+            //console.log(data);
+        } catch (error) {
+            console.log("UserProfile load error", error)
+        }
+    };
+
 
     return (
         !currentUser ? null :

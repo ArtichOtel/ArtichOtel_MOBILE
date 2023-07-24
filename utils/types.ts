@@ -17,6 +17,11 @@ export type userProfileType = {
     email: string | null,
     pseudo: string | null,
     dateUpdate: string | null
-    //firstName: string | null,
-    //lastName: string | null
+    firstName: string | null,
+    lastName: string | null
+}
+
+export type credentials = {
+    id: string,
+    token: string
 }

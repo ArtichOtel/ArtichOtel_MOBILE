@@ -15,7 +15,7 @@ import {userDataType, userProfileType} from "../utils/types";
 import {UserCtx, UserProfileCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
-import {getProfileData} from "../utils/profileUpdater";
+import {getUserData} from "../utils/profileUpdater";
 
 
 type ConnectionProps = {
@@ -87,7 +87,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
             })
             .then((cred)=> {
                 console.log("signup success", cred)
-                return getProfileData(cred.user_id, cred.token)
+                return getUserData(cred.user_id, cred.token)
             })
             .then((data: any)=>{
                 console.log("conection success, now try update user profile ctx", data)

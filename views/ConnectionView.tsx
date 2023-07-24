@@ -8,11 +8,11 @@ import buttonStyle from "../style/buttonStyle";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import mainMenuStyle from "../style/mainMenuStyle";
-import {getProfileData} from "../utils/profileUpdater";
+import {getUserData} from "../utils/profileUpdater";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
-import {userProfileType} from "../utils/types";
+import {credentials, userProfileType} from "../utils/types";
 import {UserCtx, UserProfileCtx} from "../utils/context";
 
 
@@ -23,6 +23,7 @@ type ConnectionProps = {
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
+    //const {userAccess, setUserAccess} = useState<{id:string, token:string}>({id:null, token:null})
     const {currentUser, setCurrentUser} = useContext(UserCtx)
     const {userProfile, setUserProfile} = useContext(UserProfileCtx)
     const [username, setUsername] = useState<string>('')
@@ -37,7 +38,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 password: password
             })
             .then((response) => {
-                console.log("RESPONSE",response.data)
+                console.log("getUserAccess",response.data)
 
                 return response.data;
             })
@@ -60,24 +61,45 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             });
     };
 
-    function tryConnection():void {
-        getUserAccess()
-            .then((cred) => {
-                // set profile context
-                //@ts-ignore
-                return getProfileData(cred.id, cred.token)
-            })
-            .then((data: any) => {
-                console.log("conection success, now try update user profile ctx", data)
-
-                const userData: userProfileType = {
-                    dateCreated: data.created_at,
-                    email: data.email,
-                    pseudo: data.pseudo,
-                    dateUpdate: data.updated_at
-                    //firstName: data.,
-                    //lastName: data.
+/*    const getUserData = async (id, token) => {
+        return await axios
+            .get(API_URL+'user/'+id, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
+            })
+    }*/
+
+    function tryConnection():void {
+        let userData: userProfileType = {
+            dateCreated: null,
+            email: null,
+            pseudo: null,
+            dateUpdate: null,
+            firstName: null,
+            lastName: null
+        }
+
+        getUserAccess()
+            .then((cred:credentials) => {
+                console.log("conection success")
+                return cred
+            })
+            .then((cred:credentials) => {
+                return getUserData(cred)
+            })
+            .then(({data, cred}) => {
+                console.log("re cred", cred)
+                console.log("getProfileData", data)
+                userData.dateCreated = data.created_at;
+                userData.email = data.email;
+                userData.pseudo = data.pseudo;
+                userData.dateUpdate = data.updated_at;
+            })
+            //.then(() => {return getUserData(currentUser.id, currentUser.token)})
+            .then((data)=>{
+                console.log("getUserData", data)
+
 
                 setUserProfile(userData)
             })
@@ -85,6 +107,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 // TODO : change destination according to global state next view
                 navigation.navigate('Main')
             })
+
     }
 
 
