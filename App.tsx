@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainView from "./views/MainView";
 import ConnectionView from "./views/ConnectionView";
 import PresentChamberView from "./views/PresentChamberView";
-import presentChamberStyle from "./style/presentChamberStyle";
 
 import colors from "./style/colors";
 import React, { createContext, useEffect, useState } from 'react';
@@ -35,7 +34,7 @@ export default function App(): JSX.Element {
     const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
 
   return (
-       {/* <UserContext.Provider value={{currentUser, setCurrentUser}}>
+       <UserContext.Provider value={{currentUser, setCurrentUser}}>
         <CriteriaContext.Provider value={{criteria, setCriteria}}>
           <NavigationContainer>
               <Stack.Navigator initialRouteName="Main">
@@ -55,15 +54,15 @@ export default function App(): JSX.Element {
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
+                    <Stack.Screen name="Options" component={OptionsView}
+                                options={({
+                                    title: null,
+                                    headerStyle: { backgroundColor : colors.primary }
+                                })} />
               </Stack.Navigator>
             </NavigationContainer>
           </CriteriaContext.Provider>
-      </UserContext.Provider> */},
-
-
-      <OptionsView />
-
-
+      </UserContext.Provider>
 
   );
 }

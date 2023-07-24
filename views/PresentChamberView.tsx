@@ -4,10 +4,22 @@ import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, 
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
+
 import ScrollView = Animated.ScrollView;
 
+type roomProps = {
+    navigation: any;
+}
 
-export default function PresentChamberView(props: any): JSX.Element {
+export default function PresentChamberView(props: roomProps): JSX.Element {
+    const {navigation} = props
+
+
+    function goToOptions()
+    {
+        navigation.navigate('Room options')
+    }
+
     return (
       <View style={baseStyle.container}>
             <View style={[baseStyle.container, presentChamberStyle.infoBox, presentChamberStyle.contentCenter]}>
@@ -62,8 +74,10 @@ export default function PresentChamberView(props: any): JSX.Element {
         
 
         <View style={[presentChamberStyle.buttonBackgroundContainer, presentChamberStyle.contentCenter]}>
-            <TouchableOpacity style={[presentChamberStyle.buttonPrice, presentChamberStyle.contentCenter]}><Text style={presentChamberStyle.buttonTextColor}>200€</Text></TouchableOpacity>
-            <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]}><Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text></TouchableOpacity>
+            <TouchableOpacity style={[presentChamberStyle.buttonPrice, presentChamberStyle.contentCenter]}><Text style={presentChamberStyle.buttonTextColor}>70 €</Text></TouchableOpacity>
+            <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]} onPress={() => navigation.navigate('Options')}>
+                <Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text>
+            </TouchableOpacity>
         </View>
       </View>
     );

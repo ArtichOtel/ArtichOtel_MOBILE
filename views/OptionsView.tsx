@@ -9,8 +9,11 @@ import buttonStyle from '../style/buttonStyle';
 import colors from '../style/colors';
 import ScrollView = Animated.ScrollView;
 
-
-export default function OptionsView(props: any): JSX.Element {
+type roomProps = {
+    navigation: any;
+}
+export default function OptionsView(props: roomProps): JSX.Element {
+    const {navigation} = props
 
     const [isEnabledFullPension, setIsEnabledFullPension] = useState(false);
     const [isEnabledHalfPension, setIsEnabledHalfPension] = useState(false);
