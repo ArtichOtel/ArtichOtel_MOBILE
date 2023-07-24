@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import connectionStyle from "../style/ConnectionStyle";
 import inputStyle from "../style/inputStyle";
@@ -8,11 +8,12 @@ import buttonStyle from "../style/buttonStyle";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import mainMenuStyle from "../style/mainMenuStyle";
+import {getProfileData} from "../utils/profileUpdater";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
-import {userDataType} from "../utils/types";
-import {UserContext} from "../App";
+import {userProfileType} from "../utils/types";
+import {UserCtx, UserProfileCtx} from "../utils/context";
 
 
 type ConnectionProps = {
@@ -22,7 +23,8 @@ type ConnectionProps = {
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation} = props
-    const {currentUser, setCurrentUser} = useContext(UserContext)
+    const {currentUser, setCurrentUser} = useContext(UserCtx)
+    const {userProfile, setUserProfile} = useContext(UserProfileCtx)
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
@@ -49,6 +51,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 })
                 setPassword("");
                 setUsername("");
+
+                return {id:userData.user_id, token:userData.token}
             })
             .catch((err) => {
                 console.log("connection error :", err);
@@ -57,11 +61,35 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
     };
 
     function tryConnection():void {
-getUserAccess().then()
+        getUserAccess()
+            .then((cred) => {
+                // set profile context
+                //@ts-ignore
+                return getProfileData(cred.id, cred.token)
+            })
+            .then((data: any) => {
+                console.log("conection success, now try update user profile ctx", data)
+
+                const userData: userProfileType = {
+                    dateCreated: data.created_at,
+                    email: data.email,
+                    pseudo: data.pseudo,
+                    dateUpdate: data.updated_at
+                    //firstName: data.,
+                    //lastName: data.
+                }
+
+                setUserProfile(userData)
+            })
+            .then(() => {
+                // TODO : change destination according to global state next view
+                navigation.navigate('Main')
+            })
     }
 
 
     return (
+        !currentUser ? null :
         <View style={baseStyle.view}>
             <View style={[connectionStyle.container]}>
 

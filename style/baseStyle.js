@@ -7,10 +7,10 @@ const typoText = 'Nunito Sans';
 const baseStyle = StyleSheet.create({
   view: {
     flex: 1,
-    paddingBottom: 62 // = tab height
   },
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0, 0.3)'
   },
   title: {
     fontFamily: typoTitle,

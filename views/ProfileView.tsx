@@ -6,7 +6,7 @@ import MainMenu from "../components/tabs/MainMenu";
 import baseStyle from "../style/baseStyle";
 import buttonStyle from "../style/buttonStyle";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import { faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faUserSlash, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import mainMenuStyle from "../style/mainMenuStyle";
 import axios from "axios";
 // @ts-ignore
@@ -16,6 +16,7 @@ import {UserCtx, UserProfileCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
 import {getProfileData} from "../utils/profileUpdater";
+import {defaultProfile, defaultUserData} from "../App";
 
 
 type ConnectionProps = {
@@ -35,80 +36,17 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
     const [connectionError, setConnectionError] = useState<string|null>(null)
 
 
-    const postCreateUser = () => {
-        let bodyJSON = {
-            last_name: lastname,
-            first_name: firstname,
-            pseudo: pseudo,
-            email: email,
-            password: password,
-            lang: 'fr_FR'
+    function loggout() {
+        axios.get(API_URL+"user/logout", {
+            headers: {
+                'Authorization': `Bearer ${currentUser.token}`
+            }
+        }).then(()=>{
+            console.log("DISCONNECTED !")
+            setUserProfile(defaultProfile)
+            setCurrentUser(defaultUserData)
+        }).then(() => navigation.navigate('Main'))
     }
-        return axios
-            .post(API_URL+"user/register",
-                bodyJSON)
-            .then((response) => {
-                console.log("RESPONSE",response.data)
-                alert(`Bienvenue ${response.data[0].pseudo} !`)
-                return response.data;
-            })
-            .catch((err) => {
-                console.log("connection error :", err);
-                setConnectionError(err.response.data.message)
-            });
-    };
-
-
-    function autoLogin(pseudo:string) {
-        return axios.post(API_URL+"user/login", {
-            pseudo: pseudo,
-            email: email,
-            password: password
-        })
-            .then((response) => {
-                const user: userDataType = {
-                    userId: response.data.user_id,
-                    token: response.data.token,
-                    customerId: response.data.customer_id
-                }
-                setCurrentUser(user)
-                return response.data
-            })
-            .catch((err) => {
-                console.log("signup error :", err);
-                setConnectionError(err.response.data.message)
-            });
-    }
-
-    function trySignUp():void {
-        postCreateUser()
-            .then((userData) => {
-                return autoLogin(userData[0].pseudo)
-            })
-            .then((cred)=> {
-                console.log("signup success", cred)
-                return getProfileData(cred.user_id, cred.token)
-            })
-            .then((data: any)=>{
-                console.log("conection success, now try update user profile ctx", data)
-
-                const userData: userProfileType = {
-                    dateCreated: data.created_at,
-                    email: data.email,
-                    pseudo: data.pseudo,
-                    dateUpdate: data.updated_at
-                    //firstName: data.,
-                    //lastName: data.
-                }
-
-                setUserProfile(userData)
-            })
-            .then(() => {
-                // TODO : change destination according to global state next view
-                navigation.navigate('Main')
-            })
-    }
-
 
     return (
         !currentUser ? null :
@@ -118,7 +56,16 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
                 >
                     <View style={connectionStyle.container}>
 
-                        <View style={[inputStyle.labelWrapper, connectionStyle.first]}>
+                        <View style={{marginTop: 30, marginBottom: 30}}>
+                            <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
+                                onPress={() => loggout()}
+                            >
+                                <FontAwesomeIcon icon={faArrowRightFromBracket} size={30} style={mainMenuStyle.items} />
+                                <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Déconnexion</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={[inputStyle.labelWrapper]}>
                             <Text style={[inputStyle.label]}>Nom</Text>
                             <Text style={[inputStyle.needed]}>*</Text>
                         </View>
@@ -130,7 +77,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
                             inputMode="text"
                             onChangeText={(val) => setLastname(val)}
                             onPressIn={() => setConnectionError(null)}
-                            placeholder={"nom"}
+                            placeholder={userProfile.lastName || "votre nom"}
                             value={lastname}
                         />
 
@@ -146,7 +93,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
                             inputMode="text"
                             onChangeText={(val) => setFirstname(val)}
                             onPressIn={() => setConnectionError(null)}
-                            placeholder={"prénom"}
+                            placeholder={userProfile.firstName || "votre prénom"}
                             value={firstname}
                         />
 
@@ -161,7 +108,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
                             inputMode="text"
                             onChangeText={(val) => setPseudo(val)}
                             onPressIn={() => setConnectionError(null)}
-                            placeholder={"pseudo"}
+                            placeholder={userProfile.pseudo}
                             value={pseudo}
                         />
 
@@ -177,7 +124,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
                             inputMode="text"
                             onChangeText={(val) => setEmail(val)}
                             onPressIn={() => setConnectionError(null)}
-                            placeholder={"identifiant"}
+                            placeholder={userProfile.email}
                             value={email}
                         />
 
@@ -199,16 +146,20 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
                             value={password}
                         />
 
-                        <View style={[connectionStyle.buttonWrapper]}
-                        >
-
+                        <View style={[connectionStyle.buttonWrapper]}>
                             <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
-                                              onPress={() => trySignUp()}
+                                              //onPress={() => trySignUp()}
                             >
-                                <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
-                                <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>S'inscrire</Text>
+                                <FontAwesomeIcon icon={faFloppyDisk} size={30} style={mainMenuStyle.items} />
+                                <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Enregistrer</Text>
                             </TouchableOpacity>
 
+                            <TouchableOpacity style={[baseStyle.btn, baseStyle.errorText]}
+                                              //onPress={() => trySignUp()}
+                            >
+                                <FontAwesomeIcon icon={faUserSlash} size={30} style={baseStyle.btn} />
+                                <Text >Supprimer le compte</Text>
+                            </TouchableOpacity>
 
                         </View>
                     </View>

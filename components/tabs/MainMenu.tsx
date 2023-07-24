@@ -5,20 +5,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faUser, faSuitcase, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import React, {useContext, useEffect, useState} from "react";
 import {userDataType} from "../../utils/types";
-import {UserContext} from "../../App";
+import { UserCtx } from '../../utils/context';
 
 export default function MainMenu({navigation}): JSX.Element {
-    const {currentUser} = useContext(UserContext)
+    const {currentUser} = useContext(UserCtx)
     const [isLogged, setIsLogged] = useState<boolean>(false)
 
 
     useEffect(()=> {
         console.log("main menu currenuser update :", currentUser.userId)
         setIsLogged(currentUser.userId !== null)
-    }, [currentUser.userId])
+    }, [currentUser.userId, UserCtx])
 
 
-    return (
+    return ( !UserCtx ? null :
         <View style={mainMenuStyle.container}>
             <TouchableHighlight onPress={() => navigation.navigate('Main')}>
                 <View style={{alignItems: "center"}}>
@@ -34,7 +34,11 @@ export default function MainMenu({navigation}): JSX.Element {
                 </View>
             </TouchableHighlight>
 
-            <TouchableHighlight onPress={() => navigation.navigate('Connection')}>
+            <TouchableHighlight onPress={() => {
+                isLogged
+                    ? navigation.navigate('Profile')
+                    : navigation.navigate('Connection')
+            }}>
                 <View style={{alignItems: "center"}}>
                     <FontAwesomeIcon icon={faUser} size={30} style={mainMenuStyle.items} />
                     <Text style={[baseStyle.textLight]}>{ isLogged ? 'Mon compte' : 'Se connecter' }</Text>

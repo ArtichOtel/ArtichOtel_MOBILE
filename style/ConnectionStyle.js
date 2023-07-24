@@ -20,10 +20,11 @@ const connectionStyle = StyleSheet.create({
         width: '100%'
     },
     first: {
-        marginTop: 80
+        marginTop: 50
     },
     buttonWrapper: {
         paddingTop: 50,
+        paddingBottom: 100,
         width: '100%',
     },
     button: {

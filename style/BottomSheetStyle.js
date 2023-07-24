@@ -9,8 +9,6 @@ const BottomSheetStyle = StyleSheet.create({
     height: SCREEN_HEIGHT,
     position: "absolute",
     top: SCREEN_HEIGHT,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
     zIndex: 9000
   },
 

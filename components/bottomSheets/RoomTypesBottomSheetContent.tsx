@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import RoomTypesBottomSheetStyle from "../../style/RoomTypesBottomSheetStyle";
 import Checkbox from "expo-checkbox";
-import { CriteriaContext } from "../../App";
+import { CriteriaCtx } from "../../utils/context";
 // @ts-ignore
 import { API_URL } from "@env";
 import colors from "../../style/colors";
@@ -18,7 +18,7 @@ type RoomTypes = {
 
 function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
-  const { criteria, setCriteria } = React.useContext(CriteriaContext);
+  const { criteria, setCriteria } = React.useContext(CriteriaCtx);
   const [data, setData] = useState<RoomTypes[] | null>([]);
   const [isChecked, setChecked] = useState<number>(0);
 
@@ -61,7 +61,7 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
   useEffect(() => {
     fetchRoomTypes();
-  }, []);
+  }, [CriteriaCtx]);
 
   return (
     <View style={RoomTypesBottomSheetStyle.container}>
