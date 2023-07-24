@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Button, Platform, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import { CriteriaCtx } from "../../utils/context";
-import { set } from 'react-native-reanimated';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import DatesBottomSheetStyle from '../../style/DatesBottomSheetStyle';
 import { formatISO } from 'date-fns'
 
-function DatePickerBottomSheetContent(props: any): JSX.Element {
+function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
   const { criteria, setCriteria } = useContext(CriteriaCtx);
   const today = new Date()
   const [startDate, setStartDate] = useState<Date>(today);
@@ -58,4 +57,4 @@ function DatePickerBottomSheetContent(props: any): JSX.Element {
   );
 }
 
-export default DatePickerBottomSheetContent;
+export default DatePickerBottomSheetContentIOS;
