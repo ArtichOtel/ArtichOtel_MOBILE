@@ -5,33 +5,35 @@ import {credentials} from "./types";
 
 
 // from log in => get data
-export async function getUserData({id, token}:credentials): Promise<any> {
-    console.log("get user data", id, token)
-    return axios.get(API_URL+"user/"+id, {
+export async function getUserData({cred}): Promise<any> {
+    console.log("get user data", cred.id, cred.token)
+    return axios.get(API_URL+"user/"+cred.id, {
         headers:{
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${cred.token}`
         }
     }).then((resp) => {
         console.log("-------------------------------------")
         console.log("user:", resp.data)
         console.log("-------------------------------------")
-        return resp.data
+        return {data: resp.data, cred: cred}
     })
         .catch(err => console.log("err", err))
 }
 
-// from log in is customer=> get more data
-export async function getCustomerData({id, token}:credentials): Promise<any> {
-    console.log("get customer data", id, token)
-    return axios.get(API_URL+"customer/"+id, {
+
+
+// from log in if is customer=> get more data
+export async function getCustomerData({cred}): Promise<any> {
+    console.log("get customer data", cred.customer, cred.token)
+    return axios.get(API_URL+"customer/"+cred.customer, {
         headers:{
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${cred.token}`
         }
     }).then((resp) => {
         console.log("-------------------------------------")
         console.log("customer:", resp.data)
         console.log("-------------------------------------")
-        return {data: resp.data, cred: {id, token}}
+        return {data: resp.data, cred: cred}
     })
         .catch(err => console.log("err", err))
 }

@@ -23,5 +23,7 @@ export type userProfileType = {
 
 export type credentials = {
     id: string,
-    token: string
+    role: string,
+    token: string,
+    customer: number|null
 }

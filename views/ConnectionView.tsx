@@ -8,7 +8,7 @@ import buttonStyle from "../style/buttonStyle";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import mainMenuStyle from "../style/mainMenuStyle";
-import {getUserData} from "../utils/profileUpdater";
+import {getCustomerData, getUserData} from "../utils/profileUpdater";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
@@ -53,7 +53,12 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 setPassword("");
                 setUsername("");
 
-                return {id:userData.user_id, token:userData.token}
+                let customer = null
+                if (userData.customer_id) {
+                    customer = userData.customer_id
+                }
+
+                return {id:userData.user_id, role:userData.role, token:userData.token, customer: customer}
             })
             .catch((err) => {
                 console.log("connection error :", err);
@@ -61,14 +66,6 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             });
     };
 
-/*    const getUserData = async (id, token) => {
-        return await axios
-            .get(API_URL+'user/'+id, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-    }*/
 
     function tryConnection():void {
         let userData: userProfileType = {
@@ -82,32 +79,36 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
         getUserAccess()
             .then((cred:credentials) => {
-                console.log("conection success")
+                console.log("connection success")
                 return cred
             })
             .then((cred:credentials) => {
-                return getUserData(cred)
+                return getUserData({cred})
             })
             .then(({data, cred}) => {
-                console.log("re cred", cred)
-                console.log("getProfileData", data)
                 userData.dateCreated = data.created_at;
                 userData.email = data.email;
                 userData.pseudo = data.pseudo;
                 userData.dateUpdate = data.updated_at;
+                return {data, cred}
             })
-            //.then(() => {return getUserData(currentUser.id, currentUser.token)})
-            .then((data)=>{
-                console.log("getUserData", data)
-
-
+            .then(({data, cred}) => {
+                if (cred.role==='customer') { // 2 for customer
+                    return getCustomerData({cred})
+                }
+                setUserProfile(userData)
+            })
+            .then(({data, cred})=>{
+                if (cred.role==='customer') { // 2 for customer
+                    userData.firstName = data.first_name
+                    userData.lastName = data.last_name
+                }
                 setUserProfile(userData)
             })
             .then(() => {
                 // TODO : change destination according to global state next view
                 navigation.navigate('Main')
             })
-
     }
 
 
