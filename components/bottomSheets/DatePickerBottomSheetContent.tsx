@@ -17,10 +17,13 @@ function DatePickerBottomSheetContent(props: any): JSX.Element {
   }
 
   useEffect(() => {
+
+    if (startDate >= endDate) setEndDate(addDays(startDate, 1))
+
     setCriteria({
       ...criteria,
-      startDate: startDate.toDateString(),
-      endDate: endDate.toDateString()
+      startDate: startDate.toLocaleDateString('fr-FR'),
+      endDate: endDate.toLocaleDateString('fr-FR')
     })
   }, [startDate, endDate]);
 
