@@ -5,30 +5,29 @@ import { withTiming } from "react-native-reanimated";
 
 const presentChamberStyle = StyleSheet.create({
 
-    greatContainer: {
-      flexDirection: "row",
+    contentCenter: {
       alignItems: "center",
       justifyContent: "center",
     },
 
-    middleContainer: {
-        alignItems: "center",
-        justifyContent: "center",
+    advantagesContainer: {
+      flexDirection: "row",
+    },
+
+    columnContainer: {
+
         marginTop: 15,
         marginRight: 10
     },
 
-    littleContainer: {
+    itemContainer: {
         flexDirection: "row", 
-        alignItems: "center",
-        justifyContent: "center",
         marginTop: 15
     },
 
     arrivalHourContainer: {
       flexDirection: "row", 
-      alignItems: "center",
-      justifyContent: "center",
+
       marginTop: 15
   },
 
@@ -42,8 +41,7 @@ const presentChamberStyle = StyleSheet.create({
       width: 300,
       height: 30,
       marginBottom: 5,
-      marginTop: 15,
-      justifyContent:"center"
+      marginTop: 5,
     },
 
     buttonPrice: {
@@ -53,8 +51,7 @@ const presentChamberStyle = StyleSheet.create({
       borderRadius: 5,
       height: 40,
       width: 110,
-      alignItems: "center",
-      justifyContent: "center",
+
     },
 
     buttonValid: {
@@ -65,12 +62,16 @@ const presentChamberStyle = StyleSheet.create({
       borderRadius: 5,
       height: 40,
       width: 220,
-      alignItems: "center",
-      justifyContent: "center",
     },
 
     buttonTextColor: {
       color: colors.primary,
+    },
+
+    buttonBackgroundContainer: 
+    {
+      backgroundColor: colors.primary,
+      flexDirection: "row",
     }
   });
 
