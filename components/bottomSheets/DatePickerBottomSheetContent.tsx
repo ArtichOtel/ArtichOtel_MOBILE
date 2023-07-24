@@ -19,7 +19,8 @@ function DatePickerBottomSheetContent(props: any): JSX.Element {
   useEffect(() => {
     setCriteria({
       ...criteria,
-      date: startDate
+      startDate: startDate.toDateString(),
+      endDate: endDate.toDateString()
     })
   }, [startDate, endDate]);
 
