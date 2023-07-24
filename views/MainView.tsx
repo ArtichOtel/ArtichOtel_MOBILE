@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -13,7 +13,8 @@ import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
 import NumberOfPeopleBottomSheetContent from '../components/bottomSheets/NumberOfPeopleBottomSheetContent';
-import DatePickerBottomSheetContent from '../components/bottomSheets/DatePickerBottomSheetContent';
+import DatePickerBottomSheetContentIOS from '../components/bottomSheets/DatePickerBottomSheetContent.ios';
+import DatePickerBottomSheetContentAndroid from '../components/bottomSheets/DatePickerBottomSheetContent.android';
 // @ts-ignore
 import { API_URL } from '@env';
 import { CriteriaCtx } from '../utils/context';
@@ -129,7 +130,10 @@ export default function MainView(props: MainViewProps): JSX.Element {
         <BottomSheetBase
           ref={allRefs.refDates}
           height={baseBottomSheetHeight + BottomSheetHeightSeperation}
-          content={<DatePickerBottomSheetContent />}
+          content={Platform.OS === 'ios'
+            ? <DatePickerBottomSheetContentIOS />
+            : <DatePickerBottomSheetContentAndroid />
+          }
         />
         <BottomSheetBase
           ref={allRefs.refPeopleNbr}

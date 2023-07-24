@@ -10,6 +10,7 @@ import { UserCtx, CriteriaCtx, UserProfileCtx } from "./utils/context";
 import colors from "./style/colors";
 import React, { useState } from 'react';
 import { criteriaType, userProfileType, userDataType } from "./utils/types";
+import OptionsView from "./views/OptionsView";
 
 // @ts-ignore
 const Stack = createNativeStackNavigator();
@@ -65,6 +66,11 @@ export default function App(): JSX.Element {
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
+                    <Stack.Screen name="Options" component={OptionsView}
+                                options={({
+                                    title: null,
+                                    headerStyle: { backgroundColor : colors.primary }
+                                })} />
 
                         <Stack.Screen name="Room" component={PresentChamberView}
                                       options={{
