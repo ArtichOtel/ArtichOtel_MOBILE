@@ -36,6 +36,7 @@ function DatePickerBottomSheetContent(props: any): JSX.Element {
         <View style={DatesBottomSheetStyle.dateContainer}>
           <Text style={DatesBottomSheetStyle.dateTitle}>Arrivée</Text>
           <DateTimePicker
+            testID='startDate'
             value={startDate}
             mode='date'
             is24Hour={true}
@@ -46,6 +47,7 @@ function DatePickerBottomSheetContent(props: any): JSX.Element {
         <View style={DatesBottomSheetStyle.dateContainer}>
           <Text style={DatesBottomSheetStyle.dateTitle}>Départ</Text>
           <DateTimePicker
+            testID='endDate'
             value={endDate}
             mode='date'
             is24Hour={true}
