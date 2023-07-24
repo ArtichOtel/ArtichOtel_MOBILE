@@ -194,7 +194,7 @@ export default function OptionsView(props: roomProps): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <TouchableOpacity style={[optionStyle.buttonPrice, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>{newPrice} €</Text></TouchableOpacity>
+            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{newPrice} €</Text>
             <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
         </View>
       </View>

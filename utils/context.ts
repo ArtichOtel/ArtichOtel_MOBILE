@@ -8,3 +8,6 @@ export const UserProfileCtx: React.Context<any> = createContext(null)
 
 // Criteria context
 export const CriteriaCtx: React.Context<any> = createContext(null)
+
+
+export const BookingCtx: React.Context<any> = createContext(null)

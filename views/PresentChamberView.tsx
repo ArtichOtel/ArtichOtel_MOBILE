@@ -1,9 +1,15 @@
+import React, {useContext, useState} from "react";
 import { Text, View, Image, TouchableOpacity, Animated } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, faKitchenSet } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
+import axios from 'axios';
+
+import {BookingCtx} from "../utils/context";
+// @ts-ignore
+import {API_URL} from "@env";
 
 import ScrollView = Animated.ScrollView;
 
@@ -13,15 +19,32 @@ type roomProps = {
 
 export default function PresentChamberView(props: roomProps): JSX.Element {
     const {navigation} = props
-
+    const {currentBooking, setCurrentBooking} = useContext(BookingCtx)
 
     function goToOptions()
     {
-        navigation.navigate('Room options')
+        axios.post(API_URL+"booking", {
+            id: 0,
+            room_id: 1,
+            customer_id: 1,
+            status: "confirmed",
+            begin_date: "25/07/2023",
+            end_date: "28/07/2023",
+            nbrs_people: 1
+        })
+        .then((response) => {
+            console.log("Reservation : ", response.data);
+            navigation.navigate('Options')
+            
+        })
+        .then(() => {
+            
+        })
     }
 
     return (
-      <View style={baseStyle.container}>
+    !currentBooking ? null :
+        <View style={baseStyle.container}>
             <View style={[baseStyle.container, presentChamberStyle.infoBox, presentChamberStyle.contentCenter]}>
                 <Text>X personnes  -  </Text>
                 <Text>29/06/2023  -  </Text>
@@ -73,12 +96,12 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
 
         
 
-        <View style={[presentChamberStyle.buttonBackgroundContainer, presentChamberStyle.contentCenter]}>
-            <TouchableOpacity style={[presentChamberStyle.buttonPrice, presentChamberStyle.contentCenter]}><Text style={presentChamberStyle.buttonTextColor}>70 €</Text></TouchableOpacity>
-            <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]} onPress={() => navigation.navigate('Options')}>
-                <Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text>
-            </TouchableOpacity>
+            <View style={[presentChamberStyle.buttonBackgroundContainer, presentChamberStyle.contentCenter]}>
+                <Text style={[presentChamberStyle.buttonPrice, presentChamberStyle.buttonTextColor, presentChamberStyle.contentCenter]}>70 €</Text>
+                <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]} onPress={() => navigation.navigate('Options')}>
+                    <Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text>
+                </TouchableOpacity>
+            </View>
         </View>
-      </View>
     );
    }
