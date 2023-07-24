@@ -11,6 +11,7 @@ import colors from "./style/colors";
 import React, { useState } from 'react';
 import { criteriaType, userProfileType, userDataType } from "./utils/types";
 
+// @ts-ignore
 const Stack = createNativeStackNavigator();
 
 
@@ -24,9 +25,9 @@ export const defaultProfile: userProfileType = {
     dateCreated: null,
     email: null,
     pseudo: null,
-    dateUpdate: null
-    //firstName: null,
-    //lastName: null
+    dateUpdate: null,
+    firstName: null,
+    lastName: null
 }
 
 export const defaultCriteria: criteriaType = {
@@ -76,9 +77,9 @@ export default function App(): JSX.Element {
                                           title: null,
                                           headerStyle: { backgroundColor: colors.primary }
                                       }} />
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </CriteriaCtx.Provider>
+                        </Stack.Navigator>
+                    </NavigationContainer>
+                </CriteriaCtx.Provider>
             </UserProfileCtx.Provider>
         </UserCtx.Provider>
     );
