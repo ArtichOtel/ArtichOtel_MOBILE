@@ -10,6 +10,7 @@ import { UserCtx, CriteriaCtx, UserProfileCtx } from "./utils/context";
 import colors from "./style/colors";
 import React, { useState } from 'react';
 import { criteriaType, userProfileType, userDataType } from "./utils/types";
+import OptionsView from "./views/OptionsView";
 
 const Stack = createNativeStackNavigator();
 
