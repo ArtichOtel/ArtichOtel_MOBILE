@@ -80,7 +80,80 @@ export default function OptionsView(props: roomProps): JSX.Element {
     useEffect(() => {
         // objectif : remettre à jour le prix total
         const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
-
+        options.map((itemOption) =>
+        {
+            switch (itemOption.id)
+            {
+                case 1 :
+                    if(itemOption.enabled)
+                    {
+                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                    else
+                    {
+                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                case 2:
+                    if(itemOption.enabled)
+                    {
+                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                    else
+                    {
+                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                case 3:
+                    if(itemOption.enabled)
+                    {
+                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                    else
+                    {
+                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                case 4:
+                    if(itemOption.enabled)
+                    {
+                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                    else
+                    {
+                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
+                        break;
+                    }
+                case 5:
+                    if(itemOption.enabled)
+                    {
+                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * nPeriod);
+                        break;
+                    }
+                    else
+                    {
+                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * nPeriod);
+                        break;
+                    }
+                case 6:
+                    if(itemOption.enabled)
+                    {
+                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1));
+                        break;
+                    }
+                    else
+                    {
+                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1));
+                        break;
+                    }
+                default:
+                    break;
+            }
+        })
     }, [options]);
 
 
