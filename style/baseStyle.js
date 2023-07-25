@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 import colors from "./colors";
 
-const typoTitle = 'Bitter-Regular';
-const typoText = 'Nunito Sans';
+const typoTitle = "Bitter-Regular";
+const typoText = "Nunito Sans";
 
 const baseStyle = StyleSheet.create({
   view: {
@@ -10,19 +10,20 @@ const baseStyle = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0, 0.3)'
+    //backgroundColor: 'rgba(0,0,0, 0.3)'
   },
   title: {
     fontFamily: typoTitle,
+    textTransform: "uppercase",
   },
   btn: {
     height: 50,
     margin: 12,
     padding: 10,
     borderRadius: 10,
-    flexDirection:'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     // TODO : add shadow
   },
   input: {
@@ -34,7 +35,7 @@ const baseStyle = StyleSheet.create({
   },
   textTypo: {
     //fontFamily: typoText,
-    fontSize: 18
+    fontSize: 18,
   },
   textDark: {
     color: colors.quaternary,
@@ -44,11 +45,10 @@ const baseStyle = StyleSheet.create({
   },
   errorText: {
     fontSize: 18,
-    color: 'red',
+    color: "red",
     padding: 5,
     backgroundColor: '#ff000060'
-}
-
+  }
 })
 
 export default baseStyle;

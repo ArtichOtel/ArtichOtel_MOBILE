@@ -8,7 +8,7 @@ export type userDataType = {
 export type criteriaType = {
     startDate: any,
     endDate: any,
-    roomTypes: string,
+    roomType: string,
     peopleNbr: number,
 }
 
