@@ -4,6 +4,11 @@ import { faBed, faShower, faTelevision, faSmokingBan, faBellConcierge, faClock, 
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
+import axios from 'axios';
+
+import {BookingCtx} from "../utils/context";
+// @ts-ignore
+import {API_URL} from "@env";
 
 import ScrollView = Animated.ScrollView;
 import React from 'react';
@@ -26,8 +31,6 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
         ? navigation.navigate('Options')
         : navigation.navigate('Connection')
     }
-
-    // console.log('search', route.params.searchReservationsResult)
 
     return (
       <View style={baseStyle.container}>
@@ -84,7 +87,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
 
         <View style={[presentChamberStyle.buttonBackgroundContainer, presentChamberStyle.contentCenter]}>
             <TouchableOpacity style={[presentChamberStyle.buttonPrice, presentChamberStyle.contentCenter]}>
-                <Text style={presentChamberStyle.buttonTextColor}>{searchReservationsResult.price * criteria.peopleNbr}€</Text>    
+                <Text style={presentChamberStyle.buttonTextColor}>{searchReservationsResult.price * criteria.peopleNbr}€</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]} onPress={navigationFlow}>
                 <Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text>
