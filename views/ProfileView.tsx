@@ -16,7 +16,7 @@ import {UserCtx, UserProfileCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
 import {getProfileData} from "../utils/profileUpdater";
-import {defaultProfile, defaultUserData} from "../App";
+import {defaultProfile, defaultUserData} from "../utils/defaults";
 
 
 type ConnectionProps = {

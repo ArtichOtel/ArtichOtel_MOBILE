@@ -22,6 +22,8 @@
     "date-fns": "^2.30.0",
     "expo": "~48.0.18",
     "expo-checkbox": "~2.3.1",
+    "expo-font": "~11.1.1",
+    "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
     "react": "18.2.0",
