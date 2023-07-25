@@ -12,65 +12,68 @@ import React, { useState } from 'react';
 import { criteriaType, userProfileType, userDataType } from "./utils/types";
 import OptionsView from "./views/OptionsView";
 import { defaultProfile, defaultUserData } from "./utils/defaults";
+import { SvgUri } from "react-native-svg";
+import { View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 export const defaultCriteria: criteriaType = {
-    startDate: null,
-    endDate: null,
-    roomTypes: "Chambre standard",
-    peopleNbr: 0,
+  startDate: null,
+  endDate: null,
+  roomTypes: "Chambre standard",
+  peopleNbr: 0,
 }
 
 export default function App(): JSX.Element {
-    const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
-    const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
-    const [userProfile, setUserProfile] = useState<userProfileType>(defaultProfile)
+  const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
+  const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
+  const [userProfile, setUserProfile] = useState<userProfileType>(defaultProfile)
 
+  const screenOptions = {
+    title: 'Home',
+    headerStyle: { backgroundColor: colors.primary, colors: colors.secondary },
+    headerTitle: () => <Logo />
+  }
+
+  function Logo () {
     return (
-        <UserCtx.Provider value={{ currentUser, setCurrentUser }}>
-            <UserProfileCtx.Provider value={{ userProfile, setUserProfile }}>
-                <CriteriaCtx.Provider value={{ criteria, setCriteria }}>
-                    <NavigationContainer>
-                        <Stack.Navigator initialRouteName="Main">
-                            <Stack.Screen name="Main" component={MainView}
-                                options={{
-                                    title: null,
-                                    headerStyle: { backgroundColor: colors.primary }
-                                }} />
+      <View>
+        <SvgUri
+          uri='https://api.artichotel.fr/icon/artichaut-mobile-logo.svg'
+          color={'white'}
+          fill={'white'}
+        />
+      </View>
+    )
+  }
 
-                            <Stack.Screen name="Connection" component={ConnectionView}
-                                options={{
-                                    title: null,
-                                    headerStyle: { backgroundColor: colors.primary }
-                                }} />
+  return (
+    <UserCtx.Provider value={{ currentUser, setCurrentUser }}>
+      <UserProfileCtx.Provider value={{ userProfile, setUserProfile }}>
+        <CriteriaCtx.Provider value={{ criteria, setCriteria }}>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Main">
+              <Stack.Screen name="Main" component={MainView}
+                options={screenOptions} />
 
-                            <Stack.Screen name="SignUp" component={SignUpView}
-                                options={{
-                                    title: null,
-                                    headerStyle: { backgroundColor: colors.primary }
-                                }} />
-                    <Stack.Screen name="Options" component={OptionsView}
-                                options={({
-                                    title: null,
-                                    headerStyle: { backgroundColor : colors.primary }
-                                })} />
+              <Stack.Screen name="Connection" component={ConnectionView}
+                options={screenOptions} />
 
-                        <Stack.Screen name="Room" component={PresentChamberView}
-                                      options={{
-                                          title: null,
-                                          headerStyle: { backgroundColor: colors.primary }
-                                      }} />
+              <Stack.Screen name="SignUp" component={SignUpView}
+                options={screenOptions} />
 
-                        <Stack.Screen name="Profile" component={ProfileView}
-                                      options={{
-                                          title: null,
-                                          headerStyle: { backgroundColor: colors.primary }
-                                      }} />
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </CriteriaCtx.Provider>
-            </UserProfileCtx.Provider>
-        </UserCtx.Provider>
-    );
+              <Stack.Screen name="Options" component={OptionsView}
+                options={screenOptions} />
+
+              <Stack.Screen name="Room" component={PresentChamberView}
+                options={screenOptions} />
+
+              <Stack.Screen name="Profile" component={ProfileView}
+                options={screenOptions} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </CriteriaCtx.Provider>
+      </UserProfileCtx.Provider>
+    </UserCtx.Provider>
+  );
 }
