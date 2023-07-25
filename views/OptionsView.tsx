@@ -8,6 +8,9 @@ import optionStyle from '../style/optionsStyle';
 import buttonStyle from '../style/buttonStyle';
 import colors from '../style/colors';
 import ScrollView = Animated.ScrollView;
+import axios from "axios";
+// @ts-ignore
+import { API_URL } from '@env';
 
 type roomProps = {
     navigation: any;
@@ -40,23 +43,20 @@ export default function OptionsView(props: roomProps): JSX.Element {
         {id:6, name:'Wifi',              u_price: 25, by_person: 0, nb_day: 0, enabled: false}
     ];
 
-    const [isEnabledFullPension, setIsEnabledFullPension] = useState(false);
-    const [isEnabledHalfPension, setIsEnabledHalfPension] = useState(false);
-    const [isEnabledBreakfast, setIsEnabledBreakfast] = useState(false);
-    const [isEnabledPressing, setIsEnabledPressing] = useState(false);
-    const [isEnabledWifi, setIsEnabledWifi] = useState(false);
-    const [isEnabledTele, setIsEnabledTele] = useState(false);
-
     const [options, setOptions] = useState<Option[]|null>(listOptions);
-
-    const toogleSwitchFullPension = () =>setIsEnabledFullPension(!isEnabledFullPension);
-    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(!isEnabledHalfPension);
-    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(!isEnabledBreakfast);
-    const toogleSwitchPressing = () =>setIsEnabledPressing(!isEnabledPressing);
-    const toogleSwitchWifi = () =>setIsEnabledWifi(!isEnabledWifi);
-    const toogleSwitchTele = () =>setIsEnabledTele(!isEnabledTele);
-
     const [totalPrice, setTotalPrice] = useState<number>(roomPrice);
+
+    // fetch options
+    const fetchOptions = async () => {
+        try {
+            const response = await axios.get(API_URL + "optional-services");
+            const data = response.data;
+            console.log(data);
+            //setOptions(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     function getDiffDate()
     {
