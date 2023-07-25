@@ -22,21 +22,14 @@ export default function OptionsView(props: roomProps): JSX.Element {
     const [isEnabledWifi, setIsEnabledWifi] = useState(false);
     const [isEnabledTele, setIsEnabledTele] = useState(false);
 
-    const [isFirstRender, setFirstRender] = useState(false);
+    const toogleSwitchFullPension = () =>setIsEnabledFullPension(!isEnabledFullPension);
+    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(isEnabledHalfPension);
+    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(isEnabledBreakfast);
+    const toogleSwitchPressing = () =>setIsEnabledPressing(isEnabledPressing);
+    const toogleSwitchWifi = () =>setIsEnabledWifi(isEnabledWifi);
+    const toogleSwitchTele = () =>setIsEnabledTele(!isEnabledTele);
 
-
-    useEffect(() =>  {
-        setFirstRender(state => state = true);
-    })
-
-    const toogleSwitchFullPension = () =>setIsEnabledFullPension(previousState => !previousState);
-    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(previousState => !previousState);
-    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(previousState => !previousState);
-    const toogleSwitchPressing = () =>setIsEnabledPressing(previousState => !previousState);
-    const toogleSwitchWifi = () =>setIsEnabledWifi(previousState => !previousState);
-    const toogleSwitchTele = () =>setIsEnabledTele(previousState => !previousState);
-
-    const [newPrice, setNewPrice] = useState(70);
+    const [totalPrice, setTotalPrice] = useState(70);
 
     function getDiffDate()
     {
@@ -48,92 +41,78 @@ export default function OptionsView(props: roomProps): JSX.Element {
 
     useEffect(() => 
     {
-        if(isFirstRender)
+
+        if(isEnabledTele)
         {
-            if(isEnabledTele)
-            {
-                setNewPrice(price => price += 10 * 1);
-            }
-            else
-            {
-                setNewPrice(price => price -= 10 * 1);
-            }
+            setTotalPrice(price => price += 10 * 1);
         }
+        else
+        {
+            setTotalPrice(price => price -= 10 * 1);
+        }
+
     }, [isEnabledTele]);
 
     useEffect(() => 
     {
-        if(isFirstRender)
+        if(isEnabledWifi)
         {
-            if(isEnabledWifi)
-            {
-                setNewPrice(price => price += 25);
-            }
-            else
-            {
-                setNewPrice(price => price -= 25);
-            }
+            setTotalPrice(price => price += 25);
         }
+        else
+        {
+            setTotalPrice(price => price -= 25);
+        }
+
     }, [isEnabledWifi]);
 
     useEffect(() => 
     {
-        if(isFirstRender)
+        if(isEnabledPressing)
         {
-            if(isEnabledPressing)
-            {
-                setNewPrice(price => price += 30 * getDiffDate() * 3);
-            }
-            else
-            {
-                setNewPrice(price => price -= 30 * getDiffDate() * 3);
-            }
+            setTotalPrice(price => price += 30 * getDiffDate() * 3);
         }
+        else
+        {
+            setTotalPrice(price => price -= 30 * getDiffDate() * 3);
+        }
+
     }, [isEnabledPressing]);
 
     useEffect(() => 
     {
-        if(isFirstRender)
+        if(isEnabledBreakfast)
         {
-            if(isEnabledBreakfast)
-            {
-                setNewPrice(price => price += 9 * getDiffDate() * 3);
-            }
-            else
-            {
-                setNewPrice(price => price -= 9 * getDiffDate() * 3);
-            }
+            setTotalPrice(price => price += 9 * getDiffDate() * 3);
+        }
+        else
+        {
+            setTotalPrice(price => price -= 9 * getDiffDate() * 3);
         }
     }, [isEnabledBreakfast]);
 
     useEffect(() => 
     {
-        if(isFirstRender)
+        if(isEnabledHalfPension)
         {
-            if(isEnabledHalfPension)
-            {
-                setNewPrice(price => price += 20 * getDiffDate() * 3);
-            }
-            else
-            {
-                setNewPrice(price => price -= 20 * getDiffDate() * 3);
-            }
+            setTotalPrice(price => price += 20 * getDiffDate() * 3);
+        }
+        else
+        {
+            setTotalPrice(price => price -= 20 * getDiffDate() * 3);
         }
     }, [isEnabledHalfPension]);
 
     useEffect(() => 
     {
-        if(isFirstRender)
+        if(isEnabledFullPension)
         {
-            if(isEnabledFullPension)
-            {
-                setNewPrice(price => price += 35 * getDiffDate() * 3);
-                
-            }
-            else
-            {
-                setNewPrice(price => price -= 35 * getDiffDate() * 3);
-            }
+            setTotalPrice(price => price += 35 * getDiffDate() * 3);
+            
+        }
+        else
+        {
+            setTotalPrice(price => price -= 35 * getDiffDate() * 3);
         }
     }, [isEnabledFullPension]);
 
@@ -172,12 +151,12 @@ export default function OptionsView(props: roomProps): JSX.Element {
                     </View>
 
                     <View style={optionStyle.switchContainer}>
-                        <Switch onValueChange={toogleSwitchFullPension} value={isEnabledFullPension}/>
-                        <Switch onValueChange={toogleSwitchHalfPension} value={isEnabledHalfPension} />
-                        <Switch onValueChange={toogleSwitchBreakfast} value={isEnabledBreakfast}/>
-                        <Switch onValueChange={toogleSwitchPressing} value={isEnabledPressing} />
-                        <Switch onValueChange={toogleSwitchTele} value={isEnabledTele} />
-                        <Switch onValueChange={toogleSwitchWifi} value={isEnabledWifi} />
+                        <Switch onValueChange={() => toogleSwitchFullPension()} value={isEnabledFullPension}/>
+                        <Switch onValueChange={() =>toogleSwitchHalfPension()} value={isEnabledHalfPension} />
+                        <Switch onValueChange={() =>toogleSwitchBreakfast ()} value={isEnabledBreakfast}/>
+                        <Switch onValueChange={() => toogleSwitchPressing()} value={isEnabledPressing} />
+                        <Switch onValueChange={() => toogleSwitchTele()} value={isEnabledTele} />
+                        <Switch onValueChange={() => toogleSwitchWifi()} value={isEnabledWifi} />
                     </View>
 
                 </View>
@@ -194,7 +173,7 @@ export default function OptionsView(props: roomProps): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{newPrice} €</Text>
+            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{totalPrice} €</Text>
             <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
         </View>
       </View>
