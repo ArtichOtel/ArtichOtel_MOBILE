@@ -1,17 +1,16 @@
-import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList} from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import {Animated, FlatList, Switch, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCreditCard} from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import optionStyle from '../style/optionsStyle';
 import buttonStyle from '../style/buttonStyle';
-import colors from '../style/colors';
-import ScrollView = Animated.ScrollView;
 import axios from "axios";
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 import {CriteriaCtx} from "../utils/context";
+import ScrollView = Animated.ScrollView;
 
 type OptionsViewProps = {
     navigation: any;
@@ -32,33 +31,21 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     const { criteria } = React.useContext(CriteriaCtx);
     const searchReservationsResult = route.params.searchReservationsResult;
 
-    // recap criteres
+    // recap criteria
     const nPers = criteria.peopleNbr;
     const roomPrice = searchReservationsResult.price;
     const basePrice = nPers * roomPrice
 
-    // data bdd
-    //Une liste de 6 objets, 1 par options. Chacun contenant les infos de la table (id, name, u_price, by_person, nb_day)
-    let listOptions = [
-        {id:1, name:'Demie-pension',     u_price: 20, by_person: 1, nb_day: 1, enabled:false},
-        {id:2, name:'Pension complète',  u_price: 35, by_person: 1, nb_day: 1, enabled:false},
-        {id:3, name:'Petit déjeuner',    u_price: 9,  by_person: 1, nb_day: 1, enabled:false},
-        {id:4, name:'Service pressing',  u_price: 30, by_person: 1, nb_day: 1, enabled:false},
-        {id:5, name:'Télévision',        u_price: 10, by_person: 0, nb_day: 7, enabled:false},
-        {id:6, name:'Wifi',              u_price: 25, by_person: 0, nb_day: 0, enabled: false}
-    ];
-
-    const [options, setOptions] = useState<Option[]|null>(listOptions);
-
-    const [totalPrice, setTotalPrice] = useState<number>(roomPrice);
+    const [options, setOptions] = useState<Option[]|null>(null);
+    const [totalPrice, setTotalPrice] = useState<number>(basePrice);
 
     // fetch options
     const fetchOptions = async () => {
         try {
             const response = await axios.get(API_URL + "optional-services");
-            const data = response.data;
-            console.log(data);
-            //setOptions(data);
+            const optionsList = response.data;
+            //console.log("fetchOptions", optionsList);
+            setOptions(optionsList);
         } catch (error) {
             console.error(error);
         }
@@ -67,9 +54,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     function getDiffDate()
     {
         let calculDiff = new Date(2023, 6,  23).getTime() - new Date(2023, 6, 20).getTime();
-        let dayDiff = Math.floor(calculDiff/(1000*3600*24));
-
-        return dayDiff;
+        return Math.floor(calculDiff / (1000 * 3600 * 24));
     }
     const DIFF_DATE = getDiffDate();
 
@@ -80,7 +65,9 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     }
 
     // fetch table des options => setOptions(data)
-
+    useEffect(()=> {
+        fetchOptions().then()
+    }, [])
 
 
     useEffect(() => {
