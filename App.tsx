@@ -11,24 +11,9 @@ import colors from "./style/colors";
 import React, { useState } from 'react';
 import { criteriaType, userProfileType, userDataType } from "./utils/types";
 import OptionsView from "./views/OptionsView";
+import { defaultProfile, defaultUserData } from "./utils/defaults";
 
 const Stack = createNativeStackNavigator();
-
-
-export const defaultUserData: userDataType = {
-    userId: null,
-    token: null,
-    customerId: null
-}
-
-export const defaultProfile: userProfileType = {
-    dateCreated: null,
-    email: null,
-    pseudo: null,
-    dateUpdate: null
-    //firstName: null,
-    //lastName: null
-}
 
 export const defaultCriteria: criteriaType = {
     startDate: null,
