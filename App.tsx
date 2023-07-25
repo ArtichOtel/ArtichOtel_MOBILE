@@ -5,11 +5,11 @@ import ConnectionView from "./views/ConnectionView";
 import SignUpView from "./views/SignUpView";
 import ProfileView from "./views/ProfileView";
 import PresentChamberView from "./views/PresentChamberView";
-import { UserCtx, CriteriaCtx, UserProfileCtx } from "./utils/context";
+import { UserCtx, CriteriaCtx, UserProfileCtx, BookingCtx } from "./utils/context";
 
 import colors from "./style/colors";
 import React, { useState } from 'react';
-import { criteriaType, userProfileType, userDataType } from "./utils/types";
+import { criteriaType, userProfileType, userDataType, bookingType } from "./utils/types";
 import OptionsView from "./views/OptionsView";
 import { defaultProfile, defaultUserData } from "./utils/defaults";
 import { SvgUri } from "react-native-svg";
@@ -24,10 +24,17 @@ export const defaultCriteria: criteriaType = {
   peopleNbr: 0,
 }
 
+export const defaultBooking: bookingType = {
+    reservationID: null,
+
+}
+
 export default function App(): JSX.Element {
-  const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
-  const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
-  const [userProfile, setUserProfile] = useState<userProfileType>(defaultProfile)
+    const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
+    const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
+    const [userProfile, setUserProfile] = useState<userProfileType>(defaultProfile)
+    const [booking, setBooking] = useState<bookingType>(defaultBooking)
+
 
   const screenOptions = {
     title: 'Home',
@@ -40,8 +47,6 @@ export default function App(): JSX.Element {
       <View>
         <SvgUri
           uri='https://api.artichotel.fr/icon/artichaut-mobile-logo.svg'
-          color={'white'}
-          fill={'white'}
         />
       </View>
     )

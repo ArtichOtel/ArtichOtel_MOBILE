@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, Animated, Switch } from 'react-native';
+import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList} from 'react-native';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
@@ -12,8 +12,33 @@ import ScrollView = Animated.ScrollView;
 type roomProps = {
     navigation: any;
 }
+
+type Option = {
+    id: number,
+    name:string,
+    u_price: number,
+    by_person: number,
+    nb_day: number,
+    enabled: boolean
+}
+
 export default function OptionsView(props: roomProps): JSX.Element {
-    const {navigation} = props
+    const {navigation} = props;
+
+    // recap criteres
+    const nPers = 3;
+    const roomPrice = 70;
+
+    // data bdd
+    //Une liste de 6 objets, 1 par options. Chacun contenant les infos de la table (id, name, u_price, by_person, nb_day)
+    let listOptions = [
+        {id:1, name:'Demie-pension',     u_price: 20, by_person: 1, nb_day: 1, enabled:false},
+        {id:2, name:'Pension complète',  u_price: 35, by_person: 1, nb_day: 1, enabled:false},
+        {id:3, name:'Petit déjeuner',    u_price: 9,  by_person: 1, nb_day: 1, enabled:false},
+        {id:4, name:'Service pressing',  u_price: 30, by_person: 1, nb_day: 1, enabled:false},
+        {id:5, name:'Télévision',        u_price: 10, by_person: 0, nb_day: 7, enabled:false},
+        {id:6, name:'Wifi',              u_price: 25, by_person: 0, nb_day: 0, enabled: false}
+    ];
 
     const [isEnabledFullPension, setIsEnabledFullPension] = useState(false);
     const [isEnabledHalfPension, setIsEnabledHalfPension] = useState(false);
@@ -22,21 +47,16 @@ export default function OptionsView(props: roomProps): JSX.Element {
     const [isEnabledWifi, setIsEnabledWifi] = useState(false);
     const [isEnabledTele, setIsEnabledTele] = useState(false);
 
-    const [isFirstRender, setFirstRender] = useState(false);
+    const [options, setOptions] = useState<Option[]|null>(listOptions);
 
+    const toogleSwitchFullPension = () =>setIsEnabledFullPension(!isEnabledFullPension);
+    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(!isEnabledHalfPension);
+    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(!isEnabledBreakfast);
+    const toogleSwitchPressing = () =>setIsEnabledPressing(!isEnabledPressing);
+    const toogleSwitchWifi = () =>setIsEnabledWifi(!isEnabledWifi);
+    const toogleSwitchTele = () =>setIsEnabledTele(!isEnabledTele);
 
-    useEffect(() =>  {
-        setFirstRender(state => state = true);
-    })
-
-    const toogleSwitchFullPension = () =>setIsEnabledFullPension(previousState => !previousState);
-    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(previousState => !previousState);
-    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(previousState => !previousState);
-    const toogleSwitchPressing = () =>setIsEnabledPressing(previousState => !previousState);
-    const toogleSwitchWifi = () =>setIsEnabledWifi(previousState => !previousState);
-    const toogleSwitchTele = () =>setIsEnabledTele(previousState => !previousState);
-
-    const [newPrice, setNewPrice] = useState(70);
+    const [totalPrice, setTotalPrice] = useState<number>(roomPrice);
 
     function getDiffDate()
     {
@@ -45,97 +65,60 @@ export default function OptionsView(props: roomProps): JSX.Element {
 
         return dayDiff;
     }
+    const DIFF_DATE = getDiffDate();
 
-    useEffect(() => 
-    {
-        if(isFirstRender)
-        {
-            if(isEnabledTele)
-            {
-                setNewPrice(price => price += 10 * 1);
-            }
-            else
-            {
-                setNewPrice(price => price -= 10 * 1);
+    function toggleOption(index: number) {
+        let tempList = options.map(a=>a)
+        tempList[index].enabled = !tempList[index].enabled
+        setOptions(tempList)
+    }
+
+    // fetch table des options => setOptions(data)
+
+
+
+    useEffect(() => {
+        // objectif : remettre à jour le prix total
+        const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+
+    }, [options]);
+
+
+
+
+    function Option ( {opt} ) {
+        const option = opt.item
+
+        function getSuffix() {
+            switch (option.nb_day) {
+                case 0:
+                    return ''
+                case 1:
+                    return '/jour'
+                case 7:
+                    return '/semaine'
+                default:
+                    return ''
             }
         }
-    }, [isEnabledTele]);
 
-    useEffect(() => 
-    {
-        if(isFirstRender)
-        {
-            if(isEnabledWifi)
-            {
-                setNewPrice(price => price += 25);
-            }
-            else
-            {
-                setNewPrice(price => price -= 25);
-            }
-        }
-    }, [isEnabledWifi]);
+        return (
+            <View style={optionStyle.contentCenter}>
+                <View style={optionStyle.textContainer}>
+                    <Text style={{marginTop:15, marginBottom:15}}>
+                        {`${option.name} (${option.u_price}€${option.by_person?'/personnes':''}${getSuffix()})`}
+                    </Text>
+                </View>
 
-    useEffect(() => 
-    {
-        if(isFirstRender)
-        {
-            if(isEnabledPressing)
-            {
-                setNewPrice(price => price += 30 * getDiffDate() * 3);
-            }
-            else
-            {
-                setNewPrice(price => price -= 30 * getDiffDate() * 3);
-            }
-        }
-    }, [isEnabledPressing]);
+                <View style={optionStyle.switchContainer}>
+                    <Switch
+                        value={option.enabled}
+                        onValueChange={() => toggleOption(opt.index)}/>
+                </View>
+            </View>
+        )
+    }
 
-    useEffect(() => 
-    {
-        if(isFirstRender)
-        {
-            if(isEnabledBreakfast)
-            {
-                setNewPrice(price => price += 9 * getDiffDate() * 3);
-            }
-            else
-            {
-                setNewPrice(price => price -= 9 * getDiffDate() * 3);
-            }
-        }
-    }, [isEnabledBreakfast]);
-
-    useEffect(() => 
-    {
-        if(isFirstRender)
-        {
-            if(isEnabledHalfPension)
-            {
-                setNewPrice(price => price += 20 * getDiffDate() * 3);
-            }
-            else
-            {
-                setNewPrice(price => price -= 20 * getDiffDate() * 3);
-            }
-        }
-    }, [isEnabledHalfPension]);
-
-    useEffect(() => 
-    {
-        if(isFirstRender)
-        {
-            if(isEnabledFullPension)
-            {
-                setNewPrice(price => price += 35 * getDiffDate() * 3);
-                
-            }
-            else
-            {
-                setNewPrice(price => price -= 35 * getDiffDate() * 3);
-            }
-        }
-    }, [isEnabledFullPension]);
 
     return (
       <View style={baseStyle.container}>
@@ -145,44 +128,40 @@ export default function OptionsView(props: roomProps): JSX.Element {
         
             <ScrollView>
                 <View style={optionStyle.recapInfoContainer}>
-                    <Text style={baseStyle.textTypo}>Arrivée                                         30/06/2023</Text>
-                    <View style={optionStyle.line}></View>
-                    <Text style={baseStyle.textTypo}>Départ                                          01/07/2023</Text>
-                    <View style={optionStyle.line}></View>
-                    <Text style={baseStyle.textTypo}>Nombre de Personnes                                3</Text>
+                    <View>
+                        <Text style={baseStyle.textTypo}>Arrivée</Text>
+                        <Text style={baseStyle.textTypo}>30/06/2023</Text>
+                        <View style={optionStyle.line}/>
+                    </View>
+
+                    <View>
+                        <Text style={baseStyle.textTypo}>Départ</Text>
+                        <Text style={baseStyle.textTypo}>01/07/2023</Text>
+                        <View style={optionStyle.line}/>
+                    </View>
+
+                    <View>
+                        <Text style={baseStyle.textTypo}>Nombre de Personnes</Text>
+                        <Text style={baseStyle.textTypo}>{nPers}</Text>
+                    </View>
                     
                 </View>
 
-                <View style={optionStyle.line}></View>
+                <View style={optionStyle.line}/>
 
                 <View style={optionStyle.contentOptionCenter}>
                     <View style={optionStyle.textContainer}>
-                        <Text style={{marginTop:15, marginBottom:15}}>Formule Pension Complète (35€/personne/jour)</Text>
-
-                        <Text style={{marginTop:15, marginBottom:15}}>Formule Demie Pension (20€/personne/jour)</Text>
-
-                        <Text style={{marginTop:15, marginBottom:15}}>Formule Petit Déjeuner (9€/personne/jour)</Text>
-
-                        <Text style={{marginTop:15, marginBottom:15}}>Service Pressing (30€/personne/jour)</Text>
-
-                        <Text style={{marginTop:15, marginBottom:15}}>Télévision (10€/semaine)</Text>
-
-                        <Text style={{marginTop:15, marginBottom:15}}>Wifi (25€)</Text>
-                        
+                        {options.length<5 ? null :
+                            <FlatList data={options}
+                                      renderItem={ (opt) => <Option opt={opt} />}
+                            />
+                        }
                     </View>
 
-                    <View style={optionStyle.switchContainer}>
-                        <Switch onValueChange={toogleSwitchFullPension} value={isEnabledFullPension}/>
-                        <Switch onValueChange={toogleSwitchHalfPension} value={isEnabledHalfPension} />
-                        <Switch onValueChange={toogleSwitchBreakfast} value={isEnabledBreakfast}/>
-                        <Switch onValueChange={toogleSwitchPressing} value={isEnabledPressing} />
-                        <Switch onValueChange={toogleSwitchTele} value={isEnabledTele} />
-                        <Switch onValueChange={toogleSwitchWifi} value={isEnabledWifi} />
-                    </View>
 
                 </View>
 
-                <View style={optionStyle.line}></View>
+                <View style={optionStyle.line}/>
                 <View style={optionStyle.cbContainer}>
                     <FontAwesomeIcon icon={faCreditCard} size={40} />
                     <TouchableOpacity style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, {width: 275}]}>
@@ -194,7 +173,7 @@ export default function OptionsView(props: roomProps): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <TouchableOpacity style={[optionStyle.buttonPrice, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>{newPrice} €</Text></TouchableOpacity>
+            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{totalPrice} €</Text>
             <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
         </View>
       </View>
