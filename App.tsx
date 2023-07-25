@@ -18,10 +18,10 @@ import { View } from "react-native";
 const Stack = createNativeStackNavigator();
 
 export const defaultCriteria: criteriaType = {
-  startDate: null,
-  endDate: null,
-  roomTypes: "Chambre standard",
-  peopleNbr: 0,
+    startDate: null,
+    endDate: null,
+    roomType: null,
+    peopleNbr: 0
 }
 
 export const defaultBooking: bookingType = {
