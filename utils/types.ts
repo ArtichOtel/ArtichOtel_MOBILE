@@ -8,7 +8,7 @@ export type userDataType = {
 export type criteriaType = {
     startDate: any,
     endDate: any,
-    roomTypes: string,
+    roomType: string,
     peopleNbr: number,
 }
 
@@ -17,13 +17,11 @@ export type userProfileType = {
     email: string | null,
     pseudo: string | null,
     dateUpdate: string | null
-    firstName: string | null,
-    lastName: string | null
+    //firstName: string | null,
+    //lastName: string | null
 }
 
-export type credentials = {
-    id: string,
-    role: string,
-    token: string,
-    customer: number|null
+
+export type bookingType = {
+    reservationID: string | null,
 }

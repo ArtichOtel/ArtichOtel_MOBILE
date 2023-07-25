@@ -20,6 +20,8 @@ cd ArtichOtel_MOBILE/
 yarn expo start
 ```
 Scan the QR Code for [Expo Go App](https://expo.dev/client).
+
+*(If you encounter an `ApiV2Error: Entity Not Authorized` when developping, try to add the `--offline` argument. Like : `yarn expo start --offline`)*
 ## Emulate
 ### OSX to iOS
 [See the Reat Native Documentation](https://reactnative.dev/docs/environment-setup?package-manager=yarn&guide=native)

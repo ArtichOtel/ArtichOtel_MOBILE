@@ -29,7 +29,12 @@ type Hero = {
 
 export default function MainView(props: MainViewProps): JSX.Element {
 
+  const { navigation } = props;
   const { criteria } = React.useContext(CriteriaCtx);
+  const [heroData, setHeroData] = useState<Hero[] | null>([]);
+  const [image, setImage] = useState<string | null>(null);
+
+
   const baseBottomSheetHeight = (-SCREEN_HEIGHT +
     mainStyle.first.marginTop +
     baseStyle.btn.height +
@@ -41,9 +46,6 @@ export default function MainView(props: MainViewProps): JSX.Element {
     baseStyle.btn.padding +
     baseStyle.btn.height
   )
-  const { navigation } = props;
-  const [data, setData] = useState<Hero[] | null>([]);
-  const [image, setImage] = useState<string | null>(null);
   const allRefs = {
     refRoomsTypes: useRef<BottomSheetRefProps>(null),
     refDates: useRef<BottomSheetRefProps>(null),
@@ -60,7 +62,6 @@ export default function MainView(props: MainViewProps): JSX.Element {
     const isActive = ref?.current?.isActive()
     ref?.current?.scrollTo(isActive ? 0 : height)
   }, [])
-  //const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   // fetchHero section
   const fetchHero = async () => {
@@ -68,22 +69,43 @@ export default function MainView(props: MainViewProps): JSX.Element {
       const response = await axios.get(API_URL + "hero");
       const data = response.data[0];
       //console.log(data);
-      setData(data);
+      setHeroData(data);
     } catch (error) {
       console.error(error);
     }
   };
+
+  const searchReservations = async () => {
+
+    if (criteria.endDate && criteria.startDate && criteria.peopleNbr > 0 && criteria.roomType) {
+      try {
+        let result;
+        const requestURL = new URL(
+            `/search?type=1&startDate=${criteria.startDate}&endDate=${criteria.endDate}`, API_URL)
+
+        const response = await axios.get(requestURL.href)
+        result = response.data
+        // console.log('searchReservations data recup: ', result)
+
+        navigation.navigate('Room', { searchReservationsResult: result })
+      } catch (error) {
+        console.error(error)
+      }
+    } else {
+      console.log(criteria)
+    }
+  }
 
   useEffect(() => {
     fetchHero();
   }, [API_URL]);
 
   useEffect(() => {
-    if (data.length > 0) {
-      setImage(data[0].url_image);
+    if (heroData.length > 0) {
+      setImage(heroData[0].url_image);
       //console.log("Image : ", data[0].url_image);
     }
-  }, [data, CriteriaCtx]);
+  }, [heroData]);
 
   // fetch
 
@@ -92,22 +114,28 @@ export default function MainView(props: MainViewProps): JSX.Element {
       <StatusBar
         barStyle={'light-content'}
       />
-      <GestureHandlerRootView style={[baseStyle.container, mainStyle.container]}>
+      <GestureHandlerRootView style={[baseStyle.container, baseStyle.heroContainer, mainStyle.container]}>
         <View>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
             onPress={() => onPress(allRefs.refRoomsTypes, baseBottomSheetHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>{criteria.roomTypes}</Text>
+            <Text style={baseStyle.textDark}>{criteria.roomType ? criteria.roomType : "Type de chambre" }</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
             onPress={() => onPress(allRefs.refDates, baseBottomSheetHeight + BottomSheetHeightSeperation)}
           >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>{criteria.startDate} - {criteria.endDate}</Text>
+            <Text style={baseStyle.textDark}>
+              {!criteria.startDate && !criteria.endDate
+                  ? 'Dates de séjour'
+                  : criteria.startDate?.toDateString()+' - '+criteria.endDate?.toDateString()}
+            </Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
             onPress={() => onPress(allRefs.refPeopleNbr, baseBottomSheetHeight + BottomSheetHeightSeperation * 2)}
@@ -115,8 +143,10 @@ export default function MainView(props: MainViewProps): JSX.Element {
             <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
             <Text style={baseStyle.textDark}>{criteria.peopleNbr ? criteria.peopleNbr : "Nombre de personnes"}</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}
+            onPress={async () => await searchReservations()}
           >
             <Text style={[buttonStyle.search, baseStyle.textLight]}>Rechercher</Text>
           </TouchableOpacity>

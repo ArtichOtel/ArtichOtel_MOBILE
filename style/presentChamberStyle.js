@@ -1,79 +1,110 @@
 import { StyleSheet } from "react-native";
 import colors from "./colors";
-import { withTiming } from "react-native-reanimated";
-
+import { color, withTiming } from "react-native-reanimated";
 
 const presentChamberStyle = StyleSheet.create({
-
-    contentCenter: {
-      alignItems: "center",
-      justifyContent: "center",
-    },
-
-    advantagesContainer: {
-      flexDirection: "row",
-    },
-
-    columnContainer: {
-
-        marginTop: 15,
-        marginRight: 10
-    },
-
-    itemContainer: {
-        flexDirection: "row", 
-        marginTop: 15
-    },
-
-    arrivalHourContainer: {
-      flexDirection: "row", 
-
-      marginTop: 15
+  contentCenter: {
+    alignItems: "center",
+    gap: 5,
   },
 
-    infoBox: {
-      flexDirection: "row",
-      flex: 0,
-      borderColor: colors.tertiary,
-      borderWidth: 1,
-      borderRadius: 10,
-      shadowColor: '#000',
-      width: 300,
-      height: 30,
-      marginBottom: 5,
-      marginTop: 5,
-    },
+  advantagesContainer: {
+    flexDirection: "row",
+  },
 
-    buttonPrice: {
-      backgroundColor: colors.tertiary,
-      marginLeft: 25,
-      marginBottom: 15,
-      borderRadius: 5,
-      height: 40,
-      width: 110,
+  columnContainer: {
+    marginRight: 15,
+  },
 
-    },
+  itemContainer: {
+    flexDirection: "row",
+    marginTop: 30,
+  },
 
-    buttonValid: {
-      backgroundColor: colors.tertiary,
-      marginRight: 15,
-      marginLeft: 15,
-      marginBottom: 15,
-      borderRadius: 5,
-      height: 40,
-      width: 220,
-    },
+  arrivalHourContainer: {
+    flexDirection: "row",
+    marginTop: 15,
+  },
 
-    buttonTextColor: {
-      color: colors.primary,
-    },
+  centerContainer: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+  },
 
-    buttonBackgroundContainer: 
-    {
-      backgroundColor: colors.primary,
-      flexDirection: "row",
-    }
-  });
+  infoBox: {
+    display: "flex",
+    backgroundColor: colors.secondary,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    width: 350,
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 3,
+    borderStyle: "solid",
+    borderColor: colors.primary,
+  },
 
+  scrollContainer: {
+    //TODO :delete backgroundColor
+    backgroundColor: "red",
+  },
 
-  export default presentChamberStyle;
+  scrollText: {
+    lineHeight: 30,
+  },
+
+  scrollImage: {
+    backgroundColor: "blue",
+    marginTop: 15,
+    width: "auto",
+    height: 150,
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 15,
+  },
+
+  buttonPrice: {
+    justifyContent: "center",
+    backgroundColor: colors.tertiary,
+    marginLeft: 25,
+    marginBottom: 15,
+    borderRadius: 5,
+    height: 50,
+    width: 110,
+  },
+
+  buttonValid: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.tertiary,
+    marginRight: 15,
+    marginLeft: 15,
+    marginBottom: 15,
+    borderRadius: 5,
+    height: 50,
+    width: 220,
+  },
+
+  buttonTextColor: {
+    color: colors.primary,
+    fontWeight: "bold",
+  },
+
+  buttonBackgroundContainer: {
+    backgroundColor: colors.primary,
+    width: "100%",
+    height: 100,
+    flexDirection: "row",
+    borderRadius: 10,
+    borderStyle: "solid",
+    borderColor: colors.primary,
+  },
+});
+
+export default presentChamberStyle;

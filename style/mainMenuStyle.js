@@ -7,7 +7,6 @@ const mainMenuStyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-evenly",
-        height: 62,
         width: '100%',
         /*TODO : find a way to determinate the actual '56' value
            OR make it better
@@ -15,6 +14,12 @@ const mainMenuStyle = StyleSheet.create({
         bottom: 0,
         backgroundColor: colors.primary,
         position: 'absolute',
+    },
+    containerHeightAndroid: {
+        height: 62,
+    },
+    containerHeightIOS: {
+        height: 80,
     },
     items: {
         color: colors.secondary

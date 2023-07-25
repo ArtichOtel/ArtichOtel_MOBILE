@@ -11,11 +11,12 @@ import mainMenuStyle from "../style/mainMenuStyle";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
-//import {userDataType, userProfileType} from "../utils/types";
+import {userDataType, userProfileType} from "../utils/types";
 import {UserCtx, UserProfileCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
-import {defaultProfile, defaultUserData} from "../App";
+import {getProfileData} from "../utils/profileUpdater";
+import {defaultProfile, defaultUserData} from "../utils/defaults";
 
 
 type ConnectionProps = {
@@ -34,8 +35,6 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
 
-    console.log("ProfilView, userProfile :",userProfile)
-    console.log("ProfilView, currentUser :",currentUser)
 
     function loggout() {
         axios.get(API_URL+"user/logout", {
@@ -48,7 +47,6 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
             setCurrentUser(defaultUserData)
         }).then(() => navigation.navigate('Main'))
     }
-
 
     return (
         !currentUser ? null :

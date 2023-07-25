@@ -25,10 +25,19 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
 
     setCriteria({
       ...criteria,
-      startDate: formatISO(startDate, { representation: 'date' }),
-      endDate: formatISO(endDate, { representation: 'date' })
+      startDate: startDate
     })
-  }, [startDate, endDate]);
+  }, [startDate]);
+
+  useEffect(() => {
+
+    if (startDate >= endDate) setStartDate(addDays(startDate, -1))
+
+    setCriteria({
+      ...criteria,
+      endDate: endDate
+    })
+  }, [endDate]);
 
   return (
     <>
@@ -38,7 +47,7 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
 
         <View style={DatesBottomSheetStyle.dateContainer}>
 
-          <TouchableOpacity onPress={() => setShowStartDate(!showStartDate)}>
+          <TouchableOpacity onPress={() => setShowStartDate(true)}>
             <Text style={DatesBottomSheetStyle.dateTitle}>Arrivée</Text>
           </TouchableOpacity>
 
@@ -47,7 +56,11 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
               value={startDate}
               mode='date'
               is24Hour={true}
-              onChange={(_, selectedDate) => setStartDate(selectedDate)}
+              onChange={(_, selectedDate) => {
+                setStartDate(selectedDate)
+                if (!endDate) {setEndDate(addDays(selectedDate, 1))}
+                setShowStartDate(false)
+              }}
               minimumDate={today}
             />
           }
@@ -55,7 +68,7 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
 
         <View style={DatesBottomSheetStyle.dateContainer}>
 
-          <TouchableOpacity onPress={() => setShowEndDate(!showEndDate)}>
+          <TouchableOpacity onPress={() => setShowEndDate(true)}>
             <Text style={DatesBottomSheetStyle.dateTitle}>Départ</Text>
           </TouchableOpacity>
           
@@ -64,7 +77,10 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
               value={endDate}
               mode='date'
               is24Hour={true}
-              onChange={(_, selectedDate) => setEndDate(selectedDate)}
+              onChange={(_, selectedDate) => {
+                setEndDate(selectedDate)
+                setShowEndDate(false)
+              }}
               minimumDate={addDays(startDate, 1)}
             />
           }
