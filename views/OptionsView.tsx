@@ -23,10 +23,10 @@ export default function OptionsView(props: roomProps): JSX.Element {
     const [isEnabledTele, setIsEnabledTele] = useState(false);
 
     const toogleSwitchFullPension = () =>setIsEnabledFullPension(!isEnabledFullPension);
-    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(isEnabledHalfPension);
-    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(isEnabledBreakfast);
-    const toogleSwitchPressing = () =>setIsEnabledPressing(isEnabledPressing);
-    const toogleSwitchWifi = () =>setIsEnabledWifi(isEnabledWifi);
+    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(!isEnabledHalfPension);
+    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(!isEnabledBreakfast);
+    const toogleSwitchPressing = () =>setIsEnabledPressing(!isEnabledPressing);
+    const toogleSwitchWifi = () =>setIsEnabledWifi(!isEnabledWifi);
     const toogleSwitchTele = () =>setIsEnabledTele(!isEnabledTele);
 
     const [totalPrice, setTotalPrice] = useState(70);
@@ -39,9 +39,10 @@ export default function OptionsView(props: roomProps): JSX.Element {
         return dayDiff;
     }
 
+    const DIFF_DATE = getDiffDate();
+
     useEffect(() => 
     {
-
         if(isEnabledTele)
         {
             setTotalPrice(price => price += 10 * 1);
@@ -70,11 +71,11 @@ export default function OptionsView(props: roomProps): JSX.Element {
     {
         if(isEnabledPressing)
         {
-            setTotalPrice(price => price += 30 * getDiffDate() * 3);
+            setTotalPrice(price => price += 30 * DIFF_DATE * 3);
         }
         else
         {
-            setTotalPrice(price => price -= 30 * getDiffDate() * 3);
+            setTotalPrice(price => price -= 30 * DIFF_DATE * 3);
         }
 
     }, [isEnabledPressing]);
@@ -83,11 +84,11 @@ export default function OptionsView(props: roomProps): JSX.Element {
     {
         if(isEnabledBreakfast)
         {
-            setTotalPrice(price => price += 9 * getDiffDate() * 3);
+            setTotalPrice(price => price += 9 * DIFF_DATE * 3);
         }
         else
         {
-            setTotalPrice(price => price -= 9 * getDiffDate() * 3);
+            setTotalPrice(price => price -= 9 * DIFF_DATE * 3);
         }
     }, [isEnabledBreakfast]);
 
@@ -95,11 +96,11 @@ export default function OptionsView(props: roomProps): JSX.Element {
     {
         if(isEnabledHalfPension)
         {
-            setTotalPrice(price => price += 20 * getDiffDate() * 3);
+            setTotalPrice(price => price += 20 * DIFF_DATE * 3);
         }
         else
         {
-            setTotalPrice(price => price -= 20 * getDiffDate() * 3);
+            setTotalPrice(price => price -= 20 * DIFF_DATE * 3);
         }
     }, [isEnabledHalfPension]);
 
@@ -107,12 +108,12 @@ export default function OptionsView(props: roomProps): JSX.Element {
     {
         if(isEnabledFullPension)
         {
-            setTotalPrice(price => price += 35 * getDiffDate() * 3);
+            setTotalPrice(price => price += 35 * DIFF_DATE * 3);
             
         }
         else
         {
-            setTotalPrice(price => price -= 35 * getDiffDate() * 3);
+            setTotalPrice(price => price -= 35 * DIFF_DATE * 3);
         }
     }, [isEnabledFullPension]);
 
