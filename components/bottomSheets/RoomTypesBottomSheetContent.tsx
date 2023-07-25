@@ -39,7 +39,7 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
     setCriteria({
       ...criteria,
-      roomTypes: data[index].title['fr_FR']
+      roomType: data[index].title['fr_FR']
     })
   }
 
