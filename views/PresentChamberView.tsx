@@ -22,7 +22,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
 
     function navigationFlow() {
         console.log('navigationFlow, currentUser', currentUser)
-        currentUser
+        currentUser.token
         ? navigation.navigate('Options')
         : navigation.navigate('Connection')
     }
