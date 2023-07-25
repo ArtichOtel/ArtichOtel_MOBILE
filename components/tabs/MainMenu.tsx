@@ -1,4 +1,4 @@
-import {Alert, Text, TouchableHighlight, View} from 'react-native';
+import {Alert, Platform, Text, TouchableHighlight, View} from 'react-native';
 import baseStyle from '../../style/baseStyle';
 import mainMenuStyle from "../../style/mainMenuStyle";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -11,6 +11,9 @@ export default function MainMenu({navigation}): JSX.Element {
     const {currentUser} = useContext(UserCtx)
     const [isLogged, setIsLogged] = useState<boolean>(false)
 
+    const containerHeight = Platform.OS === 'ios'
+        ? mainMenuStyle.containerHeightIOS
+        : mainMenuStyle.containerHeightAndroid
 
     useEffect(()=> {
         console.log("main menu currenuser update :", currentUser.userId)
@@ -19,7 +22,7 @@ export default function MainMenu({navigation}): JSX.Element {
 
 
     return ( !UserCtx ? null :
-        <View style={mainMenuStyle.container}>
+        <View style={[mainMenuStyle.container, containerHeight]}>
             <TouchableHighlight onPress={() => navigation.navigate('Main')}>
                 <View style={{alignItems: "center"}}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} size={30} style={mainMenuStyle.items} />
