@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -13,7 +13,8 @@ import { SCREEN_HEIGHT } from '../utils/dimension';
 import axios from 'axios';
 import RoomTypesBottomSheetContent from '../components/bottomSheets/RoomTypesBottomSheetContent';
 import NumberOfPeopleBottomSheetContent from '../components/bottomSheets/NumberOfPeopleBottomSheetContent';
-import DatePickerBottomSheetContent from '../components/bottomSheets/DatePickerBottomSheetContent';
+import DatePickerBottomSheetContentIOS from '../components/bottomSheets/DatePickerBottomSheetContent.ios';
+import DatePickerBottomSheetContentAndroid from '../components/bottomSheets/DatePickerBottomSheetContent.android';
 // @ts-ignore
 import { API_URL } from '@env';
 import { CriteriaCtx } from '../utils/context';
@@ -73,6 +74,21 @@ export default function MainView(props: MainViewProps): JSX.Element {
     }
   };
 
+  const searchReservations = async () => {
+    let result;
+    try {
+      const requestURL = new URL(`/search?type=1&startDate=${
+        criteria.startDate}&endDate=${criteria.endDate}`, API_URL)
+      const response = await axios.get(requestURL.href)
+      result = response.data
+      // console.log('searchReservations data recup: ', result)
+
+      navigation.navigate('Room', { searchReservationsResult: result })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     fetchHero();
   }, [API_URL]);
@@ -105,7 +121,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
             onPress={() => onPress(allRefs.refDates, baseBottomSheetHeight + BottomSheetHeightSeperation)}
           >
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>{criteria.startDate} - {criteria.endDate}</Text>
+            <Text style={baseStyle.textDark}>{criteria.startDate?.toDateString()} - {criteria.endDate?.toDateString()}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
@@ -116,6 +132,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
           </TouchableOpacity>
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}
+            onPress={async () => await searchReservations()}
           >
             <Text style={[buttonStyle.search, baseStyle.textLight]}>Rechercher</Text>
           </TouchableOpacity>
@@ -129,7 +146,10 @@ export default function MainView(props: MainViewProps): JSX.Element {
         <BottomSheetBase
           ref={allRefs.refDates}
           height={baseBottomSheetHeight + BottomSheetHeightSeperation}
-          content={<DatePickerBottomSheetContent />}
+          content={Platform.OS === 'ios'
+            ? <DatePickerBottomSheetContentIOS />
+            : <DatePickerBottomSheetContentAndroid />
+          }
         />
         <BottomSheetBase
           ref={allRefs.refPeopleNbr}
