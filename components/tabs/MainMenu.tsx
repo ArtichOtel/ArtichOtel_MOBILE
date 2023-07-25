@@ -1,4 +1,4 @@
-import {Text, TouchableHighlight, View} from 'react-native';
+import {Alert, Text, TouchableHighlight, View} from 'react-native';
 import baseStyle from '../../style/baseStyle';
 import mainMenuStyle from "../../style/mainMenuStyle";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -27,7 +27,10 @@ export default function MainMenu({navigation}): JSX.Element {
                 </View>
             </TouchableHighlight>
 
-            <TouchableHighlight onPress={() => navigation.navigate('Room')}>
+            <TouchableHighlight onPress={() => {
+                // navigation.navigate('Room')
+                Alert.alert('Not implemented yet', 'Here will be the reservations history')
+            }}>
                 <View style={{alignItems: "center"}}>
                     <FontAwesomeIcon icon={faSuitcase} size={30} style={mainMenuStyle.items} />
                     <Text style={[baseStyle.textLight]}>Réservation</Text>
