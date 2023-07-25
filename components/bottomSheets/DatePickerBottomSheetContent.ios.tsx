@@ -23,8 +23,8 @@ function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
 
     setCriteria({
       ...criteria,
-      startDate: formatISO(startDate, { representation: 'date' }),
-      endDate: formatISO(endDate, { representation: 'date' })
+      startDate: startDate,
+      endDate: endDate
     })
   }, [startDate, endDate]);
 

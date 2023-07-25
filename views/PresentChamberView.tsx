@@ -6,33 +6,39 @@ import mainStyle from '../style/MainStyle';
 import presentChamberStyle from '../style/presentChamberStyle';
 
 import ScrollView = Animated.ScrollView;
+import React from 'react';
+import { CriteriaCtx } from '../utils/context';
 
 type roomProps = {
     navigation: any;
+    route: any
 }
 
 export default function PresentChamberView(props: roomProps): JSX.Element {
-    const {navigation} = props
-
+    const { navigation, route } = props
+    const { criteria } = React.useContext(CriteriaCtx)
+    const searchReservationsResult = route.params.searchReservationsResult[0]
 
     function goToOptions()
     {
         navigation.navigate('Room options')
     }
 
+    // console.log('search', route.params.searchReservationsResult)
+
     return (
       <View style={baseStyle.container}>
             <View style={[baseStyle.container, presentChamberStyle.infoBox, presentChamberStyle.contentCenter]}>
-                <Text>X personnes  -  </Text>
-                <Text>29/06/2023  -  </Text>
-                <Text>30/06/2023</Text>
+                <Text>{criteria.peopleNbr} personnes  -  </Text>
+                <Text>{criteria.startDate.toDateString()}  -  </Text>
+                <Text>{criteria.endDate.toDateString()}</Text>
             </View> 
         
             <ScrollView>
                 <Image source={require('../assets/images/chambreHotel.jpg')} style={{width:300, height:100, borderColor:'black', borderWidth:1, borderRadius:10, marginBottom: 15}} />
-                <Text style={[baseStyle.title, {fontSize: 30, alignItems:"flex-start", marginBottom: 5, textDecorationLine: 'underline'}]}>Chambre Standard</Text>
+                <Text style={[baseStyle.title, {fontSize: 30, alignItems:"flex-start", marginBottom: 5, textDecorationLine: 'underline'}]}>{searchReservationsResult?.title['fr_FR']}</Text>
 
-                <Text style={baseStyle.textTypo}>Voici une chambre Standard pour maximum 3 personnes, avec des lits douillés, ainsi qu'un confort inégalable. Télé, service de chambre, douche et autres avantages vous attendent</Text>
+                <Text style={baseStyle.textTypo}>{searchReservationsResult?.description['fr_FR']}</Text>
 
                 <View style={[presentChamberStyle.arrivalHourContainer, presentChamberStyle.contentCenter]}>
                     <FontAwesomeIcon icon={faClock} size={40} style={{marginRight: 15}} />
@@ -74,7 +80,9 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
         
 
         <View style={[presentChamberStyle.buttonBackgroundContainer, presentChamberStyle.contentCenter]}>
-            <TouchableOpacity style={[presentChamberStyle.buttonPrice, presentChamberStyle.contentCenter]}><Text style={presentChamberStyle.buttonTextColor}>70 €</Text></TouchableOpacity>
+            <TouchableOpacity style={[presentChamberStyle.buttonPrice, presentChamberStyle.contentCenter]}>
+                <Text style={presentChamberStyle.buttonTextColor}>{searchReservationsResult.price * criteria.peopleNbr}€</Text>    
+            </TouchableOpacity>
             <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]} onPress={() => navigation.navigate('Options')}>
                 <Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text>
             </TouchableOpacity>
