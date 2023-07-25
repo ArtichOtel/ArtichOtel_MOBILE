@@ -7,7 +7,7 @@ import presentChamberStyle from '../style/presentChamberStyle';
 
 import ScrollView = Animated.ScrollView;
 import React from 'react';
-import { CriteriaCtx } from '../utils/context';
+import { CriteriaCtx, UserCtx } from '../utils/context';
 
 type roomProps = {
     navigation: any;
@@ -17,11 +17,14 @@ type roomProps = {
 export default function PresentChamberView(props: roomProps): JSX.Element {
     const { navigation, route } = props
     const { criteria } = React.useContext(CriteriaCtx)
+    const { currentUser, setCurrentUser } = React.useContext(UserCtx)
     const searchReservationsResult = route.params.searchReservationsResult[0]
 
-    function goToOptions()
-    {
-        navigation.navigate('Room options')
+    function navigationFlow() {
+        console.log('navigationFlow, currentUser', currentUser)
+        currentUser
+        ? navigation.navigate('Options')
+        : navigation.navigate('Connection')
     }
 
     // console.log('search', route.params.searchReservationsResult)
@@ -83,7 +86,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
             <TouchableOpacity style={[presentChamberStyle.buttonPrice, presentChamberStyle.contentCenter]}>
                 <Text style={presentChamberStyle.buttonTextColor}>{searchReservationsResult.price * criteria.peopleNbr}€</Text>    
             </TouchableOpacity>
-            <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]} onPress={() => navigation.navigate('Options')}>
+            <TouchableOpacity style={[presentChamberStyle.buttonValid, presentChamberStyle.contentCenter]} onPress={navigationFlow}>
                 <Text style={presentChamberStyle.buttonTextColor}>Selectionner</Text>
             </TouchableOpacity>
         </View>
