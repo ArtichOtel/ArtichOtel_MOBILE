@@ -1,5 +1,5 @@
 import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList} from 'react-native';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -11,10 +11,12 @@ import ScrollView = Animated.ScrollView;
 import axios from "axios";
 // @ts-ignore
 import { API_URL } from '@env';
+import {CriteriaCtx} from "../utils/context";
 
-type roomProps = {
+type OptionsViewProps = {
     navigation: any;
-}
+    route: any;
+};
 
 type Option = {
     id: number,
@@ -25,12 +27,15 @@ type Option = {
     enabled: boolean
 }
 
-export default function OptionsView(props: roomProps): JSX.Element {
-    const {navigation} = props;
+export default function OptionsView(props: OptionsViewProps): JSX.Element {
+    const { navigation, route } = props;
+    const { criteria } = React.useContext(CriteriaCtx);
+    const searchReservationsResult = route.params.searchReservationsResult;
 
     // recap criteres
-    const nPers = 3;
-    const roomPrice = 70;
+    const nPers = criteria.peopleNbr;
+    const roomPrice = searchReservationsResult.price;
+    const basePrice = nPers * roomPrice
 
     // data bdd
     //Une liste de 6 objets, 1 par options. Chacun contenant les infos de la table (id, name, u_price, by_person, nb_day)
@@ -44,6 +49,7 @@ export default function OptionsView(props: roomProps): JSX.Element {
     ];
 
     const [options, setOptions] = useState<Option[]|null>(listOptions);
+
     const [totalPrice, setTotalPrice] = useState<number>(roomPrice);
 
     // fetch options
@@ -130,13 +136,13 @@ export default function OptionsView(props: roomProps): JSX.Element {
                 <View style={optionStyle.recapInfoContainer}>
                     <View>
                         <Text style={baseStyle.textTypo}>Arrivée</Text>
-                        <Text style={baseStyle.textTypo}>30/06/2023</Text>
+                        <Text style={baseStyle.textTypo}>{criteria.startDate.toDateString()}</Text>
                         <View style={optionStyle.line}/>
                     </View>
 
                     <View>
                         <Text style={baseStyle.textTypo}>Départ</Text>
-                        <Text style={baseStyle.textTypo}>01/07/2023</Text>
+                        <Text style={baseStyle.textTypo}>{criteria.endDate.toDateString()}</Text>
                         <View style={optionStyle.line}/>
                     </View>
 
