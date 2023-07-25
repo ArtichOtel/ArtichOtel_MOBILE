@@ -11,6 +11,7 @@ import axios from "axios";
 import {API_URL} from '@env';
 import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
+import {getDiffDate} from "../utils/dates";
 
 type OptionsViewProps = {
     navigation: any;
@@ -33,8 +34,9 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
     // recap criteria
     const nPers = criteria.peopleNbr;
+    const diffDate = getDiffDate(criteria.startDate, criteria.endDate);
     const roomPrice = searchReservationsResult.price;
-    const basePrice = nPers * roomPrice
+    const basePrice = nPers * roomPrice * diffDate
 
     const [options, setOptions] = useState<Option[]|null>(null);
     const [totalPrice, setTotalPrice] = useState<number>(basePrice);
@@ -51,12 +53,6 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
     };
 
-    function getDiffDate()
-    {
-        let calculDiff = new Date(2023, 6,  23).getTime() - new Date(2023, 6, 20).getTime();
-        return Math.floor(calculDiff / (1000 * 3600 * 24));
-    }
-    const DIFF_DATE = getDiffDate();
 
     function toggleOption(index: number) {
         let tempList = options.map(a=>a)
@@ -72,7 +68,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
     useEffect(() => {
         // objectif : remettre à jour le prix total
-        const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+        const nPeriod =  Math.ceil(diffDate/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
 
     }, [options]);
 
@@ -144,7 +140,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
                 <View style={optionStyle.contentOptionCenter}>
                     <View style={optionStyle.textContainer}>
-                        {options.length<5 ? null :
+                        {options?.length<5 ? null :
                             <FlatList data={options}
                                       renderItem={ (opt) => <Option opt={opt} />}
                             />

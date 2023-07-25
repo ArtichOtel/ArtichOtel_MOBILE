@@ -17,18 +17,22 @@ import {UserCtx, UserProfileCtx} from "../utils/context";
 
 
 type ConnectionProps = {
-    navigation: any;
+    navigation: any,
+    route: any
 }
 
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
-    const {navigation} = props
+    const {navigation, route} = props
     //const {userAccess, setUserAccess} = useState<{id:string, token:string}>({id:null, token:null})
     const {currentUser, setCurrentUser} = useContext(UserCtx)
     const {userProfile, setUserProfile} = useContext(UserProfileCtx)
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
+    const searchReservationsResult = route.params.searchReservationsResult
+    const nextScreen = route.params.nextScreen ? route.params.nextScreen : null
+    //const searchReservationsResult = route.params.searchReservationsResult[0];
 
     const getUserAccess = async () => {
         return await axios
@@ -73,8 +77,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             email: null,
             pseudo: null,
             dateUpdate: null,
-            firstName: null,
-            lastName: null
+            //firstName: null,
+            //lastName: null
         }
 
         getUserAccess()
@@ -93,21 +97,27 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 return {data, cred}
             })
             .then(({data, cred}) => {
-                if (cred.role==='customer') { // 2 for customer
-                    return getCustomerData({cred})
-                }
+                //if (cred.role==='customer') { // 2 for customer
+                    //return getCustomerData({cred})
+                //}
                 setUserProfile(userData)
             })
-            .then(({data, cred})=>{
+            /*.then(({data, cred})=>{
                 if (cred.role==='customer') { // 2 for customer
                     userData.firstName = data.first_name
                     userData.lastName = data.last_name
                 }
                 setUserProfile(userData)
-            })
+            })*/
             .then(() => {
-                // TODO : change destination according to global state next view
-                navigation.navigate('Main')
+                console.log(`navigate from connection to ${nextScreen ? {nextScreen, searchReservationsResult} : 'main'}`)
+               nextScreen
+                   ? navigation.navigate( nextScreen, searchReservationsResult)
+                   : navigation.navigate( 'Main')
+                }
+            )
+            .catch(err => {
+                console.log(err)
             })
     }
 

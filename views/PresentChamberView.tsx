@@ -10,37 +10,35 @@ import {
   faKitchenSet,
 } from "@fortawesome/free-solid-svg-icons";
 import baseStyle from "../style/baseStyle";
-import mainStyle from "../style/MainStyle";
 import presentChamberStyle from "../style/presentChamberStyle";
-import axios from "axios";
-
 import { BookingCtx } from "../utils/context";
 // @ts-ignore
 import { API_URL } from "@env";
-
 import ScrollView = Animated.ScrollView;
 import React from "react";
 import { CriteriaCtx, UserCtx } from "../utils/context";
+import {getDiffDate} from "../utils/dates";
+
 
 type roomProps = {
-  navigation: any;
-  route: any;
+  navigation: any,
+  route: any,
 };
 
 export default function PresentChamberView(props: roomProps): JSX.Element {
   const { navigation, route } = props;
   const { criteria } = React.useContext(CriteriaCtx);
-  const { currentUser, setCurrentUser } = React.useContext(UserCtx);
+  const { currentUser } = React.useContext(UserCtx);
   const searchReservationsResult = route.params.searchReservationsResult[0];
-
   //console.log("searchReservationsResult",searchReservationsResult)
+    const basePrice = searchReservationsResult.price * criteria.peopleNbr * getDiffDate(criteria.startDate, criteria.endDate)
 
   function navigationFlow() {
-    //console.log("navigationFlow, currentUser", currentUser);
     currentUser.token
       ? navigation.navigate("Options", { searchReservationsResult: searchReservationsResult })
-      : navigation.navigate("Connection");
+      : navigation.navigate("Connection", { nextScreen: "Options", searchReservationsResult: searchReservationsResult});
   }
+
 
   return ( !searchReservationsResult ? null :
     <View style={presentChamberStyle.centerContainer}>
@@ -187,7 +185,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
           <Text
             style={[presentChamberStyle.buttonTextColor, baseStyle.textTypo]}
           >
-            {searchReservationsResult.price * criteria.peopleNbr}€
+              {basePrice} €
           </Text>
         </View>
         <TouchableOpacity
