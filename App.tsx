@@ -5,11 +5,11 @@ import ConnectionView from "./views/ConnectionView";
 import SignUpView from "./views/SignUpView";
 import ProfileView from "./views/ProfileView";
 import PresentChamberView from "./views/PresentChamberView";
-import { UserCtx, CriteriaCtx, UserProfileCtx } from "./utils/context";
+import { UserCtx, CriteriaCtx, UserProfileCtx, BookingCtx } from "./utils/context";
 
 import colors from "./style/colors";
 import React, { useState } from 'react';
-import { criteriaType, userProfileType, userDataType } from "./utils/types";
+import { criteriaType, userProfileType, userDataType, bookingType } from "./utils/types";
 import OptionsView from "./views/OptionsView";
 import { defaultProfile, defaultUserData } from "./utils/defaults";
 
@@ -22,10 +22,17 @@ export const defaultCriteria: criteriaType = {
     peopleNbr: 0,
 }
 
+export const defaultBooking: bookingType = {
+    reservationID: null,
+
+}
+
 export default function App(): JSX.Element {
     const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
     const [criteria, setCriteria] = useState<criteriaType>(defaultCriteria)
     const [userProfile, setUserProfile] = useState<userProfileType>(defaultProfile)
+    const [booking, setBooking] = useState<bookingType>(defaultBooking)
+
 
     return (
         <UserCtx.Provider value={{ currentUser, setCurrentUser }}>
@@ -50,23 +57,23 @@ export default function App(): JSX.Element {
                                     title: null,
                                     headerStyle: { backgroundColor: colors.primary }
                                 }} />
-                    <Stack.Screen name="Options" component={OptionsView}
+                            <Stack.Screen name="Options" component={OptionsView}
                                 options={({
                                     title: null,
                                     headerStyle: { backgroundColor : colors.primary }
                                 })} />
 
-                        <Stack.Screen name="Room" component={PresentChamberView}
-                                      options={{
-                                          title: null,
-                                          headerStyle: { backgroundColor: colors.primary }
-                                      }} />
+                            <Stack.Screen name="Room" component={PresentChamberView}
+                                    options={{
+                                        title: null,
+                                        headerStyle: { backgroundColor: colors.primary }
+                                    }} />
 
-                        <Stack.Screen name="Profile" component={ProfileView}
-                                      options={{
-                                          title: null,
-                                          headerStyle: { backgroundColor: colors.primary }
-                                      }} />
+                            <Stack.Screen name="Profile" component={ProfileView}
+                                    options={{
+                                        title: null,
+                                        headerStyle: { backgroundColor: colors.primary }
+                                    }} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </CriteriaCtx.Provider>

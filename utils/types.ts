@@ -20,3 +20,8 @@ export type userProfileType = {
     //firstName: string | null,
     //lastName: string | null
 }
+
+
+export type bookingType = {
+    reservationID: string | null,
+}

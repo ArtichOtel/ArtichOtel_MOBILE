@@ -10,7 +10,13 @@ import {
   faKitchenSet,
 } from "@fortawesome/free-solid-svg-icons";
 import baseStyle from "../style/baseStyle";
+import mainStyle from "../style/MainStyle";
 import presentChamberStyle from "../style/presentChamberStyle";
+import axios from "axios";
+
+import { BookingCtx } from "../utils/context";
+// @ts-ignore
+import { API_URL } from "@env";
 
 import ScrollView = Animated.ScrollView;
 import React from "react";
