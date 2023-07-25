@@ -30,9 +30,10 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
-    const searchReservationsResult = route.params.searchReservationsResult
-    const nextScreen = route.params.nextScreen ? route.params.nextScreen : null
-    //const searchReservationsResult = route.params.searchReservationsResult[0];
+    const searchReservationsResult : object = route.params?.searchReservationsResult ? route.params.searchReservationsResult : null
+    const nextScreen:object = route.params?.nextScreen ? route.params.nextScreen : null
+    console.log('route.params in connectionview', route.params);
+    console.log('searchReservationsResult in connectionview', searchReservationsResult);
 
     const getUserAccess = async () => {
         return await axios
@@ -110,9 +111,9 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 setUserProfile(userData)
             })*/
             .then(() => {
-                console.log(`navigate from connection to ${nextScreen ? {nextScreen, searchReservationsResult} : 'main'}`)
+                //console.log(`navigate from connection to ${nextScreen ? {nextScreen?.toString(), searchReservationsResult.toString()} : 'main'}`)
                nextScreen
-                   ? navigation.navigate( nextScreen, searchReservationsResult)
+                   ? navigation.navigate({route})
                    : navigation.navigate( 'Main')
                 }
             )

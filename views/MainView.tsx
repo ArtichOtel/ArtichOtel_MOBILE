@@ -92,7 +92,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
         console.error(error)
       }
     } else {
-      console.log(criteria)
+      console.log("need criteria",criteria)
     }
   }
 

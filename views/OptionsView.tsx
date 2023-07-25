@@ -35,6 +35,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     // recap criteria
     const nPers = criteria.peopleNbr;
     const diffDate = getDiffDate(criteria.startDate, criteria.endDate);
+    console.log("searchReservationsResult in optionview",searchReservationsResult)
     const roomPrice = searchReservationsResult.price;
     const basePrice = nPers * roomPrice * diffDate
 
@@ -49,7 +50,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
             //console.log("fetchOptions", optionsList);
             setOptions(optionsList);
         } catch (error) {
-            console.error(error);
+            console.error("error", error);
         }
     };
 
@@ -62,7 +63,9 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
     // fetch table des options => setOptions(data)
     useEffect(()=> {
-        fetchOptions().then()
+        if (!options) {
+            fetchOptions().then()
+        }
     }, [])
 
 
