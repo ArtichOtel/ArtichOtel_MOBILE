@@ -172,7 +172,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
           presentChamberStyle.contentCenter,
         ]}
       >
-        <TouchableOpacity
+        <View
           style={[
             presentChamberStyle.buttonPrice,
             presentChamberStyle.contentCenter,
@@ -183,7 +183,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
           >
             {searchReservationsResult.price * criteria.peopleNbr}€
           </Text>
-        </TouchableOpacity>
+        </View>
         <TouchableOpacity
           style={[presentChamberStyle.buttonValid]}
           onPress={navigationFlow}
