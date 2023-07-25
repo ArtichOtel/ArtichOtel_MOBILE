@@ -114,7 +114,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
       <StatusBar
         barStyle={'light-content'}
       />
-      <GestureHandlerRootView style={[baseStyle.container, mainStyle.container]}>
+      <GestureHandlerRootView style={[baseStyle.container, baseStyle.heroContainer, mainStyle.container]}>
         <View>
           <TouchableOpacity
             style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}

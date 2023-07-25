@@ -58,6 +58,7 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
               is24Hour={true}
               onChange={(_, selectedDate) => {
                 setStartDate(selectedDate)
+                if (!endDate) {setEndDate(addDays(selectedDate, 1))}
                 setShowStartDate(false)
               }}
               minimumDate={today}
