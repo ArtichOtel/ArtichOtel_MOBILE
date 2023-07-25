@@ -19,7 +19,7 @@ type roomProps = {
 
 export default function PresentChamberView(props: roomProps): JSX.Element {
     const {navigation} = props
-    const {currentBooking, setCurrentBooking} = useContext(BookingCtx)
+    //const {currentBooking, setCurrentBooking} = useContext(BookingCtx)
 
     function goToOptions()
     {
@@ -43,7 +43,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
     }
 
     return (
-    !currentBooking ? null :
+    //!currentBooking ? null :
         <View style={baseStyle.container}>
             <View style={[baseStyle.container, presentChamberStyle.infoBox, presentChamberStyle.contentCenter]}>
                 <Text>X personnes  -  </Text>
