@@ -35,16 +35,16 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
   const { currentUser, setCurrentUser } = React.useContext(UserCtx);
   const searchReservationsResult = route.params.searchReservationsResult[0];
 
+  //console.log("searchReservationsResult",searchReservationsResult)
+
   function navigationFlow() {
-    console.log("navigationFlow, currentUser", currentUser);
+    //console.log("navigationFlow, currentUser", currentUser);
     currentUser.token
-      ? navigation.navigate("Options")
+      ? navigation.navigate("Options", { searchReservationsResult: searchReservationsResult })
       : navigation.navigate("Connection");
   }
 
-  // console.log('search', route.params.searchReservationsResult)
-
-  return (
+  return ( !searchReservationsResult ? null :
     <View style={presentChamberStyle.centerContainer}>
       <View style={[presentChamberStyle.infoBox]}>
         <Text>{criteria.peopleNbr} personnes - </Text>
