@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform, Alert } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -33,7 +33,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
   const { criteria } = React.useContext(CriteriaCtx);
   const [heroData, setHeroData] = useState<Hero[] | null>([]);
   const [image, setImage] = useState<string | null>(null);
-
+  const [criteriaError, setCriteriaError] = useState<string | null>(null)
 
   const baseBottomSheetHeight = (-SCREEN_HEIGHT +
     mainStyle.first.marginTop +
@@ -46,6 +46,12 @@ export default function MainView(props: MainViewProps): JSX.Element {
     baseStyle.btn.padding +
     baseStyle.btn.height
   )
+  const criteriaErrors = {
+    roomType: "Veuillez choisir un type de chambre.",
+    startDate: "Veuillez choisir une date d'arrivée.",
+    endDate: "Veuillez choisir une date de départ.",
+    peopleNbr: "Veuillez choisir un nombre de personnes."
+  }
   const allRefs = {
     refRoomsTypes: useRef<BottomSheetRefProps>(null),
     refDates: useRef<BottomSheetRefProps>(null),
@@ -75,9 +81,18 @@ export default function MainView(props: MainViewProps): JSX.Element {
     }
   };
 
-  const searchReservations = async () => {
+  function validateCriterias() {
+    let validated = 0
 
-    if (criteria.endDate && criteria.startDate && criteria.peopleNbr > 0 && criteria.roomType) {
+    for (const [key, value] of Object.entries(criteria)) {
+      if (value) validated++
+      else return setCriteriaError(criteriaErrors[`${key}`])
+    }
+    setCriteriaError(null)
+  }
+
+  const searchReservations = async () => {
+    if (!criteriaError) {
       try {
         let result;
         const requestURL = new URL(
@@ -89,12 +104,17 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
         navigation.navigate('Room', { searchReservationsResult: result })
       } catch (error) {
-        console.error(error)
+        console.error('MainView - searchReservations:', error)
       }
     } else {
-      console.log(criteria)
+      console.log('Main View - criteria:', criteria)
+      Alert.alert('Critère non valide', criteriaError)
     }
   }
+
+  useEffect(() => {
+    validateCriterias()
+  }, [criteria])
 
   useEffect(() => {
     fetchHero();
