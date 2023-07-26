@@ -1,4 +1,4 @@
-import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList} from 'react-native';
+import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList, Platform} from 'react-native';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import buttonStyle from '../style/buttonStyle';
 import colors from '../style/colors';
 import ScrollView = Animated.ScrollView;
 import {enAU} from "date-fns/locale";
+import optionsStyle from "../style/optionsStyle";
 
 type roomProps = {
     navigation: any;
@@ -162,8 +163,8 @@ export default function OptionsView(props: roomProps): JSX.Element {
 
 
     return (
-      <View style={baseStyle.container}>
-            <View style={[baseStyle.container, optionStyle.titleBox, optionStyle.contentCenter]}>
+      <View style={optionStyle.centerContainer}>
+            <View style={[optionStyle.titleBox]}>
                 <Text>Vos options de Réservation</Text>
             </View>
         
@@ -214,8 +215,13 @@ export default function OptionsView(props: roomProps): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{totalPrice} €</Text>
-            <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
+            <View style={[
+                Platform.OS === 'android' ?
+                optionStyle.buttonPriceAndroid : optionsStyle.buttonPrice,
+                optionStyle.contentCenter]}>
+                <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>{totalPrice} €</Text>
+            </View>
+            <TouchableOpacity style={[optionStyle.buttonValid]}><Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text></TouchableOpacity>
         </View>
       </View>
     );

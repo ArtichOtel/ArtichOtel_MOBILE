@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, Animated } from "react-native";
+import {Text, View, Image, TouchableOpacity, Animated, Platform} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBed,
@@ -21,6 +21,8 @@ import { API_URL } from "@env";
 import ScrollView = Animated.ScrollView;
 import React from "react";
 import { CriteriaCtx, UserCtx } from "../utils/context";
+import optionStyle from "../style/optionsStyle";
+import optionsStyle from "../style/optionsStyle";
 
 type roomProps = {
   navigation: any;
@@ -180,8 +182,9 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
       >
         <View
           style={[
-            presentChamberStyle.buttonPrice,
-            presentChamberStyle.contentCenter,
+              Platform.OS === 'android' ?
+                  presentChamberStyle.buttonPriceAndroid : presentChamberStyle.buttonPrice,
+              presentChamberStyle.contentCenter
           ]}
         >
           <Text
