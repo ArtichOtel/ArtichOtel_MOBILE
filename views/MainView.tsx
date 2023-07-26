@@ -100,9 +100,12 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
         const response = await axios.get(requestURL.href)
         result = response.data
-        // console.log('searchReservations data recup: ', result)
 
-        navigation.navigate('Room', { searchReservationsResult: result })
+        if (result.length > 0) navigation.navigate('Room', { searchReservationsResult: result })
+        else Alert.alert(
+          'Aucune chambre disponible',
+          'Veuillez changer la plage de dates de réservation.'
+        )
       } catch (error) {
         console.error('MainView - searchReservations:', error)
       }
