@@ -4,6 +4,7 @@ import { CriteriaCtx } from "../../utils/context";
 import DateTimePicker from '@react-native-community/datetimepicker'
 import DatesBottomSheetStyle from '../../style/DatesBottomSheetStyle';
 import { formatISO } from 'date-fns'
+import colors from '../../style/colors';
 
 function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
   const { criteria, setCriteria } = useContext(CriteriaCtx);
@@ -23,10 +24,19 @@ function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
 
     setCriteria({
       ...criteria,
-      startDate: startDate,
+      startDate: startDate
+    })
+  }, [startDate]);
+
+  useEffect(() => {
+
+    if (startDate >= endDate) setStartDate(addDays(startDate, -1))
+
+    setCriteria({
+      ...criteria,
       endDate: endDate
     })
-  }, [startDate, endDate]);
+  }, [endDate]);
 
   return (
     <>
@@ -36,10 +46,14 @@ function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
           <Text style={DatesBottomSheetStyle.dateTitle}>Arrivée</Text>
           <DateTimePicker
             testID='startDate'
-            value={startDate}
+            value={startDate ? startDate : today}
             mode='date'
+            accentColor={colors.primary}
             is24Hour={true}
-            onChange={(_, selectedDate) => setStartDate(selectedDate)}
+            onChange={(_, selectedDate) => {
+              setStartDate(selectedDate)
+              if (!endDate) setEndDate(addDays(selectedDate, 1))
+            }}
             minimumDate={today}
           />
         </View>
@@ -49,8 +63,12 @@ function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
             testID='endDate'
             value={endDate}
             mode='date'
+            accentColor={colors.primary}
             is24Hour={true}
-            onChange={(_, selectedDate) => setEndDate(selectedDate)}
+            onChange={(_, selectedDate) => {
+              setEndDate(selectedDate)
+              if (!startDate) setStartDate(addDays(selectedDate, -1))
+            }}
             minimumDate={addDays(startDate, 1)}
           />
         </View>
