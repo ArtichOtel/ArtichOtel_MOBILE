@@ -1,7 +1,7 @@
-import {Animated, FlatList, Switch, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCreditCard} from '@fortawesome/free-solid-svg-icons';
+import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList, Platform} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import optionStyle from '../style/optionsStyle';
@@ -11,9 +11,11 @@ import axios from "axios";
 import {API_URL} from '@env';
 import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
+import optionsStyle from "../style/optionsStyle";
 
-type roomProps = {
-    navigation: any;
+type OptionsViewProps = {
+    navigation: any,
+    route: any
 }
 
 type Option = {
@@ -150,8 +152,8 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
 
     return (
-      <View style={baseStyle.container}>
-            <View style={[baseStyle.container, optionStyle.titleBox, optionStyle.contentCenter]}>
+      <View style={optionStyle.centerContainer}>
+            <View style={[optionStyle.titleBox]}>
                 <Text>Vos options de Réservation</Text>
             </View>
         
@@ -202,8 +204,13 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{totalPrice} €</Text>
-            <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
+            <View style={[
+                Platform.OS === 'android' ?
+                optionStyle.buttonPriceAndroid : optionsStyle.buttonPrice,
+                optionStyle.contentCenter]}>
+                <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>{totalPrice} €</Text>
+            </View>
+            <TouchableOpacity style={[optionStyle.buttonValid]}><Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text></TouchableOpacity>
         </View>
       </View>
     );
