@@ -20,7 +20,7 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
   const { criteria, setCriteria } = React.useContext(CriteriaCtx);
   const [data, setData] = useState<RoomTypes[] | null>([]);
-  const [isChecked, setChecked] = useState<number>(0);
+  //const [isChecked, setChecked] = useState<number>(0);
 
   const fetchRoomTypes = async () => {
     try {
@@ -32,14 +32,15 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
       console.error(error);
     }
   };
-
+  console.log('criteria', criteria)
   function setCriteriaToContext(index: number) {
 
-    setChecked(index);
+    //setChecked(index);
 
     setCriteria({
       ...criteria,
-      roomType: data[index].title['fr_FR']
+      roomType: data[index].id,
+      roomTitle: data[index].title['fr_FR'],
     })
   }
 
@@ -48,9 +49,9 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
       <View style={RoomTypesBottomSheetStyle.alignContent} key={index}>
         <Checkbox
           style={RoomTypesBottomSheetStyle.checkbox}
-          value={isChecked === index}
+          value={criteria.roomType === index + 1}
           onValueChange={() => setCriteriaToContext(index)}
-          color={isChecked ? colors.primary : colors.primary}
+          color={criteria.roomType ? colors.primary : colors.primary}
         />
         <Text style={RoomTypesBottomSheetStyle.alignContent}>{roomType.title['fr_FR']}</Text>
       </View>
