@@ -1,7 +1,7 @@
-import {Animated, FlatList, Switch, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCreditCard} from '@fortawesome/free-solid-svg-icons';
+import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList, Platform} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import optionStyle from '../style/optionsStyle';
@@ -12,11 +12,12 @@ import {API_URL} from '@env';
 import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import {getDiffDate} from "../utils/dates";
+import optionsStyle from "../style/optionsStyle";
 
 type OptionsViewProps = {
-    navigation: any;
-    route: any;
-};
+    navigation: any,
+    route: any
+}
 
 type Option = {
     id: number,
@@ -59,6 +60,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         let tempList = options.map(a=>a)
         tempList[index].enabled = !tempList[index].enabled
         setOptions(tempList)
+        calculPrice(index);
     }
 
     // fetch table des options => setOptions(data)
@@ -68,12 +70,48 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
     }, [])
 
+    // update price
+    function calculPrice(index :number)
+    {
+        let tempListCalcul = options.map(b => b)
+        if(tempListCalcul[index].name === "Wifi")
+        {
+            if(tempListCalcul[index].enabled)
+            {
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person ? nPers : 1));
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1));
+            }
+        }
+        else if(tempListCalcul[index].name === "Télévision")
+        {
+            const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+            if(tempListCalcul[index].enabled)
+            {
 
-    useEffect(() => {
-        // objectif : remettre à jour le prix total
-        const nPeriod =  Math.ceil(diffDate/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod)
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod);
+            }
+        }
+        else
+        {
+            if(tempListCalcul[index].enabled)
+            {
 
-    }, [options]);
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * DIFF_DATE)
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * DIFF_DATE);
+            }
+        }
+    }
+
 
 
 
@@ -113,8 +151,8 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
 
     return (
-      <View style={baseStyle.container}>
-            <View style={[baseStyle.container, optionStyle.titleBox, optionStyle.contentCenter]}>
+      <View style={optionStyle.centerContainer}>
+            <View style={[optionStyle.titleBox]}>
                 <Text>Vos options de Réservation</Text>
             </View>
         
@@ -165,8 +203,13 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{totalPrice} €</Text>
-            <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
+            <View style={[
+                Platform.OS === 'android' ?
+                optionStyle.buttonPriceAndroid : optionsStyle.buttonPrice,
+                optionStyle.contentCenter]}>
+                <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>{totalPrice} €</Text>
+            </View>
+            <TouchableOpacity style={[optionStyle.buttonValid]}><Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text></TouchableOpacity>
         </View>
       </View>
     );

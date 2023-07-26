@@ -10,15 +10,21 @@ import {
   faKitchenSet,
 } from "@fortawesome/free-solid-svg-icons";
 import baseStyle from "../style/baseStyle";
+import mainStyle from "../style/MainStyle";
 import presentChamberStyle from "../style/presentChamberStyle";
+import axios from "axios";
+
 import { BookingCtx } from "../utils/context";
 // @ts-ignore
 import { API_URL } from "@env";
+
 import ScrollView = Animated.ScrollView;
 import React from "react";
 import { CriteriaCtx, UserCtx } from "../utils/context";
 import {getDiffDate} from "../utils/dates";
 
+import optionStyle from "../style/optionsStyle";
+import optionsStyle from "../style/optionsStyle";
 
 type roomProps = {
   navigation: any,
@@ -34,6 +40,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
     const basePrice = searchReservationsResult.price * criteria.peopleNbr * getDiffDate(criteria.startDate, criteria.endDate)
 
   function navigationFlow() {
+    //console.log("navigationFlow, currentUser", currentUser);
     currentUser.token
       ? navigation.navigate("Options", { searchReservationsResult: searchReservationsResult })
       : navigation.navigate("Connection", { nextScreen: "Options", searchReservationsResult: searchReservationsResult});
@@ -178,8 +185,9 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
       >
         <View
           style={[
-            presentChamberStyle.buttonPrice,
-            presentChamberStyle.contentCenter,
+              Platform.OS === 'android' ?
+                  presentChamberStyle.buttonPriceAndroid : presentChamberStyle.buttonPrice,
+              presentChamberStyle.contentCenter
           ]}
         >
           <Text
