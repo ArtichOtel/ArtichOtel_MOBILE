@@ -96,7 +96,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
       try {
         let result;
         const requestURL = new URL(
-            `/search?type=1&startDate=${criteria.startDate}&endDate=${criteria.endDate}`, API_URL)
+          `/search?type=1&startDate=${criteria.startDate}&endDate=${criteria.endDate}`, API_URL)
 
         const response = await axios.get(requestURL.href)
         result = response.data
@@ -141,7 +141,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
             onPress={() => onPress(allRefs.refRoomsTypes, baseBottomSheetHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>{criteria.roomType ? criteria.roomType : "Type de chambre" }</Text>
+            <Text style={baseStyle.textDark}>{criteria.roomTitle ? criteria.roomTitle : "Type de chambre"}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -151,8 +151,8 @@ export default function MainView(props: MainViewProps): JSX.Element {
             <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
             <Text style={baseStyle.textDark}>
               {!criteria.startDate && !criteria.endDate
-                  ? 'Dates de séjour'
-                  : criteria.startDate?.toDateString()+' - '+criteria.endDate?.toDateString()}
+                ? 'Dates de séjour'
+                : criteria.startDate?.toDateString() + ' - ' + criteria.endDate?.toDateString()}
             </Text>
           </TouchableOpacity>
 
