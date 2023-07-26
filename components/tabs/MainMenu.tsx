@@ -16,7 +16,7 @@ export default function MainMenu({navigation}): JSX.Element {
         : mainMenuStyle.containerHeightAndroid
 
     useEffect(()=> {
-        console.log("main menu currenuser update :", currentUser.userId)
+        //console.log("mainMenu current user update :", currentUser.userId)
         setIsLogged(currentUser.userId !== null)
     }, [currentUser.userId, UserCtx])
 
