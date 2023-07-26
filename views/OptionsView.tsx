@@ -1,5 +1,5 @@
-import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList} from 'react-native';
-import { useEffect, useState } from 'react';
+import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList, Platform} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -11,10 +11,11 @@ import axios from "axios";
 import {API_URL} from '@env';
 import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
-import {enAU} from "date-fns/locale";
+import optionsStyle from "../style/optionsStyle";
 
-type roomProps = {
-    navigation: any;
+type OptionsViewProps = {
+    navigation: any,
+    route: any
 }
 
 type Option = {
