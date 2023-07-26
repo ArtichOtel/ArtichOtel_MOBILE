@@ -8,6 +8,7 @@ import optionStyle from '../style/optionsStyle';
 import buttonStyle from '../style/buttonStyle';
 import colors from '../style/colors';
 import ScrollView = Animated.ScrollView;
+import {enAU} from "date-fns/locale";
 
 type roomProps = {
     navigation: any;
@@ -71,89 +72,56 @@ export default function OptionsView(props: roomProps): JSX.Element {
         let tempList = options.map(a=>a)
         tempList[index].enabled = !tempList[index].enabled
         setOptions(tempList)
+        calculPrice(index);
     }
 
     // fetch table des options => setOptions(data)
+    function calculPrice(index :number)
+    {
+        let tempListCalcul = options.map(b => b)
+        if(tempListCalcul[index].name === "Wifi")
+        {
+            if(tempListCalcul[index].enabled)
+            {
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person ? nPers : 1));
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1));
+            }
+        }
+        else if(tempListCalcul[index].name === "Télévision")
+        {
+            const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+            if(tempListCalcul[index].enabled)
+            {
 
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod)
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod);
+            }
+        }
+        else
+        {
+            if(tempListCalcul[index].enabled)
+            {
+
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * DIFF_DATE)
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * DIFF_DATE);
+            }
+        }
+    }
 
 
     useEffect(() => {
         // objectif : remettre à jour le prix total
-        const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
-        options.map((itemOption) =>
-        {
-            switch (itemOption.id)
-            {
-                case 1 :
-                    if(itemOption.enabled)
-                    {
-                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                    else
-                    {
-                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                case 2:
-                    if(itemOption.enabled)
-                    {
-                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                    else
-                    {
-                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                case 3:
-                    if(itemOption.enabled)
-                    {
-                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                    else
-                    {
-                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                case 4:
-                    if(itemOption.enabled)
-                    {
-                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                    else
-                    {
-                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * DIFF_DATE);
-                        break;
-                    }
-                case 5:
-                    if(itemOption.enabled)
-                    {
-                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1) * nPeriod);
-                        break;
-                    }
-                    else
-                    {
-                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1) * nPeriod);
-                        break;
-                    }
-                case 6:
-                    if(itemOption.enabled)
-                    {
-                        setTotalPrice(price => price += itemOption.u_price * (itemOption.by_person? nPers : 1));
-                        break;
-                    }
-                    else
-                    {
-                        setTotalPrice(price => price -= itemOption.u_price * (itemOption.by_person? nPers : 1));
-                        break;
-                    }
-                default:
-                    break;
-            }
-        })
+
+
     }, [options]);
 
 
