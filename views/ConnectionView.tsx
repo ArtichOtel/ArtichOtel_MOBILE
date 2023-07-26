@@ -112,13 +112,14 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             })*/
             .then(() => {
                 //console.log(`navigate from connection to ${nextScreen ? {nextScreen?.toString(), searchReservationsResult.toString()} : 'main'}`)
+                console.log(route)
                nextScreen
-                   ? navigation.navigate({route})
-                   : navigation.navigate( 'Main')
+                   ? navigation.navigate(route.params.nextScreen, {searchReservationsResult: route.params.searchReservationsResult}) // "Options", { }
+                   : navigation.navigate('Main')
                 }
             )
             .catch(err => {
-                console.log(err)
+                console.log("connection error",err)
             })
     }
 

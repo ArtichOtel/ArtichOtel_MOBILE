@@ -181,7 +181,8 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
                 <View style={optionStyle.contentOptionCenter}>
                     <View style={optionStyle.textContainer}>
-                        {options?.length<5 ? null :
+
+                        {!options ? null :
                             <FlatList data={options}
                                       renderItem={ (opt) => <Option opt={opt} />}
                             />
