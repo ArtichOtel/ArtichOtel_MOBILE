@@ -83,7 +83,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
         }
 
         getUserAccess()
-            .then((cred:credentials) => {
+            .then((cred: credentials) => {
                 console.log("connection success")
                 return cred
             })

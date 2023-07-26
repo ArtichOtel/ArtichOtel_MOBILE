@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, Animated } from "react-native";
+import {Text, View, Image, TouchableOpacity, Animated, Platform} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBed,

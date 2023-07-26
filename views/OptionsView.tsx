@@ -87,7 +87,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
         else if(tempListCalcul[index].name === "Télévision")
         {
-            const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+            const nPeriod =  Math.ceil(diffDate/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
             if(tempListCalcul[index].enabled)
             {
 
@@ -103,11 +103,11 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
             if(tempListCalcul[index].enabled)
             {
 
-                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * DIFF_DATE)
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate)
             }
             else
             {
-                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * DIFF_DATE);
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate);
             }
         }
     }

@@ -29,5 +29,6 @@ export type bookingType = {
 export type credentials = {
     id: string,
     token: string,
-    role: string
+    role: string,
+    customer: string
 }
