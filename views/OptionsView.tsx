@@ -13,6 +13,7 @@ import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import {getDiffDate} from "../utils/dates";
 import optionsStyle from "../style/optionsStyle";
+import Option from "../components/option";
 
 type OptionsViewProps = {
     navigation: any,
@@ -36,7 +37,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     // recap criteria
     const nPers = criteria.peopleNbr;
     const diffDate = getDiffDate(criteria.startDate, criteria.endDate);
-    console.log("searchReservationsResult in optionview",searchReservationsResult)
+    //console.log("searchReservationsResult in optionview",searchReservationsResult)
     const roomPrice = searchReservationsResult.price;
     const basePrice = nPers * roomPrice * diffDate
 
@@ -48,7 +49,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         try {
             const response = await axios.get(API_URL + "optional-services");
             const optionsList = response.data;
-            //console.log("fetchOptions", optionsList);
+            console.log("fetchOptions", optionsList);
             setOptions(optionsList);
         } catch (error) {
             console.error("error", error);
@@ -115,41 +116,6 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
 
 
-
-    function Option ( {opt} ) {
-        const option = opt.item
-
-        function getSuffix() {
-            switch (option.nb_day) {
-                case 0:
-                    return ''
-                case 1:
-                    return '/jour'
-                case 7:
-                    return '/semaine'
-                default:
-                    return ''
-            }
-        }
-
-        return (
-            <View style={optionStyle.contentCenter}>
-                <View style={optionStyle.textContainer}>
-                    <Text style={{marginTop:15, marginBottom:15}}>
-                        {`${option.name} (${option.u_price}€${option.by_person?'/personnes':''}${getSuffix()})`}
-                    </Text>
-                </View>
-
-                <View style={optionStyle.switchContainer}>
-                    <Switch
-                        value={option.enabled}
-                        onValueChange={() => toggleOption(opt.index)}/>
-                </View>
-            </View>
-        )
-    }
-
-
     return (
       <View style={optionStyle.centerContainer}>
             <View style={[optionStyle.titleBox]}>
@@ -184,7 +150,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
                         {!options ? null :
                             <FlatList data={options}
-                                      renderItem={ (opt) => <Option opt={opt} />}
+                                      renderItem={ (opt) => <Option opt={opt} toggle={toggleOption}/>}
                             />
                         }
                     </View>

@@ -32,8 +32,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
     const [connectionError, setConnectionError] = useState<string|null>(null)
     const searchReservationsResult : object = route.params?.searchReservationsResult ? route.params.searchReservationsResult : null
     const nextScreen:object = route.params?.nextScreen ? route.params.nextScreen : null
-    console.log('route.params in connectionview', route.params);
-    console.log('searchReservationsResult in connectionview', searchReservationsResult);
+    //console.log('route.params in connectionview', route.params);
+    //console.log('searchReservationsResult in connectionview', searchReservationsResult);
 
     const getUserAccess = async () => {
         return await axios
@@ -48,8 +48,8 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 return response.data;
             })
             .then((userData) => {
-                console.log("recap")
-                console.log(userData.user_id,userData.token,userData.customer_id)
+                //console.log("recap")
+                //console.log(userData.user_id,userData.token,userData.customer_id)
                 setCurrentUser({
                     userId: userData.user_id,
                     token: userData.token,
@@ -112,7 +112,6 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             })*/
             .then(() => {
                 //console.log(`navigate from connection to ${nextScreen ? {nextScreen?.toString(), searchReservationsResult.toString()} : 'main'}`)
-                console.log(route)
                nextScreen
                    ? navigation.navigate(route.params.nextScreen, {searchReservationsResult: route.params.searchReservationsResult}) // "Options", { }
                    : navigation.navigate('Main')
