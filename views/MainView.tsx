@@ -85,14 +85,14 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
         const response = await axios.get(requestURL.href)
         result = response.data
-        // console.log('searchReservations data recup: ', result)
+         //console.log('searchReservations data recup: ', result)
 
         navigation.navigate('Room', { searchReservationsResult: result })
       } catch (error) {
         console.error(error)
       }
     } else {
-      console.log(criteria)
+      console.log("need criteria",criteria)
     }
   }
 

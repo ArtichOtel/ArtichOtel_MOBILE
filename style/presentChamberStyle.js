@@ -91,6 +91,16 @@ const presentChamberStyle = StyleSheet.create({
     width: 220,
   },
 
+  buttonPriceAndroid: {
+    justifyContent: "center",
+    backgroundColor: colors.tertiary,
+    marginLeft: 8,
+    marginBottom: 15,
+    borderRadius: 5,
+    height: 40,
+    width: 110,
+  },
+
   buttonTextColor: {
     color: colors.primary,
     fontWeight: "bold",

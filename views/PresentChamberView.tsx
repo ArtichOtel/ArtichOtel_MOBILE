@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, Animated } from "react-native";
+import {Text, View, Image, TouchableOpacity, Animated, Platform} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBed,
@@ -21,28 +21,33 @@ import { API_URL } from "@env";
 import ScrollView = Animated.ScrollView;
 import React from "react";
 import { CriteriaCtx, UserCtx } from "../utils/context";
+import {getDiffDate} from "../utils/dates";
+
+import optionStyle from "../style/optionsStyle";
+import optionsStyle from "../style/optionsStyle";
 
 type roomProps = {
-  navigation: any;
-  route: any;
+  navigation: any,
+  route: any,
 };
 
 export default function PresentChamberView(props: roomProps): JSX.Element {
   const { navigation, route } = props;
   const { criteria } = React.useContext(CriteriaCtx);
-  const { currentUser, setCurrentUser } = React.useContext(UserCtx);
+  const { currentUser } = React.useContext(UserCtx);
   const searchReservationsResult = route.params.searchReservationsResult[0];
+  //console.log("searchReservationsResult",searchReservationsResult)
+    const basePrice = searchReservationsResult.price * criteria.peopleNbr * getDiffDate(criteria.startDate, criteria.endDate)
 
   function navigationFlow() {
-    console.log("navigationFlow, currentUser", currentUser);
+    //console.log("navigationFlow, currentUser", currentUser);
     currentUser.token
-      ? navigation.navigate("Options")
-      : navigation.navigate("Connection");
+      ? navigation.navigate("Options", { searchReservationsResult: searchReservationsResult })
+      : navigation.navigate("Connection", { nextScreen: "Options", searchReservationsResult: searchReservationsResult});
   }
 
-  // console.log('search', route.params.searchReservationsResult)
 
-  return (
+  return ( !searchReservationsResult ? null :
     <View style={presentChamberStyle.centerContainer}>
       <View style={[presentChamberStyle.infoBox]}>
         <Text>{criteria.peopleNbr} personnes - </Text>
@@ -180,14 +185,15 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
       >
         <View
           style={[
-            presentChamberStyle.buttonPrice,
-            presentChamberStyle.contentCenter,
+              Platform.OS === 'android' ?
+                  presentChamberStyle.buttonPriceAndroid : presentChamberStyle.buttonPrice,
+              presentChamberStyle.contentCenter
           ]}
         >
           <Text
             style={[presentChamberStyle.buttonTextColor, baseStyle.textTypo]}
           >
-            {searchReservationsResult.price * criteria.peopleNbr}€
+              {basePrice} €
           </Text>
         </View>
         <TouchableOpacity

@@ -25,3 +25,10 @@ export type userProfileType = {
 export type bookingType = {
     reservationID: string | null,
 }
+
+export type credentials = {
+    id: string,
+    token: string,
+    role: string,
+    customer: string
+}

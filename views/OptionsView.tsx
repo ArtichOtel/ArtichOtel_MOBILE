@@ -1,16 +1,22 @@
-import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList} from 'react-native';
-import { useEffect, useState } from 'react';
+import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList, Platform} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
 import mainStyle from '../style/MainStyle';
 import optionStyle from '../style/optionsStyle';
 import buttonStyle from '../style/buttonStyle';
-import colors from '../style/colors';
+import axios from "axios";
+// @ts-ignore
+import {API_URL} from '@env';
+import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
+import {getDiffDate} from "../utils/dates";
+import optionsStyle from "../style/optionsStyle";
 
-type roomProps = {
-    navigation: any;
+type OptionsViewProps = {
+    navigation: any,
+    route: any
 }
 
 type Option = {
@@ -22,66 +28,90 @@ type Option = {
     enabled: boolean
 }
 
-export default function OptionsView(props: roomProps): JSX.Element {
-    const {navigation} = props;
+export default function OptionsView(props: OptionsViewProps): JSX.Element {
+    const { navigation, route } = props;
+    const { criteria } = React.useContext(CriteriaCtx);
+    const searchReservationsResult = route.params.searchReservationsResult;
 
-    // recap criteres
-    const nPers = 3;
-    const roomPrice = 70;
+    // recap criteria
+    const nPers = criteria.peopleNbr;
+    const diffDate = getDiffDate(criteria.startDate, criteria.endDate);
+    console.log("searchReservationsResult in optionview",searchReservationsResult)
+    const roomPrice = searchReservationsResult.price;
+    const basePrice = nPers * roomPrice * diffDate
 
-    // data bdd
-    //Une liste de 6 objets, 1 par options. Chacun contenant les infos de la table (id, name, u_price, by_person, nb_day)
-    let listOptions = [
-        {id:1, name:'Demie-pension',     u_price: 20, by_person: 1, nb_day: 1, enabled:false},
-        {id:2, name:'Pension complète',  u_price: 35, by_person: 1, nb_day: 1, enabled:false},
-        {id:3, name:'Petit déjeuner',    u_price: 9,  by_person: 1, nb_day: 1, enabled:false},
-        {id:4, name:'Service pressing',  u_price: 30, by_person: 1, nb_day: 1, enabled:false},
-        {id:5, name:'Télévision',        u_price: 10, by_person: 0, nb_day: 7, enabled:false},
-        {id:6, name:'Wifi',              u_price: 25, by_person: 0, nb_day: 0, enabled: false}
-    ];
+    const [options, setOptions] = useState<Option[]|null>(null);
+    const [totalPrice, setTotalPrice] = useState<number>(basePrice);
 
-    const [isEnabledFullPension, setIsEnabledFullPension] = useState(false);
-    const [isEnabledHalfPension, setIsEnabledHalfPension] = useState(false);
-    const [isEnabledBreakfast, setIsEnabledBreakfast] = useState(false);
-    const [isEnabledPressing, setIsEnabledPressing] = useState(false);
-    const [isEnabledWifi, setIsEnabledWifi] = useState(false);
-    const [isEnabledTele, setIsEnabledTele] = useState(false);
+    // fetch options
+    const fetchOptions = async () => {
+        try {
+            const response = await axios.get(API_URL + "optional-services");
+            const optionsList = response.data;
+            //console.log("fetchOptions", optionsList);
+            setOptions(optionsList);
+        } catch (error) {
+            console.error("error", error);
+        }
+    };
 
-    const [options, setOptions] = useState<Option[]|null>(listOptions);
-
-    const toogleSwitchFullPension = () =>setIsEnabledFullPension(!isEnabledFullPension);
-    const toogleSwitchHalfPension = () =>setIsEnabledHalfPension(!isEnabledHalfPension);
-    const toogleSwitchBreakfast = () =>setIsEnabledBreakfast(!isEnabledBreakfast);
-    const toogleSwitchPressing = () =>setIsEnabledPressing(!isEnabledPressing);
-    const toogleSwitchWifi = () =>setIsEnabledWifi(!isEnabledWifi);
-    const toogleSwitchTele = () =>setIsEnabledTele(!isEnabledTele);
-
-    const [totalPrice, setTotalPrice] = useState<number>(roomPrice);
-
-    function getDiffDate()
-    {
-        let calculDiff = new Date(2023, 6,  23).getTime() - new Date(2023, 6, 20).getTime();
-        let dayDiff = Math.floor(calculDiff/(1000*3600*24));
-
-        return dayDiff;
-    }
-    const DIFF_DATE = getDiffDate();
 
     function toggleOption(index: number) {
         let tempList = options.map(a=>a)
         tempList[index].enabled = !tempList[index].enabled
         setOptions(tempList)
+        calculPrice(index);
     }
 
     // fetch table des options => setOptions(data)
+    useEffect(()=> {
+        if (!options) {
+            fetchOptions().then()
+        }
+    }, [])
 
+    // update price
+    function calculPrice(index :number)
+    {
+        let tempListCalcul = options.map(b => b)
+        if(tempListCalcul[index].name === "Wifi")
+        {
+            if(tempListCalcul[index].enabled)
+            {
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person ? nPers : 1));
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1));
+            }
+        }
+        else if(tempListCalcul[index].name === "Télévision")
+        {
+            const nPeriod =  Math.ceil(diffDate/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+            if(tempListCalcul[index].enabled)
+            {
 
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod)
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod);
+            }
+        }
+        else
+        {
+            if(tempListCalcul[index].enabled)
+            {
 
-    useEffect(() => {
-        // objectif : remettre à jour le prix total
-        const nPeriod =  Math.ceil(DIFF_DATE/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate)
+            }
+            else
+            {
+                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate);
+            }
+        }
+    }
 
-    }, [options]);
 
 
 
@@ -121,8 +151,8 @@ export default function OptionsView(props: roomProps): JSX.Element {
 
 
     return (
-      <View style={baseStyle.container}>
-            <View style={[baseStyle.container, optionStyle.titleBox, optionStyle.contentCenter]}>
+      <View style={optionStyle.centerContainer}>
+            <View style={[optionStyle.titleBox]}>
                 <Text>Vos options de Réservation</Text>
             </View>
         
@@ -130,13 +160,13 @@ export default function OptionsView(props: roomProps): JSX.Element {
                 <View style={optionStyle.recapInfoContainer}>
                     <View>
                         <Text style={baseStyle.textTypo}>Arrivée</Text>
-                        <Text style={baseStyle.textTypo}>30/06/2023</Text>
+                        <Text style={baseStyle.textTypo}>{criteria.startDate.toDateString()}</Text>
                         <View style={optionStyle.line}/>
                     </View>
 
                     <View>
                         <Text style={baseStyle.textTypo}>Départ</Text>
-                        <Text style={baseStyle.textTypo}>01/07/2023</Text>
+                        <Text style={baseStyle.textTypo}>{criteria.endDate.toDateString()}</Text>
                         <View style={optionStyle.line}/>
                     </View>
 
@@ -151,7 +181,8 @@ export default function OptionsView(props: roomProps): JSX.Element {
 
                 <View style={optionStyle.contentOptionCenter}>
                     <View style={optionStyle.textContainer}>
-                        {options.length<5 ? null :
+
+                        {!options ? null :
                             <FlatList data={options}
                                       renderItem={ (opt) => <Option opt={opt} />}
                             />
@@ -173,8 +204,13 @@ export default function OptionsView(props: roomProps): JSX.Element {
         
 
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
-            <Text style={[optionStyle.buttonPrice, optionStyle.buttonTextColor, optionStyle.contentCenter]}>{totalPrice} €</Text>
-            <TouchableOpacity style={[optionStyle.buttonValid, optionStyle.contentCenter]}><Text style={optionStyle.buttonTextColor}>Réserver</Text></TouchableOpacity>
+            <View style={[
+                Platform.OS === 'android' ?
+                optionStyle.buttonPriceAndroid : optionsStyle.buttonPrice,
+                optionStyle.contentCenter]}>
+                <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>{totalPrice} €</Text>
+            </View>
+            <TouchableOpacity style={[optionStyle.buttonValid]}><Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text></TouchableOpacity>
         </View>
       </View>
     );
