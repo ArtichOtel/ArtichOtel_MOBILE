@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 import { CriteriaCtx } from "../../utils/context";
-import {addDays} from "../../utils/dates";
 
 import DatesBottomSheetStyle from '../../style/DatesBottomSheetStyle';
+import {addDays} from "date-fns";
 
 
 
@@ -22,14 +22,14 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
   const firstPossibleDay = today.getHours() < 18 ? today : addDays(today, 1)
 
   function userSelectStart(selectedDate):void {
-    if (criteria.endDate && criteria.endDate > criteria.start) {
+    if (criteria.endDate) {
       setCriteria({ ...criteria, startDate: selectedDate })
     } else {
       setCriteria({ ...criteria, startDate: selectedDate, endDate: addDays(selectedDate, 1) })
     }
   }
   function userSelectEnd(selectedDate):void {
-    if (criteria.startDate && criteria.endDate > criteria.start) {
+    if (criteria.startDate) {
       setCriteria({ ...criteria, endDate: selectedDate })
     } else {
       setCriteria({ ...criteria, startDate: addDays(selectedDate, -1), endDate: selectedDate })
