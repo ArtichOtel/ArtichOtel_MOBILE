@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform, Alert, Animated, Easing } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -18,7 +18,7 @@ import DatePickerBottomSheetContentAndroid from '../components/bottomSheets/Date
 // @ts-ignore
 import { API_URL } from '@env';
 import { CriteriaCtx } from '../utils/context';
-import Animated from 'react-native-reanimated';
+import colors from '../style/colors';
 
 type MainViewProps = {
   navigation: any,
@@ -36,9 +36,12 @@ export default function MainView(props: MainViewProps): JSX.Element {
   const [image, setImage] = useState<string | null>(null);
   const [criteriaError, setCriteriaError] = useState<string | null>(null)
 
-  const [roomTypeHasChanged, setRoomTypeHasChanged] = useState(false)
-  const [dateHasChanged, setdateHasChanged] = useState(false)
-  const [peopleNbrHasChanged, setpeopleNbrHasChanged] = useState(false)
+  // Animations consts
+  const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
+  const roomTypeAnim = useRef(new Animated.Value(0)).current
+  const dateAnim = useRef(new Animated.Value(0)).current
+  const peopleNbrAnim = useRef(new Animated.Value(0)).current
+  const [criteriaDiffs, setCriteriaDiffs] = useState({})
 
   const baseBottomSheetHeight = (-SCREEN_HEIGHT +
     mainStyle.first.marginTop +
@@ -85,22 +88,38 @@ export default function MainView(props: MainViewProps): JSX.Element {
     }
   };
 
+  function fadeInOut(animation: Animated.Value) {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: false,
+      easing: Easing.inOut(Easing.linear)
+    }).start(() => roomTypeAnim.setValue(0)) // Resets the value once the animation is in 'stop' state.
+  }
+
+  function bgAnimatedStyle(animation: Animated.Value) {
+    return {
+      backgroundColor: animation.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: [colors.secondary, colors.tertiary, colors.secondary],
+      })
+    }
+  }
+
   function animateValidation(key: string) {
+    console.log('✔︎') // TODO : Delete
     switch (key) {
-      // If conditions are here to prevent re-setting the value
-      // when the func pass into the useEffect associated to.
-      // So, it prevents too much resource consumption from the app.
       case 'roomType':
-        if (!roomTypeHasChanged) setRoomTypeHasChanged(true)
+        fadeInOut(roomTypeAnim)
         break
       case 'startDate':
-        if (!dateHasChanged) setdateHasChanged(true)
+        fadeInOut(dateAnim)
         break
       case 'endDate':
-        if (!dateHasChanged) setdateHasChanged(true)
+        fadeInOut(dateAnim)
         break
       case 'peopleNbr':
-        if (!peopleNbrHasChanged) setpeopleNbrHasChanged(true)
+        fadeInOut(peopleNbrAnim)
         break
       default:
         break
@@ -111,9 +130,19 @@ export default function MainView(props: MainViewProps): JSX.Element {
     let validated = 0
 
     for (const [key, value] of Object.entries(criteria)) {
+      // TODO : Delete logs
+      console.log('key:', key, 'value:', value)
+      console.log(`criteriaDiffs['${key}']`, criteriaDiffs[`${key}`])
+      console.log('!==', value !== criteriaDiffs[`${key}`])
       if (value) {
         validated++
-        animateValidation(key)
+        if (value !== criteriaDiffs[`${key}`]) {
+          animateValidation(key)
+          setCriteriaDiffs({
+            ...criteriaDiffs,
+            [key]: value
+          })
+        }
       }
       else setCriteriaError(criteriaErrors[`${key}`])
     }
@@ -168,27 +197,27 @@ export default function MainView(props: MainViewProps): JSX.Element {
         barStyle={'light-content'}
       />
       <GestureHandlerRootView style={[baseStyle.container, baseStyle.heroContainer, mainStyle.container]}>
-        <Animated.View>
-          <TouchableOpacity
+        <View>
+          <AnimatedTouchableOpacity
             style={[
               baseStyle.btn,
               mainStyle.alignBtn,
               buttonStyle.light,
               mainStyle.first,
-              roomTypeHasChanged ? buttonStyle.validated : null
+              bgAnimatedStyle(roomTypeAnim)
             ]}
             onPress={() => onPress(allRefs.refRoomsTypes, baseBottomSheetHeight)}
           >
             <FontAwesomeIcon icon={faBed} size={40} />
             <Text style={baseStyle.textDark}>{criteria.roomTitle ? criteria.roomTitle : "Type de chambre"}</Text>
-          </TouchableOpacity>
+          </AnimatedTouchableOpacity>
 
-          <TouchableOpacity
+          <AnimatedTouchableOpacity
             style={[
               baseStyle.btn,
               mainStyle.alignBtn,
               buttonStyle.light,
-              dateHasChanged ? buttonStyle.validated : null
+              bgAnimatedStyle(dateAnim)
             ]}
             onPress={() => onPress(allRefs.refDates, baseBottomSheetHeight + BottomSheetHeightSeperation)}
           >
@@ -198,20 +227,20 @@ export default function MainView(props: MainViewProps): JSX.Element {
                 ? 'Dates de séjour'
                 : criteria.startDate?.toDateString() + ' - ' + criteria.endDate?.toDateString()}
             </Text>
-          </TouchableOpacity>
+          </AnimatedTouchableOpacity>
 
-          <TouchableOpacity
+          <AnimatedTouchableOpacity
             style={[
               baseStyle.btn,
               mainStyle.alignBtn,
               buttonStyle.light,
-              peopleNbrHasChanged ? buttonStyle.validated : null
+              bgAnimatedStyle(peopleNbrAnim)
             ]}
             onPress={() => onPress(allRefs.refPeopleNbr, baseBottomSheetHeight + BottomSheetHeightSeperation * 2)}
           >
             <FontAwesomeIcon icon={faUserGroup} size={40} />
             <Text style={baseStyle.textDark}>{criteria.peopleNbr ? criteria.peopleNbr : "Nombre de personnes"}</Text>
-          </TouchableOpacity>
+          </AnimatedTouchableOpacity>
 
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}
@@ -220,7 +249,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
             <Text style={[buttonStyle.search, baseStyle.textLight]}>Rechercher</Text>
           </TouchableOpacity>
 
-        </Animated.View>
+        </View>
         <BottomSheetBase
           ref={allRefs.refRoomsTypes}
           height={baseBottomSheetHeight}
