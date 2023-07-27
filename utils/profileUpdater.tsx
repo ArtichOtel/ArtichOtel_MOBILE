@@ -5,19 +5,21 @@ import {credentials} from "./types";
 
 
 // from log in => get data
-export async function getUserData({cred}): Promise<any> {
-    console.log("get user data", cred.id, cred.token)
-    return axios.get(API_URL+"user/"+cred.id, {
-        headers:{
-            'Authorization': `Bearer ${cred.token}`
-        }
-    }).then((resp) => {
-        console.log("-------------------------------------")
-        console.log("user:", resp.data)
-        console.log("-------------------------------------")
-        return {data: resp.data, cred: cred}
+export async function getUserData({ cred }): Promise<any> {
+  console.log("get user data", cred.user_id, cred.token);
+  return axios
+    .get(API_URL + "user/" + cred.user_id, {
+      headers: {
+        Authorization: `Bearer ${cred.token}`,
+      },
     })
-        .catch(err => console.log("err", err))
+    .then((resp) => {
+      //   console.log("-------------------------------------");
+      //   console.log("user:", resp.data);
+      //   console.log("-------------------------------------");
+      return { data: resp.data, cred: cred };
+    })
+    .catch((err) => console.log("err", err));
 }
 
 
