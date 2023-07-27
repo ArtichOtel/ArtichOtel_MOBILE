@@ -51,8 +51,8 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
     <View style={presentChamberStyle.centerContainer}>
       <View style={[presentChamberStyle.infoBox]}>
         <Text>{criteria.peopleNbr} personnes - </Text>
-        <Text>{criteria.startDate.toDateString()} - </Text>
-        <Text>{criteria.endDate.toDateString()}</Text>
+        <Text>{criteria.startDate.toLocaleDateString()} - </Text>
+        <Text>{criteria.endDate.toLocaleDateString()}</Text>
       </View>
 
       <ScrollView>

@@ -225,7 +225,8 @@ export default function MainView(props: MainViewProps): JSX.Element {
             <Text style={baseStyle.textDark}>
               {!criteria.startDate && !criteria.endDate
                 ? 'Dates de séjour'
-                : criteria.startDate?.toDateString() + ' - ' + criteria.endDate?.toDateString()}
+                : criteria.startDate?.toLocaleDateString() + ' - ' + criteria.endDate?.toLocaleDateString()
+              }
             </Text>
           </AnimatedTouchableOpacity>
 
