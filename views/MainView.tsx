@@ -38,9 +38,10 @@ export default function MainView(props: MainViewProps): JSX.Element {
 
   // Animations consts
   const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
-  const roomTypeAnim = useRef(new Animated.Value(0)).current
-  const dateAnim = useRef(new Animated.Value(0)).current
-  const peopleNbrAnim = useRef(new Animated.Value(0)).current
+  //const roomTypeAnim = useRef(new Animated.Value(0)).current
+  //const dateAnim = useRef(new Animated.Value(0)).current
+  //const peopleNbrAnim = useRef(new Animated.Value(0)).current
+  const animFadeInOut = useRef(new Animated.Value(0)).current
   const [criteriaDiffs, setCriteriaDiffs] = useState({})
 
   const baseBottomSheetHeight = (-SCREEN_HEIGHT +
@@ -88,23 +89,34 @@ export default function MainView(props: MainViewProps): JSX.Element {
     }
   };
 
-  function fadeInOut(animation: Animated.Value) {
-    Animated.timing(animation, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: false,
-      easing: Easing.inOut(Easing.linear)
-    }).start(() => roomTypeAnim.setValue(0)) // Resets the value once the animation is in 'stop' state.
-  }
+  const roomTypeAnim = Animated.timing(animFadeInOut, {
+    toValue: 1,
+    duration: 500,
+    useNativeDriver: false,
+    easing: Easing.inOut(Easing.linear)
+  }).start()//() => roomTypeAnim.setValue(0)) // Resets the value once the animation is in 'stop' state.
+  const dateAnim = Animated.timing(animFadeInOut, {
+    toValue: 1,
+    duration: 500,
+    useNativeDriver: false,
+    easing: Easing.inOut(Easing.linear)
+  }).start()//() => roomTypeAnim.setValue(0)) // Resets the value once the animation is in 'stop' state.
+  const peopleNbrAnim = Animated.timing(animFadeInOut, {
+    toValue: 1,
+    duration: 500,
+    useNativeDriver: false,
+    easing: Easing.inOut(Easing.linear)
+  }).start()//() => roomTypeAnim.setValue(0)) // Resets the value once the animation is in 'stop' state.
 
   function bgAnimatedStyle(animation: Animated.Value) {
     return {
       backgroundColor: animation.interpolate({
-        inputRange: [0, 0.5, 1],
+        inputRange: [0, 0.2, 1],
         outputRange: [colors.secondary, colors.tertiary, colors.secondary],
       })
     }
   }
+/*
 
   function animateValidation(key: string) {
     console.log('✔︎') // TODO : Delete
@@ -125,6 +137,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
         break
     }
   }
+*/
 
   function validateCriterias() {
     let validated = 0
@@ -174,9 +187,21 @@ export default function MainView(props: MainViewProps): JSX.Element {
     }
   }
 
+  // useEffect(() => {
+  //   validateCriterias()
+  // }, [criteria])
+
   useEffect(() => {
-    validateCriterias()
-  }, [criteria])
+    roomTypeAnim.start()
+  }, [criteria.roomType])
+
+  useEffect(() => {
+    fadeInOut(dateAnim)
+  }, [criteria.endDate, criteria.startDate])
+
+  useEffect(() => {
+    fadeInOut(peopleNbrAnim)
+  }, [criteria.peopleNbr])
 
   useEffect(() => {
     fetchHero();
