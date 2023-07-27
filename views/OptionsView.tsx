@@ -165,43 +165,6 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
             default:
                 break;
         }
-
-        /*if(tempListCalcul[index].name === "Wifi")
-        {
-            if(tempListCalcul[index].enabled)
-            {
-                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person ? nPers : 1));
-            }
-            else
-            {
-                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1));
-            }
-        }
-        else if(tempListCalcul[index].name === "Télévision")
-        {
-
-            if(tempListCalcul[index].enabled)
-            {
-
-                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod)
-            }
-            else
-            {
-                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod);
-            }
-        }
-        else
-        {
-            if(tempListCalcul[index].enabled)
-            {
-
-                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate)
-            }
-            else
-            {
-                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate);
-            }
-        }*/
     }
 
 
