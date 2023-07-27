@@ -10,14 +10,12 @@ import colors from "../../style/colors";
 
 type RoomTypes = {
   title: {
-    fr_FR: string,
-    en_EN: string,
-  }
+    fr_FR: string;
+    en_EN: string;
+  };
 };
 
-
 function RoomTypesBottomSheetContent(props: any): JSX.Element {
-
   const { criteria, setCriteria } = React.useContext(CriteriaCtx);
   const [data, setData] = useState<RoomTypes[] | null>([]);
   //const [isChecked, setChecked] = useState<number>(0);
@@ -33,14 +31,13 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
     }
   };
   function setCriteriaToContext(index: number) {
-
     //setChecked(index);
 
     setCriteria({
       ...criteria,
       roomType: data[index].id,
-      roomTitle: data[index].title['fr_FR'],
-    })
+      roomTitle: data[index].title["fr_FR"],
+    });
   }
 
   const roomTypes = data.map((roomType, index) => {
@@ -52,9 +49,11 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
           onValueChange={() => setCriteriaToContext(index)}
           color={criteria.roomType ? colors.primary : colors.primary}
         />
-        <Text style={RoomTypesBottomSheetStyle.alignContent}>{roomType.title['fr_FR']}</Text>
+        <Text style={RoomTypesBottomSheetStyle.alignContent}>
+          {roomType.title["fr_FR"]}
+        </Text>
       </View>
-    )
+    );
   });
 
   //console.log("RoomTypes : ", data)
@@ -65,7 +64,9 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
 
   return (
     <View style={RoomTypesBottomSheetStyle.container}>
-      <Text style={RoomTypesBottomSheetStyle.textTitle}>Indiquez le type de chambre</Text>
+      <Text style={RoomTypesBottomSheetStyle.textTitle}>
+        Indiquez le type de chambre
+      </Text>
       {roomTypes}
     </View>
   );
