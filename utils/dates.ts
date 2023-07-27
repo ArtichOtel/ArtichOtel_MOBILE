@@ -9,3 +9,13 @@ export function getDiffDate(start, end): number
     let calculDiff = end.getTime() - start.getTime();
     return Math.floor(calculDiff / (1000 * 3600 * 24));
 }
+
+
+
+
+
+export function addDays(date : Date, days : number) {
+    let newDate = new Date(date)
+    newDate.setDate(newDate.getDate() + days)
+    return newDate
+}
