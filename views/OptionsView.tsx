@@ -14,6 +14,7 @@ import ScrollView = Animated.ScrollView;
 import {getDiffDate} from "../utils/dates";
 import optionsStyle from "../style/optionsStyle";
 import Option from "../components/option";
+import {setDayWithOptions} from "date-fns/fp";
 
 type OptionsViewProps = {
     navigation: any,
@@ -71,11 +72,101 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
     }, [])
 
+    let nPeriod : number;
     // update price
     function calculPrice(index :number)
     {
         let tempListCalcul = options.map(b => b)
-        if(tempListCalcul[index].name === "Wifi")
+        switch(tempListCalcul[index].nb_day)
+        {
+            case 0:
+                nPeriod =  0;
+                switch(tempListCalcul[index].by_person)
+                {
+                    case 0:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price);
+                        }
+                        break;
+                    case 1:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPers);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPers);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 1:
+                switch(tempListCalcul[index].by_person)
+                {
+                    case 0:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * diffDate);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * diffDate);
+                        }
+                        break;
+                    case 1:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPers * diffDate);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPers * diffDate);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 7:
+                nPeriod =  Math.ceil(diffDate/7)
+                switch(tempListCalcul[index].by_person)
+                {
+                    case 0:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPeriod);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPeriod);
+                        }
+                        break;
+                    case 1:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPers * nPeriod);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPers * nPeriod);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+
+        /*if(tempListCalcul[index].name === "Wifi")
         {
             if(tempListCalcul[index].enabled)
             {
@@ -88,7 +179,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
         else if(tempListCalcul[index].name === "Télévision")
         {
-            const nPeriod =  Math.ceil(diffDate/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
+
             if(tempListCalcul[index].enabled)
             {
 
@@ -110,7 +201,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
             {
                 setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate);
             }
-        }
+        }*/
     }
 
 
