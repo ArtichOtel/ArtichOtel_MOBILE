@@ -5,7 +5,7 @@ import React from "react";
 
 export default function Option ( {opt, toggle} ) {
     const option = opt.item
-    console.log("opt",opt)
+    //console.log("opt",opt)
     const toggleOption = toggle
 
     function getSuffix() {
@@ -22,7 +22,7 @@ export default function Option ( {opt, toggle} ) {
     }
 
     return (
-        <View style={optionStyle.contentCenter}>
+        <View style={optionStyle.contentOptionCenter}>
             <View style={optionStyle.textContainer}>
                 <Text style={{marginTop:15, marginBottom:15}}>
                     {`${option.name['fr_FR']} (${option.u_price}€${option.by_person?'/personnes':''}${getSuffix()})`}

@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import colors from "./colors";
 import { withTiming } from "react-native-reanimated";
-import { faAlignCenter } from "@fortawesome/free-solid-svg-icons";
 
 
 const presentChamberStyle = StyleSheet.create({
@@ -36,7 +35,12 @@ const presentChamberStyle = StyleSheet.create({
         justifyContent: "center",
     },
 
-    //Un truc pour chaque partie de récap info
+    infoContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
 
     line: {
         borderBottomColor:colors.primary,
@@ -46,14 +50,21 @@ const presentChamberStyle = StyleSheet.create({
         marginTop: 15,
     },
 
-    contentOptionCenter: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
+    lineBeforeCB: {
+        borderBottomColor:colors.primary,
+        borderBottomWidth: 1,
+        alignSelf: "stretch",
+        marginBottom:5,
+        marginTop: 15,
     },
 
-
-
+    contentOptionCenter: {
+        display:"flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginLeft: 5,
+    },
 
     textContainer: {
         alignItems: "flex-start",
@@ -69,12 +80,13 @@ const presentChamberStyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        marginLeft: 15,
     },
 
     buttonBackgroundContainer: {
         backgroundColor: colors.primary,
         width: "100%",
-        height: 100,
+        height: 75,
         flexDirection: "row",
         borderRadius: 10,
         borderStyle: "solid",
@@ -82,7 +94,7 @@ const presentChamberStyle = StyleSheet.create({
     },
 
     contentCenter: {
-      alignItems: "center",
+        alignItems: "center",
         gap: 5,
     },
 
@@ -90,7 +102,7 @@ const presentChamberStyle = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: colors.tertiary,
         marginLeft: 25,
-        marginBottom: 15,
+        marginBottom: 0,
         borderRadius: 5,
         height: 40,
         width: 110,
@@ -101,7 +113,7 @@ const presentChamberStyle = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: colors.tertiary,
         marginLeft: 8,
-        marginBottom: 15,
+        marginBottom: 0,
         borderRadius: 5,
         height: 40,
         width: 110,
@@ -113,7 +125,7 @@ const presentChamberStyle = StyleSheet.create({
         backgroundColor: colors.tertiary,
         marginRight: 15,
         marginLeft: 10,
-        marginBottom: 15,
+        marginBottom: 0,
         borderRadius: 5,
         height: 40,
         width: 220,

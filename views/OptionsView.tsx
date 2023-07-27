@@ -12,7 +12,6 @@ import {API_URL} from '@env';
 import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import {getDiffDate} from "../utils/dates";
-import optionsStyle from "../style/optionsStyle";
 import Option from "../components/option";
 import {setDayWithOptions} from "date-fns/fp";
 
@@ -40,7 +39,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     const diffDate = getDiffDate(criteria.startDate, criteria.endDate);
     //console.log("searchReservationsResult in optionview",searchReservationsResult)
     const roomPrice = searchReservationsResult.price;
-    const basePrice = nPers * roomPrice * diffDate
+    const basePrice = nPers * roomPrice * diffDate;
 
     const [options, setOptions] = useState<Option[]|null>(null);
     const [totalPrice, setTotalPrice] = useState<number>(basePrice);
@@ -178,20 +177,23 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         
             <ScrollView>
                 <View style={optionStyle.recapInfoContainer}>
-                    <View>
-                        <Text style={baseStyle.textTypo}>Arrivée</Text>
+                    <View style={optionStyle.infoContainer}>
+                        <Text style={baseStyle.textTypo}>Date d'Arrivée - </Text>
                         <Text style={baseStyle.textTypo}>{criteria.startDate.toDateString()}</Text>
-                        <View style={optionStyle.line}/>
+
                     </View>
 
-                    <View>
-                        <Text style={baseStyle.textTypo}>Départ</Text>
+                    <View style={optionStyle.line}/>
+
+                    <View style={optionStyle.infoContainer}>
+                        <Text style={baseStyle.textTypo}>Date de Départ - </Text>
                         <Text style={baseStyle.textTypo}>{criteria.endDate.toDateString()}</Text>
-                        <View style={optionStyle.line}/>
                     </View>
 
-                    <View>
-                        <Text style={baseStyle.textTypo}>Nombre de Personnes</Text>
+                    <View style={optionStyle.line}/>
+
+                    <View style={optionStyle.infoContainer}>
+                        <Text style={baseStyle.textTypo}>Nombre de Personnes - </Text>
                         <Text style={baseStyle.textTypo}>{nPers}</Text>
                     </View>
                     
@@ -208,11 +210,9 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
                             />
                         }
                     </View>
-
-
                 </View>
 
-                <View style={optionStyle.line}/>
+                <View style={optionStyle.lineBeforeCB}/>
                 <View style={optionStyle.cbContainer}>
                     <FontAwesomeIcon icon={faCreditCard} size={40} />
                     <TouchableOpacity style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, {width: 275}]}>
@@ -226,11 +226,13 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
             <View style={[
                 Platform.OS === 'android' ?
-                optionStyle.buttonPriceAndroid : optionsStyle.buttonPrice,
+                optionStyle.buttonPriceAndroid : optionStyle.buttonPrice,
                 optionStyle.contentCenter]}>
                 <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>{totalPrice} €</Text>
             </View>
-            <TouchableOpacity style={[optionStyle.buttonValid]}><Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text></TouchableOpacity>
+            <TouchableOpacity style={[optionStyle.buttonValid]}>
+                <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text>
+            </TouchableOpacity>
         </View>
       </View>
     );
