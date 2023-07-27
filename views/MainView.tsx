@@ -18,6 +18,7 @@ import DatePickerBottomSheetContentAndroid from '../components/bottomSheets/Date
 // @ts-ignore
 import { API_URL } from '@env';
 import { CriteriaCtx } from '../utils/context';
+import Animated from 'react-native-reanimated';
 
 type MainViewProps = {
   navigation: any,
@@ -34,6 +35,10 @@ export default function MainView(props: MainViewProps): JSX.Element {
   const [heroData, setHeroData] = useState<Hero[] | null>([]);
   const [image, setImage] = useState<string | null>(null);
   const [criteriaError, setCriteriaError] = useState<string | null>(null)
+
+  const [roomTypeHasChanged, setRoomTypeHasChanged] = useState(false)
+  const [dateHasChanged, setdateHasChanged] = useState(false)
+  const [peopleNbrHasChanged, setpeopleNbrHasChanged] = useState(false)
 
   const baseBottomSheetHeight = (-SCREEN_HEIGHT +
     mainStyle.first.marginTop +
@@ -74,21 +79,45 @@ export default function MainView(props: MainViewProps): JSX.Element {
     try {
       const response = await axios.get(API_URL + "hero");
       const data = response.data[0];
-      //console.log(data);
       setHeroData(data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  function animateValidation(key: string) {
+    switch (key) {
+      // If conditions are here to prevent re-setting the value
+      // when the func pass into the useEffect associated to.
+      // So, it prevents too much resource consumption from the app.
+      case 'roomType':
+        if (!roomTypeHasChanged) setRoomTypeHasChanged(true)
+        break
+      case 'startDate':
+        if (!dateHasChanged) setdateHasChanged(true)
+        break
+      case 'endDate':
+        if (!dateHasChanged) setdateHasChanged(true)
+        break
+      case 'peopleNbr':
+        if (!peopleNbrHasChanged) setpeopleNbrHasChanged(true)
+        break
+      default:
+        break
+    }
+  }
+
   function validateCriterias() {
     let validated = 0
 
     for (const [key, value] of Object.entries(criteria)) {
-      if (value) validated++
-      else return setCriteriaError(criteriaErrors[`${key}`])
+      if (value) {
+        validated++
+        animateValidation(key)
+      }
+      else setCriteriaError(criteriaErrors[`${key}`])
     }
-    setCriteriaError(null)
+    if (validated === Object.keys(criteriaErrors).length) setCriteriaError(null)
   }
 
   const searchReservations = async () => {
@@ -139,20 +168,31 @@ export default function MainView(props: MainViewProps): JSX.Element {
         barStyle={'light-content'}
       />
       <GestureHandlerRootView style={[baseStyle.container, baseStyle.heroContainer, mainStyle.container]}>
-        <View>
+        <Animated.View>
           <TouchableOpacity
-            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
+            style={[
+              baseStyle.btn,
+              mainStyle.alignBtn,
+              buttonStyle.light,
+              mainStyle.first,
+              roomTypeHasChanged ? buttonStyle.validated : null
+            ]}
             onPress={() => onPress(allRefs.refRoomsTypes, baseBottomSheetHeight)}
           >
-            <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
+            <FontAwesomeIcon icon={faBed} size={40} />
             <Text style={baseStyle.textDark}>{criteria.roomTitle ? criteria.roomTitle : "Type de chambre"}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+            style={[
+              baseStyle.btn,
+              mainStyle.alignBtn,
+              buttonStyle.light,
+              dateHasChanged ? buttonStyle.validated : null
+            ]}
             onPress={() => onPress(allRefs.refDates, baseBottomSheetHeight + BottomSheetHeightSeperation)}
           >
-            <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
+            <FontAwesomeIcon icon={faCalendar} size={40} />
             <Text style={baseStyle.textDark}>
               {!criteria.startDate && !criteria.endDate
                 ? 'Dates de séjour'
@@ -161,10 +201,15 @@ export default function MainView(props: MainViewProps): JSX.Element {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+            style={[
+              baseStyle.btn,
+              mainStyle.alignBtn,
+              buttonStyle.light,
+              peopleNbrHasChanged ? buttonStyle.validated : null
+            ]}
             onPress={() => onPress(allRefs.refPeopleNbr, baseBottomSheetHeight + BottomSheetHeightSeperation * 2)}
           >
-            <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
+            <FontAwesomeIcon icon={faUserGroup} size={40} />
             <Text style={baseStyle.textDark}>{criteria.peopleNbr ? criteria.peopleNbr : "Nombre de personnes"}</Text>
           </TouchableOpacity>
 
@@ -175,7 +220,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
             <Text style={[buttonStyle.search, baseStyle.textLight]}>Rechercher</Text>
           </TouchableOpacity>
 
-        </View>
+        </Animated.View>
         <BottomSheetBase
           ref={allRefs.refRoomsTypes}
           height={baseBottomSheetHeight}
