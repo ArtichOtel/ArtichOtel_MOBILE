@@ -12,6 +12,9 @@ const buttonStyle = StyleSheet.create({
     backgroundColor: colors.primary,
     color: colors.secondary,
   },
+  validated : {
+    backgroundColor: colors.tertiary
+  }
 });
 
 export default buttonStyle;

@@ -30,7 +30,6 @@ function RoomTypesBottomSheetContent(props: any): JSX.Element {
       console.error(error);
     }
   };
-  //console.log('criteria', criteria)
   function setCriteriaToContext(index: number) {
     //setChecked(index);
 
