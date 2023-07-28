@@ -23,8 +23,8 @@ export default function MainMenu({ navigation }): JSX.Element {
 
   useEffect(() => {
     //console.log("mainMenu current user update :", currentUser.userId)
-    setIsLogged(currentUser.userId !== null);
-  }, [currentUser.userId, UserCtx]);
+    setIsLogged(currentUser.user_id !== null);
+  }, [currentUser.user_id, UserCtx]);
 
   return !UserCtx ? null : (
     <View style={[mainMenuStyle.container, containerHeight]}>
