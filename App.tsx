@@ -11,7 +11,7 @@ import colors from "./style/colors";
 import React, { useEffect, useState } from 'react';
 import { criteriaType, userProfileType, userDataType, bookingType } from "./utils/types";
 import OptionsView from "./views/OptionsView";
-import { defaultProfile, defaultUserData } from "./utils/defaults";
+import { defaultProfile, defaultUserData, defaultBooking } from "./utils/defaults";
 import { SvgUri } from "react-native-svg";
 import { View } from "react-native";
 import { useFonts } from "expo-font";
@@ -26,10 +26,6 @@ export const defaultCriteria: criteriaType = {
   peopleNbr: 0
 }
 
-export const defaultBooking: bookingType = {
-  reservationID: null,
-
-}
 
 export default function App(): JSX.Element {
   const [currentUser, setCurrentUser] = useState<userDataType>(defaultUserData)
@@ -65,27 +61,29 @@ export default function App(): JSX.Element {
     <UserCtx.Provider value={{ currentUser, setCurrentUser }}>
       <UserProfileCtx.Provider value={{ userProfile, setUserProfile }}>
         <CriteriaCtx.Provider value={{ criteria, setCriteria }}>
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName="Main">
-              <Stack.Screen name="Main" component={MainView}
-                options={screenOptions} />
+          <BookingCtx.Provider value={{booking, setBooking}}>
+            <NavigationContainer>
+              <Stack.Navigator initialRouteName="Main">
+                <Stack.Screen name="Main" component={MainView}
+                  options={screenOptions} />
 
-              <Stack.Screen name="Connection" component={ConnectionView}
-                options={screenOptions} />
+                <Stack.Screen name="Connection" component={ConnectionView}
+                  options={screenOptions} />
 
-              <Stack.Screen name="SignUp" component={SignUpView}
-                options={screenOptions} />
+                <Stack.Screen name="SignUp" component={SignUpView}
+                  options={screenOptions} />
 
-              <Stack.Screen name="Options" component={OptionsView}
-                options={screenOptions} />
+                <Stack.Screen name="Options" component={OptionsView}
+                  options={screenOptions} />
 
-              <Stack.Screen name="Room" component={PresentChamberView}
-                options={screenOptions} />
+                <Stack.Screen name="Room" component={PresentChamberView}
+                  options={screenOptions} />
 
-              <Stack.Screen name="Profile" component={ProfileView}
-                options={screenOptions} />
-            </Stack.Navigator>
-          </NavigationContainer>
+                <Stack.Screen name="Profile" component={ProfileView}
+                  options={screenOptions} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </BookingCtx.Provider>
         </CriteriaCtx.Provider>
       </UserProfileCtx.Provider>
     </UserCtx.Provider>

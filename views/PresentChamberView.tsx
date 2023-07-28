@@ -33,18 +33,37 @@ type roomProps = {
 
 export default function PresentChamberView(props: roomProps): JSX.Element {
   const { navigation, route } = props;
-  const { criteria } = React.useContext(CriteriaCtx);
+  const { criteria,  } = React.useContext(CriteriaCtx);
   const { currentUser } = React.useContext(UserCtx);
+  const { booking, setBooking } = React.useContext(BookingCtx);
   const searchReservationsResult = route.params.searchReservationsResult[0];
   //console.log("searchReservationsResult",searchReservationsResult)
     const basePrice = searchReservationsResult.price * criteria.peopleNbr * getDiffDate(criteria.startDate, criteria.endDate)
 
-  function navigationFlow() {
-    //console.log("navigationFlow, currentUser", currentUser);
-    currentUser.token
-      ? navigation.navigate("Options", { searchReservationsResult: searchReservationsResult })
-      : navigation.navigate("Connection", { nextScreen: "Options", searchReservationsResult: searchReservationsResult});
-  }
+    function beginBooking()
+    {
+        axios.post(API_URL+"booking", {
+            room_id: criteria.room_id,
+            customer_id: currentUser.customer_id,
+            status: "Pending",
+            begin_date: criteria.startDate,
+            end_date: criteria.endDate,
+            nbrs_people: criteria.peopleNbr
+        }).then((response) => {
+            console.log("Reservation : ", response.data);
+            setBooking({booking_id: response.data.id, option_list : null});
+            navigationFlow();
+        }).catch((err) =>  {
+            console.log("Debut réservation : ", err);
+        })
+    }
+
+    function navigationFlow() {
+        //console.log("navigationFlow, currentUser", currentUser);
+        currentUser.token
+          ? navigation.navigate("Options", { searchReservationsResult: searchReservationsResult })
+          : navigation.navigate("Connection", { nextScreen: "Options", searchReservationsResult: searchReservationsResult});
+    }
 
 
   return ( !searchReservationsResult ? null :
@@ -197,7 +216,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
         </View>
         <TouchableOpacity
           style={[presentChamberStyle.buttonValid]}
-          onPress={navigationFlow}
+          onPress={beginBooking}
         >
           <Text
             style={[presentChamberStyle.buttonTextColor, baseStyle.textTypo]}

@@ -1,4 +1,4 @@
-import { userProfileType, userDataType } from "../utils/types";
+import {userProfileType, userDataType, bookingType} from "../utils/types";
 
 export const defaultUserData: userDataType = {
   userId: null,
@@ -13,4 +13,10 @@ export const defaultProfile: userProfileType = {
   dateUpdate: null
   //firstName: null,
   //lastName: null
+}
+
+
+export const defaultBooking: bookingType = {
+  booking_id: 0,
+  option_list: null,
 }

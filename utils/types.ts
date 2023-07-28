@@ -24,7 +24,8 @@ export type userProfileType = {
 
 
 export type bookingType = {
-    reservationID: string | null,
+    booking_id: number,
+    option_list: any,
 }
 
 export type credentials = {

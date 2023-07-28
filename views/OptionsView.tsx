@@ -1,4 +1,15 @@
-import {Text, View, Image, TouchableOpacity, Animated, Switch, FlatList, Platform} from 'react-native';
+import {
+    Alert,
+    Text,
+    View,
+    Image,
+    TouchableOpacity,
+    Animated,
+    Switch,
+    FlatList,
+    Platform,
+    TextInput
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
@@ -9,11 +20,12 @@ import buttonStyle from '../style/buttonStyle';
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from '@env';
-import {CriteriaCtx} from "../utils/context";
+import {CriteriaCtx, BookingCtx, UserCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import {getDiffDate} from "../utils/dates";
 import Option from "../components/option";
 import {setDayWithOptions} from "date-fns/fp";
+import connectionStyle from "../style/ConnectionStyle";
 
 type OptionsViewProps = {
     navigation: any,
@@ -32,6 +44,8 @@ type Option = {
 export default function OptionsView(props: OptionsViewProps): JSX.Element {
     const { navigation, route } = props;
     const { criteria } = React.useContext(CriteriaCtx);
+    const { booking } = React.useContext(BookingCtx);
+    const { user } = React.useContext(UserCtx)
     const searchReservationsResult = route.params.searchReservationsResult;
 
     // recap criteria
@@ -43,6 +57,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
 
     const [options, setOptions] = useState<Option[]|null>(null);
     const [totalPrice, setTotalPrice] = useState<number>(basePrice);
+    const [numCB, setNumCB] = useState<string>('');
 
     // fetch options
     const fetchOptions = async () => {
@@ -166,7 +181,48 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
     }
 
+    //Check num CB
+    function filterNum(num) {
+        setNumCB(num.replace(/[^0-9]/g, ""));
+    }
 
+    //Exemple
+    function updateBooking() {
+        if (numCB.length !== 16) {
+            alert("Veuillez fournir votre numéro de CB");
+        } else {
+            // confirm booking with options and bank card
+            const payload = {
+                status: "confirmed",
+                optional_services_id: options.map((opt) => {
+                    opt.id
+                }),
+                bankCard: numCB,
+            };
+
+            axios
+                .put(
+                    API_URL+"booking/"+ booking.booking_id,
+                    payload,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${user.token}`,
+                        },
+                    }
+                )
+                .then((resp) => {
+                    console.log("change Status : ", resp.data);
+                    Alert.alert("Votre réservation est enregistrée !!")
+                    navigationFlow();
+                })
+                .catch((e) => console.log("Erreur : ", e));
+        }
+    }
+
+    function navigationFlow() {
+        //console.log("navigationFlow, currentUser", currentUser);
+        navigation.navigate("Main");
+    }
 
 
     return (
@@ -215,9 +271,16 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
                 <View style={optionStyle.lineBeforeCB}/>
                 <View style={optionStyle.cbContainer}>
                     <FontAwesomeIcon icon={faCreditCard} size={40} />
-                    <TouchableOpacity style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, {width: 275}]}>
-                        <Text>Numéro Carte Bancaire</Text>
-                    </TouchableOpacity>
+                    <Text>Numéro Carte Bancaire</Text>
+                    <TextInput
+                        style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, {width: 275}]}
+                        blurOnSubmit={true}
+                        inputMode="text"
+                        onChangeText={(val) => filterNum(val)}
+                        //onPressIn={() => setConnectionError(null)}
+                        placeholder={"0000 0000 0000 0000"}
+                        value={numCB}
+                    />
                 </View>
             </ScrollView>
 
@@ -230,7 +293,8 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
                 optionStyle.contentCenter]}>
                 <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>{totalPrice} €</Text>
             </View>
-            <TouchableOpacity style={[optionStyle.buttonValid]}>
+            <TouchableOpacity style={[optionStyle.buttonValid]}
+                onPress={updateBooking}>
                 <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text>
             </TouchableOpacity>
         </View>
