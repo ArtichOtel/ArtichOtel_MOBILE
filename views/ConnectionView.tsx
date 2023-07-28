@@ -140,7 +140,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
 
     return (
-        !currentUser ? null :
+        //!currentUser ? null :
         <View style={baseStyle.view}>
             <View style={[connectionStyle.container]}>
 
