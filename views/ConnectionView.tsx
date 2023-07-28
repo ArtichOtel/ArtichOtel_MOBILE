@@ -1,19 +1,23 @@
-import React, {useContext, useState, useEffect} from "react";
-import {Text, TextInput, TouchableOpacity, View} from "react-native";
-import connectionStyle from "../style/ConnectionStyle";
-import inputStyle from "../style/inputStyle";
-import MainMenu from "../components/tabs/MainMenu";
-import baseStyle from "../style/baseStyle";
-import buttonStyle from "../style/buttonStyle";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faArrowRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
-import mainMenuStyle from "../style/mainMenuStyle";
-import {getCustomerData, getUserData} from "../utils/profileUpdater";
+import React, { useContext, useState, useEffect } from "react";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 // @ts-ignore
 import {API_URL} from "@env";
-import {credentials, userProfileType} from "../utils/types";
-import {UserCtx, UserProfileCtx} from "../utils/context";
+
+import MainMenu from "../components/tabs/MainMenu";
+
+import { credentials, userProfileType } from "../utils/types";
+import { UserCtx, UserProfileCtx } from "../utils/context";
+import {getUserData, getCustomerData } from "../utils/profileUpdater";
+
+import baseStyle from "../style/baseStyle";
+import buttonStyle from "../style/buttonStyle";
+import mainMenuStyle from "../style/mainMenuStyle";
+import connectionStyle from "../style/ConnectionStyle";
+import inputStyle from "../style/inputStyle";
+
 
 
 type ConnectionProps = {
@@ -24,27 +28,32 @@ type ConnectionProps = {
 
 function ConnectionView(props: ConnectionProps): JSX.Element {
     const {navigation, route} = props
-    //const {userAccess, setUserAccess} = useState<{id:string, token:string}>({id:null, token:null})
+
+    // CONTEXTS
     const {currentUser, setCurrentUser} = useContext(UserCtx)
     const {userProfile, setUserProfile} = useContext(UserProfileCtx)
+
+    // internal states
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [connectionError, setConnectionError] = useState<string|null>(null)
-    const searchReservationsResult : object = route.params?.searchReservationsResult ? route.params.searchReservationsResult : null
+
+    // navigation flow
+    const searchReservationsResult: object = route.params?.searchReservationsResult ? route.params.searchReservationsResult : null
     const nextScreen:object = route.params?.nextScreen ? route.params.nextScreen : null
     //console.log('route.params in connectionview', route.params);
     //console.log('searchReservationsResult in connectionview', searchReservationsResult);
 
-    const getUserAccess = async () => {
+
+  const getUserAccess = async () => {
         return await axios
-            .post(API_URL+"user/login", {
+            .post(API_URL + "user/login", {
                 pseudo: username,
                 email: username,
-                password: password
+                password: password,
             })
             .then((response) => {
-                console.log("getUserAccess",response.data)
-
+                console.log("getUserAccess", response.data);
                 return response.data;
             })
             .then((userData) => {
@@ -63,41 +72,45 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     customer = userData.customer_id
                 }
 
-                return {id:userData.user_id, role:userData.role, token:userData.token, customer: customer}
-            })
-            .catch((err) => {
-                console.log("connection error :", err);
-                setConnectionError(err.response.data.message)
-            });
-    };
+        return {
+          id: userData.user_id,
+          role: userData.role,
+          token: userData.token,
+          customer: customer,
+        };
+      })
+      .catch((err) => {
+        console.log("connection error :", err);
+        setConnectionError(err.response.data.message);
+      });
+  };
 
-
-    function tryConnection():void {
-        let userData: userProfileType = {
-            dateCreated: null,
-            email: null,
-            pseudo: null,
-            dateUpdate: null,
-            //firstName: null,
-            //lastName: null
-        }
+  function tryConnection(): void {
+      let userData: userProfileType = {
+          dateCreated: null,
+          email: null,
+          pseudo: null,
+          dateUpdate: null,
+          //firstName: null,
+          // lastName: null
+          };
 
         getUserAccess()
             .then((cred: credentials) => {
-                console.log("connection success")
-                return cred
+                console.log("connection success");
+                return cred;
             })
-            .then((cred:credentials) => {
-                return getUserData({cred})
+            .then((cred: credentials) => {
+                return getUserData({ cred });
             })
-            .then(({data, cred}) => {
+            .then(({ data, cred }) => {
                 userData.dateCreated = data.created_at;
                 userData.email = data.email;
                 userData.pseudo = data.pseudo;
                 userData.dateUpdate = data.updated_at;
-                return {data, cred}
+                return { data, cred }
             })
-            .then(({data, cred}) => {
+            .then(({ data, cred }) => {
                 //if (cred.role==='customer') { // 2 for customer
                     //return getCustomerData({cred})
                 //}
@@ -113,7 +126,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             .then(() => {
                 //console.log(`navigate from connection to ${nextScreen ? {nextScreen?.toString(), searchReservationsResult.toString()} : 'main'}`)
                nextScreen
-                   ? navigation.navigate(route.params.nextScreen, {searchReservationsResult: route.params.searchReservationsResult}) // "Options", { }
+                   ? navigation.navigate(route.params.nextScreen, {searchReservationsResult: route.params.searchReservationsResult})
                    : navigation.navigate('Main')
                 }
             )

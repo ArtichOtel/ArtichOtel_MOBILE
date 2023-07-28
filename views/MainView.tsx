@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground, StatusBar, Platform, Alert, Animated, Easing } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBed, faCalendar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import baseStyle from '../style/baseStyle';
@@ -18,6 +18,7 @@ import DatePickerBottomSheetContentAndroid from '../components/bottomSheets/Date
 // @ts-ignore
 import { API_URL } from '@env';
 import { CriteriaCtx } from '../utils/context';
+import colors from '../style/colors';
 
 type MainViewProps = {
   navigation: any,
@@ -33,7 +34,14 @@ export default function MainView(props: MainViewProps): JSX.Element {
   const { criteria } = React.useContext(CriteriaCtx);
   const [heroData, setHeroData] = useState<Hero[] | null>([]);
   const [image, setImage] = useState<string | null>(null);
+  const [criteriaError, setCriteriaError] = useState<string | null>(null)
 
+  // Animations consts
+  const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
+  const roomTypeAnim = useRef(new Animated.Value(0)).current
+  const dateAnim = useRef(new Animated.Value(0)).current
+  const peopleNbrAnim = useRef(new Animated.Value(0)).current
+  const [criteriaDiffs, setCriteriaDiffs] = useState({})
 
   const baseBottomSheetHeight = (-SCREEN_HEIGHT +
     mainStyle.first.marginTop +
@@ -46,6 +54,12 @@ export default function MainView(props: MainViewProps): JSX.Element {
     baseStyle.btn.padding +
     baseStyle.btn.height
   )
+  const criteriaErrors = {
+    roomType: "Veuillez choisir un type de chambre.",
+    startDate: "Veuillez choisir une date d'arrivée.",
+    endDate: "Veuillez choisir une date de départ.",
+    peopleNbr: "Veuillez choisir un nombre de personnes."
+  }
   const allRefs = {
     refRoomsTypes: useRef<BottomSheetRefProps>(null),
     refDates: useRef<BottomSheetRefProps>(null),
@@ -68,33 +82,101 @@ export default function MainView(props: MainViewProps): JSX.Element {
     try {
       const response = await axios.get(API_URL + "hero");
       const data = response.data[0];
-      //console.log(data);
       setHeroData(data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const searchReservations = async () => {
+  function fadeInOut(animation: Animated.Value) {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: false,
+      easing: Easing.inOut(Easing.linear)
+    }).start(() => roomTypeAnim.setValue(0)) // Resets the value once the animation is in 'stop' state.
+  }
 
-    if (criteria.endDate && criteria.startDate && criteria.peopleNbr > 0 && criteria.roomType) {
+  function bgAnimatedStyle(animation: Animated.Value) {
+    return {
+      backgroundColor: animation.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: [colors.secondary, colors.tertiary, colors.secondary],
+      })
+    }
+  }
+
+  function animateValidation(key: string) {
+    console.log('✔︎') // TODO : Delete
+    switch (key) {
+      case 'roomType':
+        fadeInOut(roomTypeAnim)
+        break
+      case 'startDate':
+        fadeInOut(dateAnim)
+        break
+      case 'endDate':
+        fadeInOut(dateAnim)
+        break
+      case 'peopleNbr':
+        fadeInOut(peopleNbrAnim)
+        break
+      default:
+        break
+    }
+  }
+
+  function validateCriterias() {
+    let validated = 0
+
+    for (const [key, value] of Object.entries(criteria)) {
+      // TODO : Delete logs
+      console.log('key:', key, 'value:', value)
+      console.log(`criteriaDiffs['${key}']`, criteriaDiffs[`${key}`])
+      console.log('!==', value !== criteriaDiffs[`${key}`])
+      if (value) {
+        validated++
+        if (value !== criteriaDiffs[`${key}`]) {
+          animateValidation(key)
+          setCriteriaDiffs({
+            ...criteriaDiffs,
+            [key]: value
+          })
+        }
+      }
+      else setCriteriaError(criteriaErrors[`${key}`])
+    }
+    if (validated === Object.keys(criteriaErrors).length) setCriteriaError(null)
+  }
+
+  const searchReservations = async () => {
+    if (!criteriaError) {
       try {
         let result;
         const requestURL = new URL(
-            `/search?type=1&startDate=${criteria.startDate}&endDate=${criteria.endDate}`, API_URL)
+          `/search?type=1&startDate=${criteria.startDate}&endDate=${criteria.endDate}`, API_URL)
 
         const response = await axios.get(requestURL.href)
         result = response.data
          //console.log('searchReservations data recup: ', result)
 
-        navigation.navigate('Room', { searchReservationsResult: result })
+        if (result.length > 0) navigation.navigate('Room', { searchReservationsResult: result })
+        else Alert.alert(
+          'Aucune chambre disponible',
+          'Veuillez changer la plage de dates de réservation.'
+        )
       } catch (error) {
-        console.error(error)
+        console.error('MainView - searchReservations:', error)
       }
     } else {
-      console.log("need criteria",criteria)
+      console.log('Main View - criteria:', criteria)
+      Alert.alert('Critère non valide', criteriaError)
     }
   }
+
+  useEffect(() => {
+    validateCriterias()
+  }, [criteria])
 
   useEffect(() => {
     fetchHero();
@@ -116,33 +198,50 @@ export default function MainView(props: MainViewProps): JSX.Element {
       />
       <GestureHandlerRootView style={[baseStyle.container, baseStyle.heroContainer, mainStyle.container]}>
         <View>
-          <TouchableOpacity
-            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, mainStyle.first]}
+          <AnimatedTouchableOpacity
+            style={[
+              baseStyle.btn,
+              mainStyle.alignBtn,
+              buttonStyle.light,
+              mainStyle.first,
+              bgAnimatedStyle(roomTypeAnim)
+            ]}
             onPress={() => onPress(allRefs.refRoomsTypes, baseBottomSheetHeight)}
           >
-            <FontAwesomeIcon icon={faBed} size={40} style={buttonStyle.light} />
-            <Text style={baseStyle.textDark}>{criteria.roomType ? criteria.roomType : "Type de chambre" }</Text>
-          </TouchableOpacity>
+            <FontAwesomeIcon icon={faBed} size={40} />
+            <Text style={baseStyle.textDark}>{criteria.roomTitle ? criteria.roomTitle : "Type de chambre"}</Text>
+          </AnimatedTouchableOpacity>
 
-          <TouchableOpacity
-            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+          <AnimatedTouchableOpacity
+            style={[
+              baseStyle.btn,
+              mainStyle.alignBtn,
+              buttonStyle.light,
+              bgAnimatedStyle(dateAnim)
+            ]}
             onPress={() => onPress(allRefs.refDates, baseBottomSheetHeight + BottomSheetHeightSeperation)}
           >
-            <FontAwesomeIcon icon={faCalendar} size={40} style={buttonStyle.light} />
+            <FontAwesomeIcon icon={faCalendar} size={40} />
             <Text style={baseStyle.textDark}>
               {!criteria.startDate && !criteria.endDate
-                  ? 'Dates de séjour'
-                  : criteria.startDate?.toDateString()+' - '+criteria.endDate?.toDateString()}
+                ? 'Dates de séjour'
+                : criteria.startDate?.toLocaleDateString() + ' - ' + criteria.endDate?.toLocaleDateString()
+              }
             </Text>
-          </TouchableOpacity>
+          </AnimatedTouchableOpacity>
 
-          <TouchableOpacity
-            style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light]}
+          <AnimatedTouchableOpacity
+            style={[
+              baseStyle.btn,
+              mainStyle.alignBtn,
+              buttonStyle.light,
+              bgAnimatedStyle(peopleNbrAnim)
+            ]}
             onPress={() => onPress(allRefs.refPeopleNbr, baseBottomSheetHeight + BottomSheetHeightSeperation * 2)}
           >
-            <FontAwesomeIcon icon={faUserGroup} size={40} style={buttonStyle.light} />
+            <FontAwesomeIcon icon={faUserGroup} size={40} />
             <Text style={baseStyle.textDark}>{criteria.peopleNbr ? criteria.peopleNbr : "Nombre de personnes"}</Text>
-          </TouchableOpacity>
+          </AnimatedTouchableOpacity>
 
           <TouchableOpacity
             style={[baseStyle.btn, buttonStyle.search]}

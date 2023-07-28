@@ -12,8 +12,8 @@ import {API_URL} from '@env';
 import {CriteriaCtx} from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import {getDiffDate} from "../utils/dates";
-import optionsStyle from "../style/optionsStyle";
 import Option from "../components/option";
+import {setDayWithOptions} from "date-fns/fp";
 
 type OptionsViewProps = {
     navigation: any,
@@ -39,7 +39,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     const diffDate = getDiffDate(criteria.startDate, criteria.endDate);
     //console.log("searchReservationsResult in optionview",searchReservationsResult)
     const roomPrice = searchReservationsResult.price;
-    const basePrice = nPers * roomPrice * diffDate
+    const basePrice = nPers * roomPrice * diffDate;
 
     const [options, setOptions] = useState<Option[]|null>(null);
     const [totalPrice, setTotalPrice] = useState<number>(basePrice);
@@ -71,45 +71,98 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
     }, [])
 
+    let nPeriod : number;
     // update price
     function calculPrice(index :number)
     {
         let tempListCalcul = options.map(b => b)
-        if(tempListCalcul[index].name === "Wifi")
+        switch(tempListCalcul[index].nb_day)
         {
-            if(tempListCalcul[index].enabled)
-            {
-                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person ? nPers : 1));
-            }
-            else
-            {
-                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1));
-            }
-        }
-        else if(tempListCalcul[index].name === "Télévision")
-        {
-            const nPeriod =  Math.ceil(diffDate/7) // 7, 1 suivant data en bdd, si 0 nPeriod = 1
-            if(tempListCalcul[index].enabled)
-            {
-
-                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod)
-            }
-            else
-            {
-                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * nPeriod);
-            }
-        }
-        else
-        {
-            if(tempListCalcul[index].enabled)
-            {
-
-                setTotalPrice(price => price += tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate)
-            }
-            else
-            {
-                setTotalPrice(price => price -= tempListCalcul[index].u_price * (tempListCalcul[index].by_person? nPers : 1) * diffDate);
-            }
+            case 0:
+                nPeriod =  0;
+                switch(tempListCalcul[index].by_person)
+                {
+                    case 0:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price);
+                        }
+                        break;
+                    case 1:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPers);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPers);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 1:
+                switch(tempListCalcul[index].by_person)
+                {
+                    case 0:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * diffDate);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * diffDate);
+                        }
+                        break;
+                    case 1:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPers * diffDate);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPers * diffDate);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 7:
+                nPeriod =  Math.ceil(diffDate/7)
+                switch(tempListCalcul[index].by_person)
+                {
+                    case 0:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPeriod);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPeriod);
+                        }
+                        break;
+                    case 1:
+                        if(tempListCalcul[index].enabled)
+                        {
+                            setTotalPrice(price => price += tempListCalcul[index].u_price * nPers * nPeriod);
+                        }
+                        else
+                        {
+                            setTotalPrice(price => price -= tempListCalcul[index].u_price * nPers * nPeriod);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -124,20 +177,23 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         
             <ScrollView>
                 <View style={optionStyle.recapInfoContainer}>
-                    <View>
-                        <Text style={baseStyle.textTypo}>Arrivée</Text>
+                    <View style={optionStyle.infoContainer}>
+                        <Text style={baseStyle.textTypo}>Date d'Arrivée - </Text>
                         <Text style={baseStyle.textTypo}>{criteria.startDate.toDateString()}</Text>
-                        <View style={optionStyle.line}/>
+
                     </View>
 
-                    <View>
-                        <Text style={baseStyle.textTypo}>Départ</Text>
+                    <View style={optionStyle.line}/>
+
+                    <View style={optionStyle.infoContainer}>
+                        <Text style={baseStyle.textTypo}>Date de Départ - </Text>
                         <Text style={baseStyle.textTypo}>{criteria.endDate.toDateString()}</Text>
-                        <View style={optionStyle.line}/>
                     </View>
 
-                    <View>
-                        <Text style={baseStyle.textTypo}>Nombre de Personnes</Text>
+                    <View style={optionStyle.line}/>
+
+                    <View style={optionStyle.infoContainer}>
+                        <Text style={baseStyle.textTypo}>Nombre de Personnes - </Text>
                         <Text style={baseStyle.textTypo}>{nPers}</Text>
                     </View>
                     
@@ -154,11 +210,9 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
                             />
                         }
                     </View>
-
-
                 </View>
 
-                <View style={optionStyle.line}/>
+                <View style={optionStyle.lineBeforeCB}/>
                 <View style={optionStyle.cbContainer}>
                     <FontAwesomeIcon icon={faCreditCard} size={40} />
                     <TouchableOpacity style={[baseStyle.btn, mainStyle.alignBtn, buttonStyle.light, {width: 275}]}>
@@ -172,11 +226,13 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         <View style={[optionStyle.buttonBackgroundContainer, optionStyle.contentCenter]}>
             <View style={[
                 Platform.OS === 'android' ?
-                optionStyle.buttonPriceAndroid : optionsStyle.buttonPrice,
+                optionStyle.buttonPriceAndroid : optionStyle.buttonPrice,
                 optionStyle.contentCenter]}>
                 <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>{totalPrice} €</Text>
             </View>
-            <TouchableOpacity style={[optionStyle.buttonValid]}><Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text></TouchableOpacity>
+            <TouchableOpacity style={[optionStyle.buttonValid]}>
+                <Text style={[optionStyle.buttonTextColor, baseStyle.textTypo]}>Réserver</Text>
+            </TouchableOpacity>
         </View>
       </View>
     );

@@ -19,14 +19,15 @@ import { useFonts } from "expo-font";
 const Stack = createNativeStackNavigator();
 
 export const defaultCriteria: criteriaType = {
-    startDate: null,
-    endDate: null,
-    roomType: null,
-    peopleNbr: 0
+  startDate: null,
+  endDate: null,
+  roomType: null,
+  roomTitle: null,
+  peopleNbr: 0
 }
 
 export const defaultBooking: bookingType = {
-    reservationID: null,
+  reservationID: null,
 
 }
 
@@ -50,7 +51,7 @@ export default function App(): JSX.Element {
     headerTitle: () => <Logo />
   }
 
-  function Logo () {
+  function Logo() {
     return (
       <View>
         <SvgUri
