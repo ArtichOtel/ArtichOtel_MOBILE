@@ -43,23 +43,23 @@ const presentChamberStyle = StyleSheet.create({
     },
 
     line: {
-        borderBottomColor:colors.primary,
+        borderBottomColor: colors.primary,
         borderBottomWidth: 1,
         alignSelf: "stretch",
-        marginBottom:15,
+        marginBottom: 15,
         marginTop: 15,
     },
 
     lineBeforeCB: {
-        borderBottomColor:colors.primary,
+        borderBottomColor: colors.primary,
         borderBottomWidth: 1,
         alignSelf: "stretch",
-        marginBottom:5,
+        marginBottom: 5,
         marginTop: 15,
     },
 
     contentOptionCenter: {
-        display:"flex",
+        display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
@@ -88,8 +88,6 @@ const presentChamberStyle = StyleSheet.create({
         width: "100%",
         height: 75,
         flexDirection: "row",
-        borderRadius: 10,
-        borderStyle: "solid",
         borderColor: colors.primary,
     },
 
@@ -135,7 +133,7 @@ const presentChamberStyle = StyleSheet.create({
         color: colors.primary,
         fontWeight: "bold",
     },
-  });
+});
 
 
-  export default presentChamberStyle;
+export default presentChamberStyle;
