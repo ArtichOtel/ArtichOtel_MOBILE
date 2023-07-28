@@ -49,18 +49,11 @@ function SignUpView(props: SignUpViewProps): JSX.Element|null {
     const [signupError, setSignupError] = useState<signupError[]>([{field:"global", message:null}])
 
 
-    function nullishError(fieldName) {
+    function nullishError(fieldName: string) {
         let tempErrors = signupError.map(a=>a)
-        console.log("map index",tempErrors.map(err => err?.field||null).indexOf(fieldName))
-        console.log("map complete before",tempErrors)
-
-        console.log("setting error on",fieldName, "at index", tempErrors.map(err => err?.field||null).indexOf(fieldName), "=>", null )
-        console.log(tempErrors[tempErrors.indexOf(fieldName)])
         tempErrors.map(err => err?.field||null).indexOf(fieldName) > -1
             ? tempErrors[tempErrors.map(err => err?.field||null).indexOf(fieldName)] = { field: fieldName, message: null }   // prepare update if exists
             : tempErrors.push({ field: fieldName, message: null })   // prepare null value is does not exists
-
-        console.log("map complete after",tempErrors)
         setSignupError(tempErrors)
     }
 
@@ -156,8 +149,8 @@ function SignUpView(props: SignUpViewProps): JSX.Element|null {
             .post(API_URL+"user/register",
                 bodyJSON)
             .then((response) => {
-                console.log("RESPONSE",response.data)
-                alert(`Bienvenue ${response.data[0].pseudo} !`)
+                //console.log("RESPONSE",response.data)
+                Alert.alert(`Bienvenue ${response.data[0].pseudo} !`)
                 return response.data;
             })
             .catch((err) => {
@@ -177,7 +170,7 @@ function SignUpView(props: SignUpViewProps): JSX.Element|null {
         })
             .then((response) => {
                 const user: userDataType = {
-                    userId: response.data.user_id,
+                    user_id: response.data.user_id,
                     token: response.data.token,
                     customerId: response.data.customer_id
                 }

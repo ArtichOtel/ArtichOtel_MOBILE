@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {Alert, Text, TextInput, TouchableOpacity, View} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -60,7 +60,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 //console.log("recap")
                 //console.log(userData.user_id,userData.token,userData.customer_id)
                 setCurrentUser({
-                    userId: userData.user_id,
+                    user_id: userData.user_id,
                     token: userData.token,
                     customerId: userData.customer_id
                 })
@@ -73,7 +73,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 }
 
         return {
-          id: userData.user_id,
+          user_id: userData.user_id,
           role: userData.role,
           token: userData.token,
           customer: customer,
@@ -115,6 +115,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                     //return getCustomerData({cred})
                 //}
                 setUserProfile(userData)
+                return { data, cred }
             })
             /*.then(({data, cred})=>{
                 if (cred.role==='customer') { // 2 for customer
@@ -123,8 +124,10 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 }
                 setUserProfile(userData)
             })*/
-            .then(() => {
+            .then(({ data, cred}) => {
                 //console.log(`navigate from connection to ${nextScreen ? {nextScreen?.toString(), searchReservationsResult.toString()} : 'main'}`)
+                console.log(data)
+                Alert.alert(`Vous êtes connecté en tant que ${data.pseudo}`)
                nextScreen
                    ? navigation.navigate(route.params.nextScreen, {searchReservationsResult: route.params.searchReservationsResult})
                    : navigation.navigate('Main')
@@ -137,7 +140,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
 
     return (
-        !currentUser ? null :
+        !currentUser ? null : // context need to be set before trying to update it
         <View style={baseStyle.view}>
             <View style={[connectionStyle.container]}>
 
@@ -194,7 +197,9 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
 
                     <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
-                                      onPress={() => navigation.navigate('SignUp')}
+                                      onPress={() => navigation.navigate('SignUp',
+                                          {searchReservationsResult: route.params.searchReservationsResult, nextScreen: nextScreen})
+                    }
                     >
                         <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
                         <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Créer un compte</Text>
@@ -206,6 +211,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             </View>
 
             <MainMenu navigation={navigation}  />
+
         </View>
     )
 }

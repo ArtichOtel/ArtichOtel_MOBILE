@@ -1,5 +1,5 @@
 export type userDataType = {
-    userId: string | null,
+    user_id: string | null,
     token: string | null
     customerId: string | null
 }
@@ -28,7 +28,7 @@ export type bookingType = {
 }
 
 export type credentials = {
-    id: string,
+    user_id: string,
     token: string,
     role: string,
     customer: string
