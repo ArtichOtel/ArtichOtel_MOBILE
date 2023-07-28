@@ -140,7 +140,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
 
     return (
-        //!currentUser ? null :
+        !currentUser ? null : // context need to be set before trying to update it
         <View style={baseStyle.view}>
             <View style={[connectionStyle.container]}>
 
@@ -209,6 +209,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
             </View>
 
             <MainMenu navigation={navigation}  />
+
         </View>
     )
 }
