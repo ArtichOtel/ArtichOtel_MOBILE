@@ -89,11 +89,10 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
             },
             }
         ).then((response) => {
-            console.log("Reservation success : ", response.data);
+            console.log("beginBooking success : ", response.data);
             setBooking({booking_id: response.data.id, option_list : null});
-            navigationFlow();
         }).catch((err) =>  {
-            console.log("Debut réservation error : ", err);
+            console.log("beginBooking error : ", err);
         })
     }
 
@@ -217,7 +216,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     //Exemple
     function updateBooking() {
         if (numCB.length !== 16) {
-            alert("Veuillez fournir votre numéro de CB");
+            Alert.alert("Veuillez fournir votre numéro de CB");
         } else {
             // confirm booking with options and bank card
             const payload = {
