@@ -3,7 +3,7 @@ import {userProfileType, userDataType, bookingType} from "../utils/types";
 export const defaultUserData: userDataType = {
   user_id: null,
   token: null,
-  customerId: null
+  customer_id: null
 }
 
 export const defaultProfile: userProfileType = {

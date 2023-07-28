@@ -62,7 +62,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
                 setCurrentUser({
                     user_id: userData.user_id,
                     token: userData.token,
-                    customerId: userData.customer_id
+                    customer_id: userData.customer_id
                 })
                 setPassword("");
                 setUsername("");

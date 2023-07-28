@@ -172,7 +172,7 @@ function SignUpView(props: SignUpViewProps): JSX.Element|null {
                 const user: userDataType = {
                     user_id: response.data.user_id,
                     token: response.data.token,
-                    customerId: response.data.customer_id
+                    customer_id: response.data.customer_id
                 }
                 setCurrentUser(user)
                 return response.data

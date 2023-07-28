@@ -26,6 +26,7 @@ import {getDiffDate} from "../utils/dates";
 import Option from "../components/option";
 import {setDayWithOptions} from "date-fns/fp";
 import connectionStyle from "../style/ConnectionStyle";
+import {formatISO} from "date-fns";
 
 type OptionsViewProps = {
     navigation: any,
@@ -44,8 +45,8 @@ type Option = {
 export default function OptionsView(props: OptionsViewProps): JSX.Element {
     const { navigation, route } = props;
     const { criteria } = React.useContext(CriteriaCtx);
-    const { booking } = React.useContext(BookingCtx);
-    const { user } = React.useContext(UserCtx)
+    const { currentUser } = React.useContext(UserCtx);
+    const { booking, setBooking } = React.useContext(BookingCtx);
     const searchReservationsResult = route.params.searchReservationsResult;
 
     // recap criteria
@@ -71,6 +72,30 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
         }
     };
 
+    const  beginBooking = async() =>
+    {
+        console.log("Données : ", searchReservationsResult.room_id, currentUser.customer_id, "Pending", formatISO(criteria.startDate), criteria.endDate, criteria.peopleNbr)
+        await axios.post(API_URL+"booking", {
+
+            room_id: searchReservationsResult.room_id,
+            customer_id: currentUser.customer_id,
+            status: "Pending",
+            begin_date: formatISO(criteria.startDate),
+            end_date: formatISO(criteria.endDate),
+            nbrs_people: criteria.peopleNbr
+        }, {
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`,
+            },
+            }
+        ).then((response) => {
+            console.log("Reservation success : ", response.data);
+            setBooking({booking_id: response.data.id, option_list : null});
+            navigationFlow();
+        }).catch((err) =>  {
+            console.log("Debut réservation error : ", err);
+        })
+    }
 
     function toggleOption(index: number) {
         let tempList = options.map(a=>a)
@@ -82,7 +107,10 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
     // fetch table des options => setOptions(data)
     useEffect(()=> {
         if (!options) {
-            fetchOptions().then()
+            fetchOptions()
+                .then(() => {
+                    beginBooking().then();
+                })
         }
     }, [])
 
@@ -206,7 +234,7 @@ export default function OptionsView(props: OptionsViewProps): JSX.Element {
                     payload,
                     {
                         headers: {
-                            Authorization: `Bearer ${user.token}`,
+                            Authorization: `Bearer ${currentUser.token}`,
                         },
                     }
                 )

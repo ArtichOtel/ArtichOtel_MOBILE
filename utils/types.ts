@@ -1,7 +1,7 @@
 export type userDataType = {
     user_id: string | null,
     token: string | null
-    customerId: string | null
+    customer_id: string | null
 }
 
 // TODO : change any type
