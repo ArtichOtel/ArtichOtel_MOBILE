@@ -19,19 +19,23 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
   // not booking after 18h00 => first possible booking day become next day
   const firstPossibleDay = today.getHours() < 18 ? today : addDays(today, 1)
 
-  function userSelectStart(selectedDate):void {
-    if (criteria.endDate) {
-      setCriteria({ ...criteria, startDate: selectedDate })
-    } else {
-      setCriteria({ ...criteria, startDate: selectedDate, endDate: addDays(selectedDate, 1) })
-    }
+  function userSelectStart(selectedDate : Date):void {
+    const newCriterias = {...criteria, startDate: selectedDate}
+
+    if (
+      !criteria.endDate
+      || selectedDate.getTime() > criteria.endDate.getTime()
+    ) newCriterias.endDate = addDays(selectedDate, 1)
+
+    setCriteria(newCriterias)
   }
+
   function userSelectEnd(selectedDate):void {
-    if (criteria.startDate) {
-      setCriteria({ ...criteria, endDate: selectedDate })
-    } else {
-      setCriteria({ ...criteria, startDate: addDays(selectedDate, -1), endDate: selectedDate })
-    }
+    const newCriterias = {...criteria, endDate: selectedDate}
+
+    if (!criteria.startDate) newCriterias.startDate = addDays(selectedDate, -1)
+    
+    setCriteria(newCriterias)
   }
 
 
