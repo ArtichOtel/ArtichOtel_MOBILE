@@ -1,71 +1,68 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, Text } from "react-native";
-import { CriteriaCtx } from "../../utils/context";
+import React, { useState, useContext } from 'react';
+import { View, Text, TouchableOpacity } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker'
+
+import { CriteriaCtx } from "../../utils/context";
+
 import DatesBottomSheetStyle from '../../style/DatesBottomSheetStyle';
-import { formatISO } from 'date-fns'
-import colors from '../../style/colors';
-import {addDays} from "../../utils/dates";
+import { addDays } from "date-fns";
 
 function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
+
+  // CONTEXTS
   const { criteria, setCriteria } = useContext(CriteriaCtx);
+
   const today = new Date()
-  const [startDate, setStartDate] = useState<Date>(today);
-  const [endDate, setEndDate] = useState<Date>(addDays(today, 1))
+  // not booking after 18h00 => first possible booking day become next day
+  const firstPossibleDay = today.getHours() < 18 ? today : addDays(today, 1)
 
+  function userSelectStart(selectedDate):void {
+    if (criteria.endDate) {
+      setCriteria({ ...criteria, startDate: selectedDate })
+    } else {
+      setCriteria({ ...criteria, startDate: selectedDate, endDate: addDays(selectedDate, 1) })
+    }
+  }
+  function userSelectEnd(selectedDate):void {
+    if (criteria.startDate) {
+      setCriteria({ ...criteria, endDate: selectedDate })
+    } else {
+      setCriteria({ ...criteria, startDate: addDays(selectedDate, -1), endDate: selectedDate })
+    }
+  }
 
-  useEffect(() => {
-
-    if (startDate >= endDate) setEndDate(addDays(startDate, 1))
-
-    setCriteria({
-      ...criteria,
-      startDate: startDate
-    })
-  }, [startDate]);
-
-  useEffect(() => {
-
-    if (startDate >= endDate) setStartDate(addDays(startDate, -1))
-
-    setCriteria({
-      ...criteria,
-      endDate: endDate
-    })
-  }, [endDate]);
 
   return (
     <>
       <Text style={DatesBottomSheetStyle.textTitle}>Choisissez vos dates</Text>
+
       <View style={DatesBottomSheetStyle.container}>
+
         <View style={DatesBottomSheetStyle.dateContainer}>
           <Text style={DatesBottomSheetStyle.dateTitle}>Arrivée</Text>
+
           <DateTimePicker
-            testID='startDate'
-            value={startDate ? startDate : today}
-            mode='date'
-            accentColor={colors.primary}
+            value={criteria.startDate||firstPossibleDay}
+            mode={'date'}
             is24Hour={true}
             onChange={(_, selectedDate) => {
-              setStartDate(selectedDate)
-              if (!endDate) setEndDate(addDays(selectedDate, 1))
+              userSelectStart(selectedDate)
             }}
-            minimumDate={today}
+            minimumDate={firstPossibleDay}
           />
         </View>
+
         <View style={DatesBottomSheetStyle.dateContainer}>
           <Text style={DatesBottomSheetStyle.dateTitle}>Départ</Text>
+          
           <DateTimePicker
-            testID='endDate'
-            value={endDate}
+            value={criteria.endDate||addDays(firstPossibleDay, 1)}
             mode='date'
-            accentColor={colors.primary}
             is24Hour={true}
             onChange={(_, selectedDate) => {
-              setEndDate(selectedDate)
-              if (!startDate) setStartDate(addDays(selectedDate, -1))
+              userSelectEnd(selectedDate)
             }}
-            minimumDate={addDays(startDate, 1)}
+            minimumDate={criteria.startDate ? addDays(criteria.startDate, 1) : addDays(firstPossibleDay, 1)}
           />
         </View>
       </View>

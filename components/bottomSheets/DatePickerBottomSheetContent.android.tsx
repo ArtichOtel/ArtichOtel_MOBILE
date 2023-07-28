@@ -5,9 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { CriteriaCtx } from "../../utils/context";
 
 import DatesBottomSheetStyle from '../../style/DatesBottomSheetStyle';
-import {addDays} from "date-fns";
-
-
+import { addDays } from "date-fns";
 
 function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
 
