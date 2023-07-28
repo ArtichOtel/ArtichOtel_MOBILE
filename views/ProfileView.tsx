@@ -1,22 +1,22 @@
-import React, {useContext, useState} from "react";
-import {Animated, Text, TextInput, TouchableOpacity, View} from "react-native";
+import React, { useContext, useState } from "react";
+import { Alert, Animated, Text, TextInput, TouchableOpacity, View } from "react-native";
 import connectionStyle from "../style/ConnectionStyle";
 import inputStyle from "../style/inputStyle";
 import MainMenu from "../components/tabs/MainMenu";
 import baseStyle from "../style/baseStyle";
 import buttonStyle from "../style/buttonStyle";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faFloppyDisk, faUserSlash, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import mainMenuStyle from "../style/mainMenuStyle";
 import axios from "axios";
 // @ts-ignore
-import {API_URL} from "@env";
-import {userDataType, userProfileType} from "../utils/types";
-import {UserCtx, UserProfileCtx} from "../utils/context";
+import { API_URL } from "@env";
+import { userDataType, userProfileType } from "../utils/types";
+import { UserCtx, UserProfileCtx } from "../utils/context";
 import ScrollView = Animated.ScrollView;
 import SignUpViewStyle from "../style/SignUpViewStyle";
-import {getProfileData} from "../utils/profileUpdater";
-import {defaultProfile, defaultUserData} from "../utils/defaults";
+import { getProfileData } from "../utils/profileUpdater";
+import { defaultProfile, defaultUserData } from "../utils/defaults";
 
 
 type ConnectionProps = {
@@ -24,27 +24,28 @@ type ConnectionProps = {
 }
 
 
-function ConnectionView(props: ConnectionProps): JSX.Element|null {
-    const {navigation} = props
-    const {currentUser, setCurrentUser} = useContext(UserCtx)
-    const {userProfile, setUserProfile} = useContext(UserProfileCtx)
+function ConnectionView(props: ConnectionProps): JSX.Element | null {
+    const { navigation } = props
+    const { currentUser, setCurrentUser } = useContext(UserCtx)
+    const { userProfile, setUserProfile } = useContext(UserProfileCtx)
     const [lastname, setLastname] = useState<string>('')
     const [firstname, setFirstname] = useState<string>('')
     const [pseudo, setPseudo] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const [connectionError, setConnectionError] = useState<string|null>(null)
+    const [connectionError, setConnectionError] = useState<string | null>(null)
 
 
     function loggout() {
-        axios.get(API_URL+"user/logout", {
+        axios.get(API_URL + "user/logout", {
             headers: {
                 'Authorization': `Bearer ${currentUser.token}`
             }
-        }).then(()=>{
+        }).then(() => {
             console.log("DISCONNECTED !")
             setUserProfile(defaultProfile)
             setCurrentUser(defaultUserData)
+            Alert.alert("Vous êtes déconnecté")
         }).then(() => navigation.navigate('Main'))
     }
 
@@ -56,7 +57,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
                 >
                     <View style={connectionStyle.container}>
 
-                        <View style={{marginTop: 30, marginBottom: 30}}>
+                        <View style={{ marginTop: 30, marginBottom: 30 }}>
                             <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
                                 onPress={() => loggout()}
                             >
@@ -148,14 +149,14 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
 
                         <View style={[connectionStyle.buttonWrapper]}>
                             <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
-                                              //onPress={() => trySignUp()}
+                            //onPress={() => trySignUp()}
                             >
                                 <FontAwesomeIcon icon={faFloppyDisk} size={30} style={mainMenuStyle.items} />
                                 <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Enregistrer</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={[baseStyle.btn, baseStyle.errorText]}
-                                              //onPress={() => trySignUp()}
+                            //onPress={() => trySignUp()}
                             >
                                 <FontAwesomeIcon icon={faUserSlash} size={30} style={baseStyle.btn} />
                                 <Text >Supprimer le compte</Text>
@@ -167,7 +168,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element|null {
 
                 </ScrollView>
 
-                <MainMenu navigation={navigation}  />
+                <MainMenu navigation={navigation} />
             </View>
     )
 }
