@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import DatesBottomSheetStyle from '../../style/DatesBottomSheetStyle';
 import { formatISO } from 'date-fns'
 import colors from '../../style/colors';
+import {addDays} from "../../utils/dates";
 
 function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
   const { criteria, setCriteria } = useContext(CriteriaCtx);
@@ -12,11 +13,6 @@ function DatePickerBottomSheetContentIOS(props: any): JSX.Element {
   const [startDate, setStartDate] = useState<Date>(today);
   const [endDate, setEndDate] = useState<Date>(addDays(today, 1))
 
-  function addDays(date : Date, days : number) {
-    let newDate = new Date(date)
-    newDate.setDate(newDate.getDate() + days)
-    return newDate
-  }
 
   useEffect(() => {
 

@@ -1,43 +1,41 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
-import { CriteriaCtx } from "../../utils/context";
 import DateTimePicker from '@react-native-community/datetimepicker'
+
+import { CriteriaCtx } from "../../utils/context";
+
 import DatesBottomSheetStyle from '../../style/DatesBottomSheetStyle';
-import { formatISO } from 'date-fns'
+import {addDays} from "date-fns";
+
+
 
 function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
-  const { criteria, setCriteria } = useContext(CriteriaCtx);
-  const today = new Date()
-  const [startDate, setStartDate] = useState<Date>(today);
-  const [endDate, setEndDate] = useState<Date>(addDays(today, 1))
-  const [showStartDate, setShowStartDate] = useState<boolean>(false)
-  const [showEndDate, setShowEndDate] = useState<boolean>(false)
 
-  function addDays(date : Date, days : number) {
-    let newDate = new Date(date)
-    newDate.setDate(newDate.getDate() + days)
-    return newDate
+  // CONTEXTS
+  const { criteria, setCriteria } = useContext(CriteriaCtx);
+
+  // internal states
+  const [visibleDatePicker, setVisibleDatePicker] = useState<"start"|"end"|null>(null)
+
+  const today = new Date()
+  // not booking after 18h00 => first possible booking day become next day
+  const firstPossibleDay = today.getHours() < 18 ? today : addDays(today, 1)
+
+  function userSelectStart(selectedDate):void {
+    if (criteria.endDate) {
+      setCriteria({ ...criteria, startDate: selectedDate })
+    } else {
+      setCriteria({ ...criteria, startDate: selectedDate, endDate: addDays(selectedDate, 1) })
+    }
+  }
+  function userSelectEnd(selectedDate):void {
+    if (criteria.startDate) {
+      setCriteria({ ...criteria, endDate: selectedDate })
+    } else {
+      setCriteria({ ...criteria, startDate: addDays(selectedDate, -1), endDate: selectedDate })
+    }
   }
 
-  useEffect(() => {
-
-    if (startDate >= endDate) setEndDate(addDays(startDate, 1))
-
-    setCriteria({
-      ...criteria,
-      startDate: startDate
-    })
-  }, [startDate]);
-
-  useEffect(() => {
-
-    if (startDate >= endDate) setStartDate(addDays(startDate, -1))
-
-    setCriteria({
-      ...criteria,
-      endDate: endDate
-    })
-  }, [endDate]);
 
   return (
     <>
@@ -47,41 +45,40 @@ function DatePickerBottomSheetContentAndroid(props: any): JSX.Element {
 
         <View style={DatesBottomSheetStyle.dateContainer}>
 
-          <TouchableOpacity onPress={() => setShowStartDate(true)}>
+          <TouchableOpacity onPress={() => setVisibleDatePicker("start")}>
             <Text style={DatesBottomSheetStyle.dateTitle}>Arrivée</Text>
           </TouchableOpacity>
 
-          {showStartDate &&
+          {visibleDatePicker === "start" &&
             <DateTimePicker
-              value={startDate}
-              mode='date'
+              value={criteria.startDate||firstPossibleDay}
+              mode={'date'}
               is24Hour={true}
               onChange={(_, selectedDate) => {
-                setStartDate(selectedDate)
-                if (!endDate) {setEndDate(addDays(selectedDate, 1))}
-                setShowStartDate(false)
+                setVisibleDatePicker(null)
+                userSelectStart(selectedDate)
               }}
-              minimumDate={today}
+              minimumDate={firstPossibleDay}
             />
           }
         </View>
 
         <View style={DatesBottomSheetStyle.dateContainer}>
 
-          <TouchableOpacity onPress={() => setShowEndDate(true)}>
+          <TouchableOpacity onPress={() => setVisibleDatePicker("end")}>
             <Text style={DatesBottomSheetStyle.dateTitle}>Départ</Text>
           </TouchableOpacity>
           
-          {showEndDate &&
+          {visibleDatePicker === "end" &&
             <DateTimePicker
-              value={endDate}
+              value={criteria.endDate||addDays(firstPossibleDay, 1)}
               mode='date'
               is24Hour={true}
               onChange={(_, selectedDate) => {
-                setEndDate(selectedDate)
-                setShowEndDate(false)
+                setVisibleDatePicker(null)
+                userSelectEnd(selectedDate)
               }}
-              minimumDate={addDays(startDate, 1)}
+              minimumDate={criteria.startDate ? addDays(criteria.startDate, 1) : addDays(firstPossibleDay, 1)}
             />
           }
         </View>

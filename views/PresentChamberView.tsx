@@ -51,8 +51,8 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
     <View style={presentChamberStyle.centerContainer}>
       <View style={[presentChamberStyle.infoBox]}>
         <Text>{criteria.peopleNbr} personnes - </Text>
-        <Text>{criteria.startDate.toDateString()} - </Text>
-        <Text>{criteria.endDate.toDateString()}</Text>
+        <Text>{criteria.startDate.toLocaleDateString()} - </Text>
+        <Text>{criteria.endDate.toLocaleDateString()}</Text>
       </View>
 
       <ScrollView>
@@ -86,7 +86,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
           <FontAwesomeIcon
             icon={faClock}
             size={40}
-            style={{ marginRight: 15 }}
+            style={{ marginRight: 15, marginLeft: 5 }}
           />
           <Text style={baseStyle.textTypo}> Arrivée entre 13h00 et 18h00</Text>
         </View>
@@ -102,7 +102,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
               <FontAwesomeIcon
                 icon={faShower}
                 size={40}
-                style={{ marginRight: 15 }}
+                style={{ marginRight: 5, marginLeft : 5}}
               />
               <Text style={baseStyle.textTypo}>Douche</Text>
             </View>
@@ -115,7 +115,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
               <FontAwesomeIcon
                 icon={faBed}
                 size={40}
-                style={{ marginRight: 15 }}
+                style={{ marginRight: 5, marginLeft: 5 }}
               />
               <Text style={baseStyle.textTypo}>Grand lit</Text>
             </View>
@@ -128,7 +128,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
               <FontAwesomeIcon
                 icon={faSmokingBan}
                 size={40}
-                style={{ marginRight: 10 }}
+                style={{ marginRight: 5, marginLeft: 2 }}
               />
               <Text style={baseStyle.textTypo}>Ne pas fumer</Text>
             </View>
@@ -143,7 +143,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
               <FontAwesomeIcon
                 icon={faTelevision}
                 size={40}
-                style={{ marginRight: 15 }}
+                style={{ marginRight: 10 }}
               />
               <Text style={baseStyle.textTypo}>Télévision</Text>
             </View>
@@ -156,7 +156,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
               <FontAwesomeIcon
                 icon={faKitchenSet}
                 size={40}
-                style={{ marginRight: 15 }}
+                style={{ marginRight: 5 }}
               />
               <Text style={baseStyle.textTypo}>Frigo et Cuisine</Text>
             </View>
@@ -169,7 +169,6 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
               <FontAwesomeIcon
                 icon={faBellConcierge}
                 size={40}
-                style={{ marginRight: 5 }}
               />
               <Text style={baseStyle.textTypo}>Service Chambre</Text>
             </View>
