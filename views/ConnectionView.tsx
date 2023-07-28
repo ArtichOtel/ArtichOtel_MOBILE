@@ -197,7 +197,9 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
 
                     <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
-                                      onPress={() => navigation.navigate('SignUp')}
+                                      onPress={() => navigation.navigate('SignUp',
+                                          {searchReservationsResult: route.params.searchReservationsResult, nextScreen: nextScreen})
+                    }
                     >
                         <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
                         <Text style={[baseStyle.textTypo, baseStyle.textLight, connectionStyle.button]}>Créer un compte</Text>
