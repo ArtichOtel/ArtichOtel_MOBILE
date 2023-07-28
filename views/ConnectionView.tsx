@@ -198,7 +198,7 @@ function ConnectionView(props: ConnectionProps): JSX.Element {
 
                     <TouchableOpacity style={[baseStyle.btn, buttonStyle.dark]}
                                       onPress={() => navigation.navigate('SignUp',
-                                          {searchReservationsResult: route.params.searchReservationsResult, nextScreen: nextScreen})
+                                          {searchReservationsResult: searchReservationsResult, nextScreen: nextScreen})
                     }
                     >
                         <FontAwesomeIcon icon={faUserPlus} size={30} style={mainMenuStyle.items} />
