@@ -1,4 +1,4 @@
-import {Text, View, Image, TouchableOpacity, Animated, Platform} from "react-native";
+import { Text, View, Image, TouchableOpacity, Animated, Platform } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBed,
@@ -21,7 +21,7 @@ import { API_URL } from "@env";
 import ScrollView = Animated.ScrollView;
 import React from "react";
 import { CriteriaCtx, UserCtx } from "../utils/context";
-import {getDiffDate} from "../utils/dates";
+import { getDiffDate } from "../utils/dates";
 
 import optionStyle from "../style/optionsStyle";
 import optionsStyle from "../style/optionsStyle";
@@ -38,7 +38,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
   const { booking, setBooking } = React.useContext(BookingCtx);
   const searchReservationsResult = route.params.searchReservationsResult[0];
   //console.log("searchReservationsResult",searchReservationsResult)
-    const basePrice = searchReservationsResult.price * criteria.peopleNbr * getDiffDate(criteria.startDate, criteria.endDate)
+  const basePrice = searchReservationsResult.price * criteria.peopleNbr * getDiffDate(criteria.startDate, criteria.endDate)
 
     function beginBooking()
     {
@@ -66,7 +66,9 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
     }
 
 
-  return ( !searchReservationsResult ? null :
+
+
+  return (!searchReservationsResult ? null :
     <View style={presentChamberStyle.centerContainer}>
       <View style={[presentChamberStyle.infoBox]}>
         <Text>{criteria.peopleNbr} personnes - </Text>
@@ -121,7 +123,7 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
               <FontAwesomeIcon
                 icon={faShower}
                 size={40}
-                style={{ marginRight: 5, marginLeft : 5}}
+                style={{ marginRight: 5, marginLeft: 5 }}
               />
               <Text style={baseStyle.textTypo}>Douche</Text>
             </View>
@@ -203,15 +205,15 @@ export default function PresentChamberView(props: roomProps): JSX.Element {
       >
         <View
           style={[
-              Platform.OS === 'android' ?
-                  presentChamberStyle.buttonPriceAndroid : presentChamberStyle.buttonPrice,
-              presentChamberStyle.contentCenter
+            Platform.OS === 'android' ?
+              presentChamberStyle.buttonPriceAndroid : presentChamberStyle.buttonPrice,
+            presentChamberStyle.contentCenter
           ]}
         >
           <Text
             style={[presentChamberStyle.buttonTextColor, baseStyle.textTypo]}
           >
-              {basePrice} €
+            {basePrice} €
           </Text>
         </View>
         <TouchableOpacity

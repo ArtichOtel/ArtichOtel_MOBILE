@@ -85,7 +85,6 @@ const presentChamberStyle = StyleSheet.create({
     backgroundColor: colors.tertiary,
     marginLeft: 8,
     marginBottom: 0,
-    borderRadius: 5,
     height: 40,
     width: 110,
   },
@@ -112,9 +111,6 @@ const presentChamberStyle = StyleSheet.create({
     width: "100%",
     height: 75,
     flexDirection: "row",
-    borderRadius: 10,
-    borderStyle: "solid",
-    borderColor: colors.primary,
   },
 });
 

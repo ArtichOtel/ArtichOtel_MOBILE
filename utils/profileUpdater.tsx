@@ -14,9 +14,9 @@ export async function getUserData({ cred }): Promise<any> {
       },
     })
     .then((resp) => {
-      //   console.log("-------------------------------------");
-      //   console.log("user:", resp.data);
-      //   console.log("-------------------------------------");
+         console.log("-------------------------------------");
+         console.log("user:", resp.data);
+         console.log("-------------------------------------");
       return { data: resp.data, cred: cred };
     })
     .catch((err) => console.log("err", err));

@@ -1,7 +1,7 @@
 import {userProfileType, userDataType, bookingType} from "../utils/types";
 
 export const defaultUserData: userDataType = {
-  userId: null,
+  user_id: null,
   token: null,
   customerId: null
 }
