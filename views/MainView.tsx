@@ -94,35 +94,15 @@ export default function MainView(props: MainViewProps): JSX.Element {
       duration: 500,
       useNativeDriver: false,
       easing: Easing.inOut(Easing.linear)
-    }).start(() => roomTypeAnim.setValue(0)) // Resets the value once the animation is in 'stop' state.
+    }).start(() => animation.setValue(0)) // Resets the value once the animation is in 'stop' state.
   }
 
   function bgAnimatedStyle(animation: Animated.Value) {
     return {
       backgroundColor: animation.interpolate({
-        inputRange: [0, 0.5, 1],
+        inputRange: [0, 0.2, 1],
         outputRange: [colors.secondary, colors.tertiary, colors.secondary],
       })
-    }
-  }
-
-  function animateValidation(key: string) {
-    console.log('✔︎') // TODO : Delete
-    switch (key) {
-      case 'roomType':
-        fadeInOut(roomTypeAnim)
-        break
-      case 'startDate':
-        fadeInOut(dateAnim)
-        break
-      case 'endDate':
-        fadeInOut(dateAnim)
-        break
-      case 'peopleNbr':
-        fadeInOut(peopleNbrAnim)
-        break
-      default:
-        break
     }
   }
 
@@ -130,20 +110,7 @@ export default function MainView(props: MainViewProps): JSX.Element {
     let validated = 0
 
     for (const [key, value] of Object.entries(criteria)) {
-      // TODO : Delete logs
-      console.log('key:', key, 'value:', value)
-      console.log(`criteriaDiffs['${key}']`, criteriaDiffs[`${key}`])
-      console.log('!==', value !== criteriaDiffs[`${key}`])
-      if (value) {
-        validated++
-        if (value !== criteriaDiffs[`${key}`]) {
-          animateValidation(key)
-          setCriteriaDiffs({
-            ...criteriaDiffs,
-            [key]: value
-          })
-        }
-      }
+      if (value) validated++
       else setCriteriaError(criteriaErrors[`${key}`])
     }
     if (validated === Object.keys(criteriaErrors).length) setCriteriaError(null)
@@ -173,6 +140,21 @@ export default function MainView(props: MainViewProps): JSX.Element {
       Alert.alert('Critère non valide', criteriaError)
     }
   }
+
+  useEffect(() => {
+    // If statement to not compute animation on the first loading of the app
+    if (criteria.roomType !== null) fadeInOut(roomTypeAnim)
+  }, [criteria.roomType])
+
+  useEffect(() => {
+    // If statement to not compute animation on the first loading of the app
+    if (criteria.startDate !== null && criteria.endDate !== null) fadeInOut(dateAnim)
+  }, [criteria.startDate, criteria.endDate])
+
+  useEffect(() => {
+    // If statement to not compute animation on the first loading of the app
+    if (criteria.peopleNbr !== 0) fadeInOut(peopleNbrAnim)
+  }, [criteria.peopleNbr])
 
   useEffect(() => {
     validateCriterias()
